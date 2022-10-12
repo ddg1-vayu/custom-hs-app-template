@@ -1,5 +1,6 @@
 <?php
-class SSP {
+class SSP
+{
 	/**
 	 * Create the data output array for the DataTables rows
 	 *
@@ -7,7 +8,8 @@ class SSP {
 	 *  @param  array $data    Data from the SQL get
 	 *  @return array          Formatted data in a row based format
 	 */
-	static function data_output($columns, $data) {
+	static function data_output($columns, $data)
+	{
 		$out = array();
 
 		for ($i = 0, $ien = count($data); $i < $ien; $i++) {
@@ -52,7 +54,8 @@ class SSP {
 	 *     * pass - user password
 	 *  @return resource PDO connection
 	 */
-	static function db($conn) {
+	static function db($conn)
+	{
 		if (is_array($conn)) {
 			return self::sql_connect($conn);
 		}
@@ -70,7 +73,8 @@ class SSP {
 	 *  @param  array $columns Column information array
 	 *  @return string SQL limit clause
 	 */
-	static function limit($request, $columns) {
+	static function limit($request, $columns)
+	{
 		$limit = '';
 
 		if (isset($request['start']) && $request['length'] != -1) {
@@ -90,7 +94,8 @@ class SSP {
 	 *  @param  array $columns Column information array
 	 *  @return string SQL order by clause
 	 */
-	static function order($request, $columns)	{
+	static function order($request, $columns)
+	{
 		$order = '';
 
 		if (isset($request['order']) && count($request['order'])) {
@@ -138,7 +143,8 @@ class SSP {
 	 *    sql_exec() function
 	 *  @return string SQL where clause
 	 */
-	static function filter($request, $columns, &$bindings) {
+	static function filter($request, $columns, &$bindings)
+	{
 		$globalSearch = array();
 		$columnSearch = array();
 		$dtColumns = self::pluck($columns, 'dt');
@@ -216,7 +222,8 @@ class SSP {
 	 *  @param  array $columns Column information array
 	 *  @return array          Server-side processing response array
 	 */
-	static function simple($request, $conn, $table, $primaryKey, $columns)	{
+	static function simple($request, $conn, $table, $primaryKey, $columns)
+	{
 		$bindings = array();
 		$db = self::db($conn);
 
@@ -291,7 +298,8 @@ class SSP {
 	 *  @param  string $whereAll WHERE condition to apply to all queries
 	 *  @return array          Server-side processing response array
 	 */
-	static function complex($request, $conn, $table, $primaryKey, $columns, $whereResult = null, $whereAll = null) {
+	static function complex($request, $conn, $table, $primaryKey, $columns, $whereResult = null, $whereAll = null)
+	{
 		$bindings = array();
 		$db = self::db($conn);
 		$localWhereResult = array();
@@ -376,7 +384,8 @@ class SSP {
 	 *     * pass - user password
 	 * @return resource Database connection handle
 	 */
-	static function sql_connect($sql_details) {
+	static function sql_connect($sql_details)
+	{
 		try {
 			$db = @new PDO(
 				"mysql:host={$sql_details['host']};dbname={$sql_details['db']}",
@@ -405,7 +414,8 @@ class SSP {
 	 * @param  string   $sql SQL query to execute.
 	 * @return array         Result from the query (all rows)
 	 */
-	static function sql_exec($db, $bindings, $sql = null) {
+	static function sql_exec($db, $bindings, $sql = null)
+	{
 		// Argument shifting
 		if ($sql === null) {
 			$sql = $bindings;
@@ -446,7 +456,8 @@ class SSP {
 	 *
 	 * @param  string $msg Message to send to the client
 	 */
-	static function fatal($msg) {
+	static function fatal($msg)
+	{
 		echo json_encode(array(
 			"error" => $msg
 		));
@@ -463,7 +474,8 @@ class SSP {
 	 * @return string       Bound key to be used in the SQL where this parameter
 	 *   would be used.
 	 */
-	static function bind(&$a, $val, $type) {
+	static function bind(&$a, $val, $type)
+	{
 		$key = ':binding_' . count($a);
 
 		$a[] = array(
@@ -484,7 +496,8 @@ class SSP {
 	 *  @param  string $prop Property to read
 	 *  @return array        Array of property values
 	 */
-	static function pluck($a, $prop) {
+	static function pluck($a, $prop)
+	{
 		$out = array();
 
 		for ($i = 0, $len = count($a); $i < $len; $i++) {
@@ -507,7 +520,8 @@ class SSP {
 	 * @param  string $join Glue for the concatenation
 	 * @return string Joined string
 	 */
-	static function _flatten($a, $join = ' AND ') {
+	static function _flatten($a, $join = ' AND ')
+	{
 		if (!$a) {
 			return '';
 		} else if ($a && is_array($a)) {
