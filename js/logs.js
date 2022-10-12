@@ -144,8 +144,12 @@ $(document).ready(function () {
 				targets: 7,
 				render: function (data, type, row) {
 					var color;
-					if (data >= 200 && data < 400) { color = "#07c007"; } else { color = "#FF0000"; }
-					return ('<span style="color:' + color + '">' + data + "</span>");
+					if (data >= 200 && data < 400) {
+						color = "#07c007";
+					} else {
+						color = "#FF0000";
+					}
+					return '<span style="color:' + color + '">' + data + "</span>";
 				},
 			},
 		],
