@@ -1,5 +1,6 @@
 <?php
-ini_set("display_errors", 1);
+// ini_set("display_errors", 1);
+
 echo "<style> *{font-family: 'Fira Sans', Calibri, Arial, sans-serif;} </style>";
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 

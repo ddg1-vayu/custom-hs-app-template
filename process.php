@@ -1,6 +1,5 @@
 <?php
-ini_set("display_errors", 1);
-
+// ini_set("display_errors", 1);
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 
 require("conn.php");

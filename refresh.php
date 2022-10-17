@@ -1,10 +1,10 @@
 <?php
-ini_set("display_errors", 1);
-echo "<style> *{font-family: 'Fira Sans', Calibri, Arial, sans-serif;} </style>";
-
+// ini_set("display_errors", 1);
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 
-// $conn = mysqli_connect("host", "user", "password", "database");
+echo "<style> *{font-family: 'Fira Sans', Calibri, Arial, sans-serif;} </style>";
+
+$conn = mysqli_connect("host", "user", "password", "database");
 if (!$conn) {
 	$error = "Database Error - " . mysqli_connect_error();
 	$file = "logs/connect_err_" . time() . ".txt";
