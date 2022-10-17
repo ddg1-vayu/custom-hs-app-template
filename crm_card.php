@@ -13,7 +13,7 @@ $payload = [
 	"results" => [
 		[
 			"objectId" => $objectId,
-			"title" => "Custom App",
+			"title" => "Custom HubSpot App",
 			"link" => $link,
 			"properties" => [
 				[
@@ -29,7 +29,7 @@ $payload = [
 		"width" => 640,
 		"height" => 480,
 		"uri" => $frameLink,
-		"label" => "Open"
+		"label" => "View"
 	]
 ];
 
