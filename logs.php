@@ -49,6 +49,8 @@
 		</section>
 	</main>
 
+	<script src="js/scroll-top.js"></script>
+
 	<div class="modal fade" id="data-modal" tabindex="-1" aria-hidden="true" aria-labelledby="data-modal-label">
 		<div class="modal-dialog">
 			<div class="modal-content">

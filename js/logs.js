@@ -1,26 +1,4 @@
 $(document).ready(function () {
-	let scroll_btn = document.getElementById("btn-back-to-top");
-	window.onscroll = function () {
-		display_btn();
-	};
-
-	function display_btn() {
-		if (
-			document.body.scrollTop > 20 ||
-			document.documentElement.scrollTop > 20
-		) {
-			scroll_btn.style.display = "block";
-		} else {
-			scroll_btn.style.display = "none";
-		}
-	}
-	scroll_btn.addEventListener("click", backToTop);
-
-	function backToTop() {
-		document.body.scrollTop = 0;
-		document.documentElement.scrollTop = 0;
-	}
-
 	$("#api_logs").DataTable({
 		ajax: "get_logs.php",
 		buttons: [
@@ -144,8 +122,14 @@ $(document).ready(function () {
 				targets: 7,
 				render: function (data, type, row) {
 					var color;
-					if (data >= 200 && data < 400) {
-						color = "#07c007";
+					if (data >= 100 && data < 200) {
+						color = "#808080";
+					} else if (data >= 200 && data < 300) {
+						color = "#07C007";
+					} else if (data >= 300 && data < 400) {
+						color = "#10107A";
+					} else if (data >= 400 && data < 500) {
+						color = "#EDED23";
 					} else {
 						color = "#FF0000";
 					}
@@ -154,8 +138,6 @@ $(document).ready(function () {
 			},
 		],
 	});
-
-	$.fn.DataTable.ext.pager.numbers_length = 7;
 
 	$("#api_logs_length").find("select").removeClass("form-select-sm");
 	$("#api_logs_filter").find("input").removeClass("form-control-sm");
