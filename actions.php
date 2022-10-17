@@ -8,8 +8,6 @@ if (isset($_POST['action'])) {
 
 	switch ($action) {
 		case "login":
-			echo "Incorrect Password!";
-			die;
 			$user = stripslashes($_POST["username"]);
 			$password = stripslashes($_POST["password"]);
 
