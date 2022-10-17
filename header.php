@@ -12,6 +12,9 @@
 						<a class="nav-link fw-bold text-uppercase" href="logs.php" title="Logs"> Logs </a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link fw-bold text-uppercase" href="webhooks.php" title="Webhooks"> Webhooks </a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link fw-bold text-uppercase" href="logout.php" onclick="return confirm('Logout')" title="Logout"> <i class="fa fa-sign-out fs-6"></i> </a>
 					</li>
 				</ul>
