@@ -81,7 +81,7 @@ CREATE TABLE `webhooks` (
 	PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
-CREATE TABLE `access_logs` (
+CREATE TABLE `user_access_logs` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`user_id` int(11) NOT NULL,
 	`user` varchar(24) NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE `access_logs` (
 	PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
-CREATE TABLE `users` (
+CREATE TABLE `registered_users` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`first_name` varchar(255) DEFAULT NULL,
 	`last_name` varchar(255) DEFAULT NULL,

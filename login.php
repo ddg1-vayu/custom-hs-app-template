@@ -1,40 +1,7 @@
 <?php
-// ini_set("display_errors", 1);
 session_start();
 if (isset($_SESSION['login_user'])) {
 	header("location: logs.php");
-}
-
-if (isset($_POST['submit']) && $_POST['submit'] == "login") {
-	$user = stripslashes($_POST["user"]);
-	$password = stripslashes($_POST["password"]);
-
-	include("conn.php");
-
-	$getUsers = mysqli_query($conn, "SELECT * FROM `users` WHERE `username` = '$user' OR `email` = '$user' LIMIT 1");
-
-	if (mysqli_num_rows($getUsers) > 0) {
-		$rows = mysqli_fetch_assoc($getUsers);
-		$firstName = $rows['first_name'];
-		$userId = $rows['id'];
-		$userPassword = $rows['password'];
-
-		if (password_verify($password, $userPassword)) {
-			$_SESSION['id'] = $userId;
-			$_SESSION['login_user'] = $user;
-			$ip_address = $_SERVER['REMOTE_ADDR'];
-			$platform = trim(str_replace("\"", "", $_SERVER['HTTP_SEC_CH_UA_PLATFORM']));
-
-			mysqli_query($conn, "INSERT INTO `access_logs` (`user_id`, `user`, `login`, `platform`, `ip_address`) VALUES ('$userId', '$user', current_timestamp(), '$platform', '$ip_address')");
-			mysqli_query($conn, "UPDATE `users` SET `last_login` = current_timestamp() WHERE `id` = '$userId' LIMIT 1");
-
-			echo "<script> alert('Login Successful! Welcome " . $firstName . "'); window.location='logs.php'; </script>";
-		} else {
-			echo "<script> alert('Incorrect Password!'); window.location='login.php'; </script>";
-		}
-	} else {
-		echo "<script> alert('" . $user . " is not an Authorized User! Access Denied!'); window.location='login.php'; </script>";
-	}
 }
 ?>
 <!DOCTYPE html>
@@ -43,8 +10,8 @@ if (isset($_POST['submit']) && $_POST['submit'] == "login") {
 <head>
 	<?php include("head.php"); ?>
 	<title> Login </title>
-	<link rel="stylesheet" href="css/stylesheet.css">
 </head>
+
 
 <body class="d-flex flex-column min-vh-100">
 	<header>
@@ -57,21 +24,34 @@ if (isset($_POST['submit']) && $_POST['submit'] == "login") {
 			</div>
 		</nav>
 	</header>
+
 	<main>
 		<div class="container-fluid">
 			<div class="row align-items-center justify-content-center">
-				<div class="col-lg-5 col-md-10 col-sm-12">
-					<div class="white-container text-center">
-						<form action="login.php" method="post">
-							<input type="text" class="form-control" id="user" name="user" placeholder="Email/Username" title="User" required>
-							<input type="password" class="form-control my-3" name="password" id="password" placeholder="Password" title="Password" required>
-							<button type="submit" name="submit" id="submit" class="btn btn-primary" title="Login" value="login"> LOGIN </button>
+				<div class="col-lg-4 col-md-8 col-sm-12">
+					<div class="form-box">
+						<img src="assets/placeholder.png" class="user-img" alt="placeholder" title="placeholder">
+						<form action="login.php" method="post" id="login-form">
+							<div class="mt-3">
+								<input type="text" class="form-control" id="username" name="username" placeholder="Email/Username" title="User">
+							</div>
+							<div class="mt-3">
+								<input type="password" class="form-control" name="password" id="password" placeholder="Password" title="Password">
+							</div>
+							<button type="button" name="login" id="login" class="btn btn-primary mt-3" title="Login" value="login"> LOGIN </button>
+							<div class="col-lg-12 col-md-12 col-sm-12 text-center" id="alert-div" style="display: none;">
+								<div class="alert m-0" role="alert" id="alert">
+									<div id="alert-text"></div>
+								</div>
+							</div>
 						</form>
+						<script src="js/login.js"></script>
 					</div>
 				</div>
 			</div>
 		</div>
 	</main>
+
 	<?php include("footer.php"); ?>
 </body>
 

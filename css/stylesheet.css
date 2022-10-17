@@ -4,6 +4,12 @@
 	scroll-behavior: smooth;
 	scrollbar-width: thin;
 	scrollbar-color: #605c5c #ececec;
+	box-sizing: border-box;
+}
+
+html,
+body {
+	height: 100%;
 }
 
 body {
@@ -190,6 +196,23 @@ pre::-webkit-scrollbar-track {
 	border-radius: 1rem;
 }
 
+.form-box {
+	background: #ffffff;
+	padding: 1.125rem;
+	border-radius: 0.5rem;
+	text-align: center;
+}
+
+.user-img {
+	padding: 0.25rem;
+	background-color: #fff;
+	border: 0.25rem solid var(--bs-border-color);
+	border-radius: 50%;
+	width: 100%;
+	max-width: 12rem !important;
+	margin: 0 0 1rem;
+}
+
 .form-select,
 .form-control {
 	padding: 0.625rem !important;
@@ -338,6 +361,10 @@ textarea {
 	color: #ff0000;
 	font-size: 0.875rem;
 	font-weight: 800;
+}
+
+.alert {
+	padding: 0.875rem !important;
 }
 
 #btn-back-to-top {
