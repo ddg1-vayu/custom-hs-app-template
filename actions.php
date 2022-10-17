@@ -1,7 +1,7 @@
 <?php
 // ini_set("display_errors", 1);
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
-// include("conn.php");
+require("conn.php");
 
 if (isset($_POST['action'])) {
 	$action = $_POST['action'];
