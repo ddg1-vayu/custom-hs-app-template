@@ -80,3 +80,28 @@ CREATE TABLE `webhooks` (
 	`timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
 	PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+CREATE TABLE `access_logs` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`user_id` int(11) NOT NULL,
+	`user` varchar(24) NOT NULL,
+	`platform` varchar(255) NOT NULL,
+	`ip_address` varchar(255) NOT NULL,
+	`login` timestamp NOT NULL DEFAULT current_timestamp(),
+	`logout` timestamp NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+CREATE TABLE `users` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`first_name` varchar(255) DEFAULT NULL,
+	`last_name` varchar(255) DEFAULT NULL,
+	`role` varchar(255) DEFAULT NULL,
+	`username` varchar(32) NOT NULL,
+	`email` varchar(255) NOT NULL,
+	`password` varchar(512) NOT NULL,
+	`added` timestamp NOT NULL DEFAULT current_timestamp(),
+	`updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`last_login` timestamp NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
