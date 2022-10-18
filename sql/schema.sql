@@ -4,7 +4,15 @@ CREATE TABLE `api_logs` (
 	`api_origin` varchar(255) DEFAULT NULL,
 	`curl_url` text DEFAULT NULL,
 	`curl_payload` longtext DEFAULT NULL,
-	`curl_method` enum('DELETE', 'GET', 'HEAD', 'OPTIONS', 'PATCH', 'POST', 'PUT') DEFAULT NULL,
+	`curl_method` enum(
+		'DELETE',
+		'GET',
+		'HEAD',
+		'OPTIONS',
+		'PATCH',
+		'POST',
+		'PUT'
+	) DEFAULT NULL,
 	`curl_response` longtext DEFAULT NULL,
 	`curl_http_code` int(11) DEFAULT NULL,
 	`curl_type` varchar(255) NOT NULL,
@@ -85,8 +93,10 @@ CREATE TABLE `user_access_logs` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`user_id` int(11) NOT NULL,
 	`user` varchar(24) NOT NULL,
-	`platform` varchar(255) NOT NULL,
+	`http_cookie` varchar(255) DEFAULT NULL,
 	`ip_address` varchar(255) NOT NULL,
+	`platform` varchar(255) NOT NULL,
+	`user_agent` text DEFAULT NULL,
 	`login` timestamp NOT NULL DEFAULT current_timestamp(),
 	`logout` timestamp NULL DEFAULT NULL,
 	PRIMARY KEY (`id`)

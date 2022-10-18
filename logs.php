@@ -1,4 +1,4 @@
-<?php //include("session.php"); ?>
+<?php include("session.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +27,7 @@
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<div class="white-container">
-							<table class="table table-hover table-responsive table-bordered align-middle" id="api_logs">
+							<table class="table table-responsive table-bordered align-middle" id="api_logs">
 								<thead class="text-center">
 									<tr>
 										<th class="curl_type"> Action </th>

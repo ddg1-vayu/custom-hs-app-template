@@ -128,10 +128,9 @@ $(document).ready(function () {
 						color = "#07C007";
 					} else if (data >= 300 && data < 400) {
 						color = "#10107A";
-					} else if (data >= 400 && data < 500) {
-						color = "#EDED23";
-					} else {
+					} else if (data >= 400) {
 						color = "#FF0000";
+					} else {
 					}
 					return '<span style="color:' + color + '">' + data + "</span>";
 				},

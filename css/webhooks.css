@@ -99,6 +99,7 @@ td.webhook_timestamp {
 div.dt-button-collection {
 	padding: 0.325rem 0 !important;
 	width: 180px !important;
+	border: 0;
 }
 
 div.dt-button-collection div.dropdown-menu {

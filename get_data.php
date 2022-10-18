@@ -34,6 +34,9 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 					$output['client_secret'] = mask_string($output['client_secret'], 12);
 					$output['code'] = mask_string($output['code'], 12);
 					print_r($output);
+				} else if (strncmp($payload, "To=", 3) === 0) {
+					$newArr = explode("&", $payload);
+					print_r($newArr);
 				} else {
 					$sanitize = preg_replace("/[\r\n]+/", " ", $payload);
 					$dec_payload = json_decode(utf8_encode($sanitize), true);

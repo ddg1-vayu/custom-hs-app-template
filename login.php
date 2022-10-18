@@ -28,28 +28,33 @@ if (isset($_SESSION['login_user'])) {
 	<main>
 		<div class="container-fluid">
 			<div class="row align-items-center justify-content-center">
-				<div class="col-lg-4 col-md-8 col-sm-12">
-					<div class="form-box">
-						<img src="assets/placeholder.png" class="user-img" alt="placeholder" title="placeholder">
-						<form action="login.php" method="post" id="login-form">
-							<div class="mt-3">
-								<input type="text" class="form-control" id="username" name="username" placeholder="Email/Username" title="User">
-							</div>
-							<div class="mt-3">
-								<input type="password" class="form-control" name="password" id="password" placeholder="Password" title="Password">
-							</div>
-							<button type="button" name="login" id="login" class="btn btn-primary mt-3" title="Login" value="login"> LOGIN </button>
-							<div class="col-lg-12 col-md-12 col-sm-12 text-center" id="alert-div" style="display: none;">
-								<div class="alert m-0" role="alert" id="alert">
-									<div id="alert-text"></div>
+				<div class="col-lg-5 col-md-10 col-sm-12">
+					<div class="form-container">
+						<div id="form-div" class="text-center">
+							<img src="assets/placeholder.png" class="placeholder-img" alt="placeholder" title="placeholder">
+							<form action="login.php" method="post" id="login-form">
+								<div>
+									<input type="text" class="form-control" id="username" name="username" placeholder="Email/Username" title="User">
 								</div>
-							</div>
-						</form>
-						<script src="js/login.js"></script>
+								<div class="mt-3">
+									<input type="password" class="form-control" name="password" id="password" placeholder="Password" title="Password">
+								</div>
+								<div class="mt-3">
+									<button type="button" name="login" id="login" class="btn btn-primary" title="Login" value="login"> LOGIN </button>
+								</div>
+								<div class="col-lg-12 col-md-12 col-sm-12 text-center" id="alert-div" style="display: none;">
+									<div class="alert m-0" role="alert" id="alert">
+										<div id="alert-text"></div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div id="error-div"></div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<script src="js/login.js"></script>
 	</main>
 
 	<?php include("footer.php"); ?>
