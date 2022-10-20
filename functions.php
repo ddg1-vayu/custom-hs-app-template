@@ -83,12 +83,12 @@ function hsContactDetails($portalId, $accessToken, $objectId, $properties, $file
 	$httpCode = $response['httpCode'];
 	$curlResult = json_decode($curlResponse, true);
 
-	log_request_get($portalId, $origin, $endpoint, $method, $curlResponse, $httpCode, $type, $fileName);
+	log_get_request($portalId, $origin, $endpoint, $method, $curlResponse, $httpCode, $type, $fileName);
 
 	if (in_array($httpCode, $successCodes) == false && $try < 4) {
 		$try++;
 		sleep(2);
-		hsContactInfo($portalId, $accessToken, $objectId, $properties, $fileName, $try);
+		hsContactDetails($portalId, $accessToken, $objectId, $properties, $fileName, $try);
 	} else {
 		if (isset($curlResult['properties']) && empty($curlResult['properties']) == false) {
 			$result = $curlResult['properties'];
@@ -207,7 +207,7 @@ function hsContactDelete($portalId, $accessToken, $objectId, $fileName, $try = 0
 	$curlResponse = $response['curlResponse'];
 	$httpCode = $response['httpCode'];
 
-	log_request_get($portalId, $origin, $endpoint, $method, $curlResponse, $httpCode, $type, $fileName);
+	log_get_request($portalId, $origin, $endpoint, $method, $curlResponse, $httpCode, $type, $fileName);
 
 	if (in_array($httpCode, $successCodes) == false && $try < 4) {
 		$try++;
@@ -217,7 +217,7 @@ function hsContactDelete($portalId, $accessToken, $objectId, $fileName, $try = 0
 }
 /* ------------------------ END ------------------------ */
 
-/* ------------------------ HUBSPOT APP CUSTOM ACTION FUNCTIONS ------------------------ */
+/* ------------------------ HUBSPOT CUSTOM ACTION FUNCTIONS ------------------------ */
 /**
  * Get all custom workflow actions for the provided App ID
  *
@@ -283,18 +283,18 @@ function createAction($appId, $devApiKey, $payload, $fileName) {
  * @param int $appId
  * @param string $devApiKey
  * @param array $payload
- * @param int $actionID
+ * @param int $actionId
  * @param string $fileName
  * @return array $response
  */
-function updateAction($appId, $devApiKey, $payload, $actionID, $fileName) {
+function updateAction($appId, $devApiKey, $payload, $actionId, $fileName) {
 	$origin = "HubSpot";
 	$method = "PATCH";
 	$type = "Update Action";
 
 	$payload = json_encode($payload);
 
-	$endpoint = "https://api.hubapi.com/automation/v4/actions/$appId/$actionID?hapikey=$devApiKey";
+	$endpoint = "https://api.hubapi.com/automation/v4/actions/$appId/$actionId?hapikey=$devApiKey";
 	$customHeaders = ["Content-Type: application/json"];
 
 	$response = cURL_request($endpoint, $customHeaders, $method, $payload);
@@ -348,7 +348,7 @@ function deleteAction($appId, $devApiKey, $actionID, $fileName) {
  * @param int $try
  * @return array $result
  */
-function hsPortalInfo($accessToken, $fileName, $try = 0) {
+function hsAccountInfo($accessToken, $fileName, $try = 0) {
 	global $successCodes;
 
 	$type = "Account Info";
@@ -373,7 +373,7 @@ function hsPortalInfo($accessToken, $fileName, $try = 0) {
 	if (in_array($httpCode, $successCodes) == false && $try < 4) {
 		$try++;
 		sleep(2);
-		hsPortalInfo($accessToken, $fileName, $try);
+		hsAccountInfo($accessToken, $fileName, $try);
 	} else {
 		if (isset($curlResult) && empty($curlResult) == false) {
 			$result = $curlResult;

@@ -2,9 +2,10 @@
 // ini_set("display_errors", 1);
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 
-echo "<style> *{font-family: 'Fira Sans', Calibri, Arial, sans-serif;} </style>";
+echo "<style> *{font-family: 'Roboto', 'Open Sans', 'Fira Sans', Calibri, Arial, sans-serif;} </style>";
 
 $conn = mysqli_connect("host", "user", "password", "database");
+
 if (!$conn) {
 	$error = "Database Error - " . mysqli_connect_error();
 	$file = "logs/connect_err_" . time() . ".txt";
@@ -33,7 +34,8 @@ if (!$conn) {
 			}
 		}
 	} else {
-		echo "No active installs found!";
+		http_response_code(404);
+		echo "No active installs!";
 	}
 }
 
@@ -55,7 +57,7 @@ function tokenRefresh($portalId, $refreshToken, $fileName) {
 	$clientId = "";
 	$clientSecret = "";
 
-	$data = "grant_type=refresh_token&client_id=$clientId&client_secret=$clientSecret&refresh_token=$refreshToken";
+	$payload = "grant_type=refresh_token&client_id=$clientId&client_secret=$clientSecret&refresh_token=$refreshToken";
 
 	$endpoint = "https://api.hubapi.com/oauth/v1/token";
 	$customHeaders = ["Content-Type: application/x-www-form-urlencoded;charset=utf-8"];
@@ -64,7 +66,7 @@ function tokenRefresh($portalId, $refreshToken, $fileName) {
 	curl_setopt($curlQuery, CURLOPT_URL, $endpoint);
 	curl_setopt($curlQuery, CURLOPT_HTTPHEADER, $customHeaders);
 	curl_setopt($curlQuery, CURLOPT_CUSTOMREQUEST, $method);
-	curl_setopt($curlQuery, CURLOPT_POSTFIELDS, $data);
+	curl_setopt($curlQuery, CURLOPT_POSTFIELDS, $payload);
 	curl_setopt($curlQuery, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($curlQuery, CURLOPT_HTTP_VERSION, "CURL_HTTP_VERSION_1_1");
 	$curlResponse = curl_exec($curlQuery);
@@ -72,7 +74,7 @@ function tokenRefresh($portalId, $refreshToken, $fileName) {
 	curl_close($curlQuery);
 
 	global $conn;
-	mysqli_query($conn, "INSERT INTO `api_logs` (`hub_portal_id`, `api_origin`, `curl_url`, `curl_payload`, `curl_method`, `curl_response`, `curl_http_code`, `curl_type`, `file_name`) VALUES ('$portalId', '$origin', '$endpoint', '" . addslashes($data) . "', '$method', '" . addslashes($curlResponse) . "', '$httpCode', '" . addslashes($type) . "', '" . addslashes($fileName) . "')");
+	mysqli_query($conn, "INSERT INTO `api_logs` (`hub_portal_id`, `api_origin`, `curl_url`, `curl_payload`, `curl_method`, `curl_response`, `curl_http_code`, `curl_type`, `file_name`) VALUES ('$portalId', '$origin', '$endpoint', '" . addslashes($payload) . "', '$method', '" . addslashes($curlResponse) . "', '$httpCode', '" . addslashes($type) . "', '" . addslashes($fileName) . "')");
 
 	$curlResult = json_decode($curlResponse, true);
 	$newAccessToken = isset($curlResult['access_token']) ? $curlResult['access_token'] : "";

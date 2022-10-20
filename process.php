@@ -23,13 +23,12 @@ if (isset($_REQUEST['code']) && empty($_REQUEST['code']) == false) {
 	$curlResponse = $response['curlResponse'];
 	$httpCode = $response['httpCode'];
 	$curlResult = json_decode($curlResponse, true);
-	// echo '<pre>'; print_r($curlResult); echo '</pre>';
 
 	if (empty($curlResult['status']) == false || isset($curlResult['refresh_token'])) {
 		$refreshToken = $curlResult['refresh_token'];
 		$accessToken = $curlResult['access_token'];
 
-		$portalInfo = hsPortalInfo($accessToken, $fileName);
+		$portalInfo = hsAccountInfo($accessToken, $fileName);
 		$portalId = $portalInfo['portalId'];
 
 		$checkInstall = mysqli_query($conn, "SELECT * FROM `app_installs` WHERE `hub_portal_id` = '$portalId'");
