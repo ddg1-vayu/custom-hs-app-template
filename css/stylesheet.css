@@ -7,11 +7,6 @@
 	box-sizing: border-box;
 }
 
-html,
-body {
-	height: 100%;
-}
-
 body {
 	font-family: "Fira Sans", Arial, Helvetica, sans-serif;
 	background: #f5f8fa;
@@ -81,19 +76,6 @@ main {
 	padding: 0.875rem;
 }
 
-.form-container {
-	padding: 1.25rem;
-}
-
-.placeholder-img {
-	padding: 0.25rem;
-	border: 0.25rem solid var(--bs-border-color);
-	border-radius: 50%;
-	width: 100%;
-	max-width: 12rem !important;
-	margin: 0 0 2rem;
-}
-
 .logo {
 	width: 100%;
 	max-width: 3rem !important;
@@ -159,6 +141,19 @@ main {
 	color: white !important;
 	background-color: crimson !important;
 	transition: 0.5s all ease;
+}
+
+.form-container {
+	padding: 1.25rem;
+}
+
+.placeholder-img {
+	padding: 0.25rem;
+	border: 0.125rem solid var(--bs-border-color);
+	border-radius: 50%;
+	width: 100%;
+	max-width: 12rem !important;
+	margin: 0 0 2rem;
 }
 
 .modal-dialog {
