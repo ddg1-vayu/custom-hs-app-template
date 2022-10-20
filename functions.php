@@ -1,75 +1,77 @@
 <?php
 $successCodes = [200, 201, 203, 204, 205];
 
+/* ------------------------ HUBSPOT CONTACT FUNCTIONS ------------------------ */
 /**
- * Make a GET/DELETE cURL Request
+ * Search HubSpot for Contact with provided filters
  *
- * @param string $endpoint
- * @param array $customHeaders
- * @param string $method
- * @return array $result
- */
-function cURL_getRequest($endpoint, $customHeaders, $method) {
-	$curlQuery = curl_init();
-	curl_setopt($curlQuery, CURLOPT_URL, $endpoint);
-	curl_setopt($curlQuery, CURLOPT_HTTP_VERSION, "CURL_HTTP_VERSION_1_1");
-	curl_setopt($curlQuery, CURLOPT_HTTPHEADER, $customHeaders);
-	curl_setopt($curlQuery, CURLOPT_CUSTOMREQUEST, $method);
-	curl_setopt($curlQuery, CURLOPT_RETURNTRANSFER, true);
-	$curlResponse = curl_exec($curlQuery);
-	$httpCode = curl_getinfo($curlQuery, CURLINFO_RESPONSE_CODE);
-	$result = [
-		"httpCode" => $httpCode,
-		"curlResponse" => $curlResponse
-	];
-
-	curl_close($curlQuery);
-
-	return $result;
-}
-
-/**
- * Make a POST/PATCH cURL request
- *
- * @param string $endpoint
- * @param array $customHeaders
- * @param string $method
- * @param string $payload
- * @return array $result
- */
-function cURL_request($endpoint, $customHeaders, $method, $payload) {
-	$curlQuery = curl_init();
-	curl_setopt($curlQuery, CURLOPT_URL, $endpoint);
-	curl_setopt($curlQuery, CURLOPT_HTTP_VERSION, "CURL_HTTP_VERSION_1_1");
-	curl_setopt($curlQuery, CURLOPT_HTTPHEADER, $customHeaders);
-	curl_setopt($curlQuery, CURLOPT_CUSTOMREQUEST, $method);
-	curl_setopt($curlQuery, CURLOPT_POSTFIELDS, $payload);
-	curl_setopt($curlQuery, CURLOPT_RETURNTRANSFER, true);
-	$curlResponse = curl_exec($curlQuery);
-	$httpCode = curl_getinfo($curlQuery, CURLINFO_RESPONSE_CODE);
-	$result = [
-		"httpCode" => $httpCode,
-		"curlResponse" => $curlResponse
-	];
-
-	curl_close($curlQuery);
-
-	return $result;
-}
-
-/**
- * Get HubSpot Portal ID & Timezone by Access Token
- *
+ * @param int $portalId
  * @param string $accessToken
+ * @param array $filters
  * @param string $fileName
+ * @param int $try
  * @return array $result
  */
-function hsPortalInfo($accessToken, $fileName) {
+function hsContactSearch($portalId, $accessToken, $filters, $fileName, $try = 0) {
+	global $successCodes;
+
+	$type = "Contact Search";
+	$origin = "HubSpot";
+	$method = "POST";
+
+	$endpoint = "https://api.hubapi.com/crm/v3/objects/contacts/search";
+
+	$customHeaders = [
+		"Content-Type: application/json",
+		"Authorization: Bearer $accessToken",
+		"cache-control: no-cache"
+	];
+
+	$payload = json_encode($filters);
+
+	sleep(2);
+
+	$response = cURL_request($endpoint, $customHeaders, $method, $payload);
+	$curlResponse = $response['curlResponse'];
+	$httpCode = $response['httpCode'];
+	$curlResult = json_decode($curlResponse, true);
+
+	log_request($portalId, $origin, $endpoint, $payload, $method, $curlResponse, $httpCode, $type, $fileName);
+
+	if (in_array($httpCode, $successCodes) == false && $try < 4) {
+		$try++;
+		sleep(2);
+		hsContactSearch($portalId, $accessToken, $filters, $fileName, $try);
+	} else {
+		if (isset($curlResult['total']) && $curlResult['total'] > 0) {
+			$result = $curlResult['results'];
+		} else {
+			$result = "";
+		}
+	}
+
+	return $result;
+}
+
+/**
+ * Retrieve the provided properties of a Contact from HubSpot by ID
+ *
+ * @param int $portalId
+ * @param string $accessToken
+ * @param int $objectId
+ * @param array $properties
+ * @param string $fileName
+ * @param int $try
+ * @return void
+ */
+function hsContactDetails($portalId, $accessToken, $objectId, $properties, $fileName, $try = 0) {
+	global $successCodes;
+
+	$type = "Contact Details";
 	$origin = "HubSpot";
 	$method = "GET";
-	$type = "Account Info";
 
-	$endpoint = "https://api.hubapi.com/account-info/v3/details";
+	$endpoint = "https://api.hubapi.com/crm/v3/objects/contacts/$objectId?archived=false&$properties";
 
 	$customHeaders = [
 		"Authorization: Bearer $accessToken",
@@ -80,13 +82,142 @@ function hsPortalInfo($accessToken, $fileName) {
 	$curlResponse = $response['curlResponse'];
 	$httpCode = $response['httpCode'];
 	$curlResult = json_decode($curlResponse, true);
-	$portalId = $curlResult['portalId'];
 
-	log_get_request($portalId, $origin, $endpoint, $method, $curlResponse, $httpCode, $type, $fileName);
+	log_request_get($portalId, $origin, $endpoint, $method, $curlResponse, $httpCode, $type, $fileName);
 
-	return $curlResult;
+	if (in_array($httpCode, $successCodes) == false && $try < 4) {
+		$try++;
+		sleep(2);
+		hsContactInfo($portalId, $accessToken, $objectId, $properties, $fileName, $try);
+	} else {
+		if (isset($curlResult['properties']) && empty($curlResult['properties']) == false) {
+			$result = $curlResult['properties'];
+		} else {
+			$result = "";
+		}
+	}
+
+	return $result;
 }
 
+/**
+ * Create Contact on HubSpot
+ *
+ * @param int $portalId
+ * @param string $accessToken
+ * @param array $payload
+ * @param string $fileName
+ * @param int $try
+ * @return void
+ */
+function hsContactCreate($portalId, $accessToken, $payload, $fileName, $try = 0) {
+	global $successCodes;
+
+	$type = "Contact Create";
+	$origin = "HubSpot";
+	$method = "POST";
+
+	$endpoint = "https://api.hubapi.com/crm/v3/objects/contacts/";
+
+	$customHeaders = [
+		"Authorization: Bearer $accessToken",
+		"Content-type: application/json"
+	];
+
+	$payload = json_encode($payload);
+
+	$response = cURL_request($endpoint, $customHeaders, $method, $payload);
+	$curlResponse = $response['curlResponse'];
+	$httpCode = $response['httpCode'];
+
+	log_request($portalId, $origin, $endpoint, $payload, $method, $curlResponse, $httpCode, $type, $fileName);
+
+	if (in_array($httpCode, $successCodes) == false && $try < 4) {
+		$try++;
+		sleep(2);
+		hsContactCreate($portalId, $accessToken, $payload, $fileName, $try);
+	}
+}
+
+/**
+ * Update Contact on HubSpot by ID
+ *
+ * @param int $portalId
+ * @param string $accessToken
+ * @param int $objectId
+ * @param array $payload
+ * @param string $fileName
+ * @param int $try
+ * @return void
+ */
+function hsContactUpdate($portalId, $accessToken, $objectId, $payload, $fileName, $try = 0) {
+	global $successCodes;
+
+	$type = "Contact Update";
+	$origin = "HubSpot";
+	$method = "PATCH";
+
+	$endpoint = "https://api.hubapi.com/crm/v3/objects/contacts/$objectId";
+
+	$customHeaders = [
+		"Authorization: Bearer $accessToken",
+		"Content-type: application/json"
+	];
+
+	$payload = json_encode($payload);
+
+	$response = cURL_request($endpoint, $customHeaders, $method, $payload);
+	$curlResponse = $response['curlResponse'];
+	$httpCode = $response['httpCode'];
+
+	log_request($portalId, $origin, $endpoint, $payload, $method, $curlResponse, $httpCode, $type, $fileName);
+
+	if (in_array($httpCode, $successCodes) == false && $try < 4) {
+		$try++;
+		sleep(2);
+		hsContactUpdate($portalId, $accessToken, $objectId, $payload, $fileName, $try);
+	}
+}
+
+/**
+ * Delete Contact from HubSpot by ID
+ *
+ * @param int $portalId
+ * @param string $accessToken
+ * @param int $objectId
+ * @param string $fileName
+ * @param int $try
+ * @return void
+ */
+function hsContactDelete($portalId, $accessToken, $objectId, $fileName, $try = 0) {
+	global $successCodes;
+
+	$type = "Contact Delete";
+	$origin = "HubSpot";
+	$method = "DELETE";
+
+	$endpoint = "https://api.hubapi.com/crm/v3/objects/contacts/$objectId";
+
+	$customHeaders = [
+		"Authorization: Bearer $accessToken",
+		"Content-type: application/json"
+	];
+
+	$response = cURL_getRequest($endpoint, $customHeaders, $method);
+	$curlResponse = $response['curlResponse'];
+	$httpCode = $response['httpCode'];
+
+	log_request_get($portalId, $origin, $endpoint, $method, $curlResponse, $httpCode, $type, $fileName);
+
+	if (in_array($httpCode, $successCodes) == false && $try < 4) {
+		$try++;
+		sleep(2);
+		hsContactDelete($portalId, $accessToken, $objectId, $fileName, $try);
+	}
+}
+/* ------------------------ END ------------------------ */
+
+/* ------------------------ HUBSPOT APP CUSTOM ACTION FUNCTIONS ------------------------ */
 /**
  * Get all custom workflow actions for the provided App ID
  *
@@ -206,6 +337,111 @@ function deleteAction($appId, $devApiKey, $actionID, $fileName) {
 
 	return $response;
 }
+/* ------------------------ END ------------------------ */
+
+/* ------------------------ OTHER HUBSPOT FUNCTIONS ------------------------ */
+/**
+ * Get HubSpot Portal ID & Timezone by Access Token
+ *
+ * @param string $accessToken
+ * @param string $fileName
+ * @param int $try
+ * @return array $result
+ */
+function hsPortalInfo($accessToken, $fileName, $try = 0) {
+	global $successCodes;
+
+	$type = "Account Info";
+	$origin = "HubSpot";
+	$method = "GET";
+
+	$endpoint = "https://api.hubapi.com/account-info/v3/details";
+
+	$customHeaders = [
+		"Authorization: Bearer $accessToken",
+		"Content-type: application/json"
+	];
+
+	$response = cURL_getRequest($endpoint, $customHeaders, $method);
+	$curlResponse = $response['curlResponse'];
+	$httpCode = $response['httpCode'];
+	$curlResult = json_decode($curlResponse, true);
+	$portalId = $curlResult['portalId'];
+
+	log_get_request($portalId, $origin, $endpoint, $method, $curlResponse, $httpCode, $type, $fileName);
+
+	if (in_array($httpCode, $successCodes) == false && $try < 4) {
+		$try++;
+		sleep(2);
+		hsPortalInfo($accessToken, $fileName, $try);
+	} else {
+		if (isset($curlResult) && empty($curlResult) == false) {
+			$result = $curlResult;
+		} else {
+			$result = "";
+		}
+	}
+
+	return $result;
+}
+/* ------------------------ END ------------------------ */
+
+/* ------------------------ OTHER FUNCTIONS ------------------------ */
+/**
+ * Make a GET/DELETE cURL Request
+ *
+ * @param string $endpoint
+ * @param array $customHeaders
+ * @param string $method
+ * @return array $result
+ */
+function cURL_getRequest($endpoint, $customHeaders, $method) {
+	$curlQuery = curl_init();
+	curl_setopt($curlQuery, CURLOPT_URL, $endpoint);
+	curl_setopt($curlQuery, CURLOPT_HTTP_VERSION, "CURL_HTTP_VERSION_1_1");
+	curl_setopt($curlQuery, CURLOPT_HTTPHEADER, $customHeaders);
+	curl_setopt($curlQuery, CURLOPT_CUSTOMREQUEST, $method);
+	curl_setopt($curlQuery, CURLOPT_RETURNTRANSFER, true);
+	$curlResponse = curl_exec($curlQuery);
+	$httpCode = curl_getinfo($curlQuery, CURLINFO_RESPONSE_CODE);
+	$result = [
+		"httpCode" => $httpCode,
+		"curlResponse" => $curlResponse
+	];
+
+	curl_close($curlQuery);
+
+	return $result;
+}
+
+/**
+ * Make a POST/PATCH cURL request
+ *
+ * @param string $endpoint
+ * @param array $customHeaders
+ * @param string $method
+ * @param string $payload
+ * @return array $result
+ */
+function cURL_request($endpoint, $customHeaders, $method, $payload) {
+	$curlQuery = curl_init();
+	curl_setopt($curlQuery, CURLOPT_URL, $endpoint);
+	curl_setopt($curlQuery, CURLOPT_HTTP_VERSION, "CURL_HTTP_VERSION_1_1");
+	curl_setopt($curlQuery, CURLOPT_HTTPHEADER, $customHeaders);
+	curl_setopt($curlQuery, CURLOPT_CUSTOMREQUEST, $method);
+	curl_setopt($curlQuery, CURLOPT_POSTFIELDS, $payload);
+	curl_setopt($curlQuery, CURLOPT_RETURNTRANSFER, true);
+	$curlResponse = curl_exec($curlQuery);
+	$httpCode = curl_getinfo($curlQuery, CURLINFO_RESPONSE_CODE);
+	$result = [
+		"httpCode" => $httpCode,
+		"curlResponse" => $curlResponse
+	];
+
+	curl_close($curlQuery);
+
+	return $result;
+}
 
 /**
  * Display either the error generated by the cURL request or the success message
@@ -295,3 +531,4 @@ function log_request($portal, $origin, $endpoint, $payload, $method, $response, 
 	global $conn;
 	mysqli_query($conn, "INSERT INTO `api_logs` (`hub_portal_id`, `api_origin`, `curl_url`, `curl_payload`, `curl_method`, `curl_response`, `curl_http_code`, `curl_type`, `file_name`) VALUES ('$portal', '$origin', '$endpoint', '" . addslashes($payload) . "', '$method', '" . addslashes($response) . "', '$httpCode', '" . addslashes($type) . "', '" . addslashes($fileName) . "')");
 }
+/* ------------------------ END ------------------------ */
