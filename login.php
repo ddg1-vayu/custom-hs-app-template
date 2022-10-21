@@ -33,10 +33,10 @@ if (isset($_SESSION['login_user'])) {
 							<img src="assets/placeholder.png" class="placeholder-img" alt="placeholder" title="placeholder">
 							<form action="login.php" method="post" id="login-form">
 								<div>
-									<input type="text" class="form-control" id="username" name="username" placeholder="Email/Username" title="User">
+									<input type="text" class="form-control" id="username" name="username" placeholder="Email/Username" title="Email/Username">
 								</div>
 								<div class="mt-3">
-									<input type="password" class="form-control" name="password" id="password" placeholder="Password" title="Password">
+									<input type="password" class="form-control" id="password" name="password" placeholder="Password" title="Password">
 								</div>
 								<button type="button" name="login" id="login" class="btn btn-primary mt-4" title="Login" value="login"> LOGIN </button>
 								<div class="col-lg-12 col-md-12 col-sm-12 text-center" id="alert-div" style="display: none;">

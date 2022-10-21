@@ -15,35 +15,41 @@ $("#login").click(function () {
 					$("#username, #password, #login").attr("disabled", "disabled");
 					$("#alert").addClass("alert-success mt-3");
 					$("#alert-text").addClass("fw-bold").text(response);
-					$("#login").hide();
-					$("#alert-div").fadeIn(500);
+					$("#login").fadeOut(function () {
+						$("#alert-div").fadeIn();
+					});
 					window.setTimeout(function () {
-						// window.location = "logs.php";
-					}, 5000);
+						$("#alert-div").fadeOut(function () {
+							window.location = "logs.php";
+						});
+					}, 3500);
 					break;
 				case "Unregistered User":
 					$("#username, #password, #login").attr("disabled", "disabled");
 					$("#alert").addClass("alert-danger mt-3");
 					$("#alert-text").addClass("fw-bold").text(response);
-					$("#login").hide();
-					$("#alert-div").fadeIn(500);
+					$("#login").fadeOut(function () {
+						$("#alert-div").fadeIn();
+					});
 					window.setTimeout(function () {
-						$("#alert-div").fadeOut(500);
-						$("#username, #password, #login").removeAttr("disabled");
-						$("#login").show();
+						$("#alert-div").fadeOut(function () {
+							$("#username, #password, #login").removeAttr("disabled");
+							$("#login").fadeIn();
+						});
 					}, 3500);
 					break;
 				case "Incorrect Password!":
 					$("#username, #password, #login").attr("disabled", "disabled");
 					$("#alert").addClass("alert-danger mt-3");
 					$("#alert-text").addClass("fw-bold").text(response);
-					$("#login").hide();
-					$("#alert-div").fadeIn(500);
+					$("#login").fadeOut(function () {
+						$("#alert-div").fadeIn();
+					});
 					window.setTimeout(function () {
-						$("#alert-div").fadeOut(500);
-						$("#password").val("");
-						$("#username, #password, #login").removeAttr("disabled");
-						$("#login").show();
+						$("#alert-div").fadeOut(function () {
+							$("#username, #password, #login").removeAttr("disabled");
+							$("#login").fadeIn();
+						});
 					}, 3500);
 					break;
 				case "empty form":
@@ -51,11 +57,13 @@ $("#login").click(function () {
 					$("#alert-text")
 						.addClass("fw-bold")
 						.text("Form fields cannot be empty!");
-					$("#login").hide();
-					$("#alert-div").fadeIn(500);
+					$("#login").fadeOut(function () {
+						$("#alert-div").fadeIn();
+					});
 					window.setTimeout(function () {
-						$("#alert-div").fadeOut(500);
-						$("#login").show();
+						$("#alert-div").fadeOut(function () {
+							$("#login").fadeIn();
+						});
 					}, 3500);
 					break;
 				default:

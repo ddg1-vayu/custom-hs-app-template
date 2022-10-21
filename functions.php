@@ -341,7 +341,7 @@ function deleteAction($appId, $devApiKey, $actionID, $fileName) {
 
 /* ------------------------ OTHER HUBSPOT FUNCTIONS ------------------------ */
 /**
- * Get HubSpot Portal ID & Timezone by Access Token
+ * Get HubSpot Account Info by Access Token
  *
  * @param string $accessToken
  * @param string $fileName
@@ -472,7 +472,7 @@ function req_response($text) {
 		<body>
 			<section class="error-section">
 				<div class="container-fluid p-0">
-					<div class="error-content fs-3 fw-bold">
+					<div class="error-content fs-4 fw-bold">
 						' . $text . '
 					</div>
 				</div>
