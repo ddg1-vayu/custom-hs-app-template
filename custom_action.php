@@ -51,12 +51,12 @@
 		]
 	];
 
-	$actionID = 111222;
+	$actionId = 111222;
 
 	$response = getActions($appId, $devApiKey, $fileName);
 	// $response = createAction($appId, $devApiKey, $feature, $fileName);
-	// $response = updateAction($appId, $devApiKey, $feature, $actionID, $fileName);
-	// $response = deleteAction($appId, $devApiKey, $actionID, $fileName);
+	// $response = updateAction($appId, $devApiKey, $feature, $actionId, $fileName);
+	// $response = deleteAction($appId, $devApiKey, $actionId, $fileName);
 
 	$curlResponse = $response['curlResponse'];
 	$httpCode = $response['httpCode'];
