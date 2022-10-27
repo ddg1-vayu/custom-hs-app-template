@@ -63,7 +63,7 @@
 	$curlResult = json_decode($curlResponse, true);
 
 	echo "HTTP Response (<strong>" . $httpCode . "</strong>)";
-	echo "<hr color='black' size='2'>";
+	echo "<hr color='navy' size='2'>";
 	echo "<pre>";
 	print_r($curlResult);
 	echo "</pre>";

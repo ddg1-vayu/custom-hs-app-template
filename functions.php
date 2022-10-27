@@ -314,16 +314,16 @@ function updateAction($appId, $devApiKey, $payload, $actionId, $fileName) {
  *
  * @param int $appId
  * @param string $devApiKey
- * @param int $actionID
+ * @param int $actionId
  * @param string $fileName
  * @return array $response
  */
-function deleteAction($appId, $devApiKey, $actionID, $fileName) {
+function deleteAction($appId, $devApiKey, $actionId, $fileName) {
 	$origin = "HubSpot";
 	$method = "DELETE";
 	$type = "Delete Action";
 
-	$endpoint = "https://api.hubapi.com/automation/v4/actions/$appId/$actionID?hapikey=$devApiKey";
+	$endpoint = "https://api.hubapi.com/automation/v4/actions/$appId/$actionId?hapikey=$devApiKey";
 	$customHeaders = ["Content-Type: application/json"];
 
 	$response = cURL_getRequest($endpoint, $customHeaders, $method);
