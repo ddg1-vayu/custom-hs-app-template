@@ -24,6 +24,7 @@ CREATE TABLE `api_logs` (
 CREATE TABLE `app_installs` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`hub_portal_id` int(11) NOT NULL,
+	`hub_timezone` varchar(255) DEFAULT NULL,
 	`install_code` varchar(255) NOT NULL,
 	`refresh_token` varchar(255) NOT NULL,
 	`access_token` varchar(350) NOT NULL,
@@ -50,9 +51,9 @@ CREATE TABLE `billing_details` (
 	`billing_status` enum('Active', 'Cancelled', 'Inactive', 'Trialing') NOT NULL DEFAULT 'Inactive',
 	`billing_start` date DEFAULT NULL,
 	`billing_end` date DEFAULT NULL,
+	`payment_link` varchar(255) DEFAULT NULL,
 	`customer_id` varchar(255) DEFAULT NULL,
 	`subscription_id` varchar(255) DEFAULT NULL,
-	`payment_link` varchar(255) DEFAULT NULL,
 	`billing_email` varchar(255) DEFAULT NULL,
 	`billing_name` varchar(255) DEFAULT NULL,
 	`billing_address` varchar(255) DEFAULT NULL,
@@ -89,19 +90,6 @@ CREATE TABLE `webhooks` (
 	PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
-CREATE TABLE `user_access_logs` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
-	`user_id` int(11) NOT NULL,
-	`user` varchar(24) NOT NULL,
-	`http_cookie` varchar(255) DEFAULT NULL,
-	`ip_address` varchar(255) NOT NULL,
-	`platform` varchar(255) NOT NULL,
-	`user_agent` text DEFAULT NULL,
-	`login` timestamp NOT NULL DEFAULT current_timestamp(),
-	`logout` timestamp NULL DEFAULT NULL,
-	PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8;
-
 CREATE TABLE `registered_users` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`first_name` varchar(255) DEFAULT NULL,
@@ -113,5 +101,18 @@ CREATE TABLE `registered_users` (
 	`added` timestamp NOT NULL DEFAULT current_timestamp(),
 	`updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
 	`last_login` timestamp NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+CREATE TABLE `user_access_logs` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`user_id` int(11) NOT NULL,
+	`user` varchar(24) NOT NULL,
+	`http_cookie` varchar(255) DEFAULT NULL,
+	`ip_address` varchar(255) NOT NULL,
+	`platform` varchar(255) NOT NULL,
+	`user_agent` text DEFAULT NULL,
+	`login` timestamp NOT NULL DEFAULT current_timestamp(),
+	`logout` timestamp NULL DEFAULT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
