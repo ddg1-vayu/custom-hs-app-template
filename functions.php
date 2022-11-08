@@ -397,11 +397,14 @@ function hsAccountInfo($accessToken, $fileName, $try = 0) {
  */
 function cURL_getRequest($endpoint, $customHeaders, $method) {
 	$curlQuery = curl_init();
-	curl_setopt($curlQuery, CURLOPT_URL, $endpoint);
-	curl_setopt($curlQuery, CURLOPT_HTTP_VERSION, "CURL_HTTP_VERSION_1_1");
-	curl_setopt($curlQuery, CURLOPT_HTTPHEADER, $customHeaders);
 	curl_setopt($curlQuery, CURLOPT_CUSTOMREQUEST, $method);
+	curl_setopt($curlQuery, CURLOPT_ENCODING, "");
+	curl_setopt($curlQuery, CURLOPT_HTTPHEADER, $customHeaders);
+	curl_setopt($curlQuery, CURLOPT_HTTP_VERSION, "CURL_HTTP_VERSION_1_1");
+	curl_setopt($curlQuery, CURLOPT_MAXREDIRS, 10);
 	curl_setopt($curlQuery, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curlQuery, CURLOPT_TIMEOUT, 30);
+	curl_setopt($curlQuery, CURLOPT_URL, $endpoint);
 	$curlResponse = curl_exec($curlQuery);
 	$httpCode = curl_getinfo($curlQuery, CURLINFO_RESPONSE_CODE);
 	$result = [
@@ -425,12 +428,15 @@ function cURL_getRequest($endpoint, $customHeaders, $method) {
  */
 function cURL_request($endpoint, $customHeaders, $method, $payload) {
 	$curlQuery = curl_init();
-	curl_setopt($curlQuery, CURLOPT_URL, $endpoint);
-	curl_setopt($curlQuery, CURLOPT_HTTP_VERSION, "CURL_HTTP_VERSION_1_1");
-	curl_setopt($curlQuery, CURLOPT_HTTPHEADER, $customHeaders);
 	curl_setopt($curlQuery, CURLOPT_CUSTOMREQUEST, $method);
+	curl_setopt($curlQuery, CURLOPT_ENCODING, "");
+	curl_setopt($curlQuery, CURLOPT_HTTPHEADER, $customHeaders);
+	curl_setopt($curlQuery, CURLOPT_HTTP_VERSION, "CURL_HTTP_VERSION_1_1");
+	curl_setopt($curlQuery, CURLOPT_MAXREDIRS, 10);
 	curl_setopt($curlQuery, CURLOPT_POSTFIELDS, $payload);
 	curl_setopt($curlQuery, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curlQuery, CURLOPT_TIMEOUT, 30);
+	curl_setopt($curlQuery, CURLOPT_URL, $endpoint);
 	$curlResponse = curl_exec($curlQuery);
 	$httpCode = curl_getinfo($curlQuery, CURLINFO_RESPONSE_CODE);
 	$result = [
