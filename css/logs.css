@@ -29,12 +29,9 @@
 	}
 }
 
-.curl_type {
-	width: 13rem !important;
-}
-
+.curl_type,
 .curl_timestamp {
-	width: 12rem !important;
+	width: 14rem !important;
 }
 
 .curl_file,

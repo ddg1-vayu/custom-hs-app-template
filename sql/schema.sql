@@ -82,11 +82,13 @@ CREATE TABLE `invoice_details` (
 
 CREATE TABLE `webhooks` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
-	`source` varchar(255) DEFAULT NULL,
+	`source` varchar(255) NOT NULL,
 	`payload` longtext DEFAULT NULL,
-	`type` varchar(255) NOT NULL,
+	`type` varchar(255) DEFAULT NULL,
 	`file` varchar(255) NOT NULL,
+	`status` enum('not processed', 'processed') NOT NULL DEFAULT 'not processed',
 	`timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+	`last_modified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
 	PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 

@@ -51,28 +51,35 @@ table.dataTable {
 .webhook_source,
 .webhook_file,
 .webhook_payload,
-.webhook_timestamp {
+.webhook_status,
+.webhook_timestamp,
+.webhook_modified {
 	text-align: center;
 }
 
-td.webhook_source {
+.webhook_type {
+	width: 6rem !important;
+	text-transform: capitalize;
+}
+
+.webhook_source,
+.webhook_file,
+.webhook_payload,
+.webhook_status {
+	width: 4.5rem !important;
+}
+
+.webhook_timestamp,
+.webhook_modified {
 	width: 4rem !important;
 }
 
-td.webhook_type {
-	width: 4rem !important;
-}
-
-td.webhook_file {
-	width: 4rem !important;
-}
-
-td.webhook_payload {
-	width: 4rem !important;
-}
-
-td.webhook_timestamp {
-	width: 4rem !important;
+.status-span {
+	padding: 0.25rem 0.75rem;
+	text-transform: uppercase;
+	border-radius: 2rem;
+	color: white;
+	font-weight: bold;
 }
 
 #webhooks_tbl_paginate,
@@ -222,11 +229,6 @@ pre {
 	padding: 0 0.5rem 0.5rem 0;
 }
 
-.view-btn {
-	word-break: keep-all;
-	padding: 0.25rem 0.5rem !important;
-}
-
 #webhooks_tbl_processing.card {
 	padding: 0.5rem !important;
 	border: 2px solid #dee2e6 !important;
@@ -271,7 +273,9 @@ div.dataTables_wrapper div.dataTables_processing {
 	.webhook_type,
 	.webhook_file,
 	.webhook_payload,
-	.webhook_timestamp {
+	.webhook_status,
+	.webhook_timestamp,
+	.webhook_modified {
 		width: auto !important;
 	}
 

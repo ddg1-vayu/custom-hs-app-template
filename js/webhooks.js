@@ -49,9 +49,35 @@ $(document).ready(function () {
 				},
 			},
 			{
+				name: "status",
+				data: "status",
+				className: "webhook_status",
+			},
+			{
 				name: "timestamp",
 				data: "timestamp",
 				className: "webhook_timestamp",
+			},
+			{
+				name: "modified",
+				data: "modified",
+				className: "webhook_modified",
+			},
+		],
+		columnDefs: [
+			{
+				targets: 4,
+				render: function (data, type, row) {
+					var bg_color, text;
+					if (data == "processed" || data == 1) {
+						bg_color = "#07c007";
+						text = "Processed";
+					} else if (data == "not processed" || data == 0) {
+						bg_color = "#FF0000";
+						text = "Not Processed";
+					}
+					return '<span class="status-span" style="background-color:' + bg_color + '">' + text + "</span>";
+				},
 			},
 		],
 		deferRender: true,
@@ -74,7 +100,7 @@ $(document).ready(function () {
 			[15, 30, 60, 120, 240, 480],
 			[15, 30, 60, 120, 240, 480],
 		],
-		order: [[4, "desc"]],
+		order: [[5, "desc"]],
 		pageLength: 15,
 		pagingType: "simple_numbers",
 		processing: true,

@@ -1,4 +1,4 @@
-<?php include("session.php"); ?>
+<?php //include("session.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,8 +31,10 @@
 								<th class="webhook_type"> Type </th>
 								<th class="webhook_source"> Source </th>
 								<th class="webhook_file"> File </th>
-								<th class="webhook_payload"> Webhook </th>
+								<th class="webhook_payload"> Payload </th>
+								<th class="webhook_status"> Status </th>
 								<th class="webhook_timestamp"> Timestamp </th>
+								<th class="webhook_modified"> Last Modified </th>
 							</thead>
 						</table>
 					</div>

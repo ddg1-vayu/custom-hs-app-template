@@ -17,7 +17,11 @@ if (empty($dbServer) == false || empty($dbUser) == false || empty($dbPassword) =
 		["db" => "source", "dt" => "source"],
 		["db" => "type", "dt" => "type"],
 		["db" => "file", "dt" => "file"],
+		["db" => "status", "dt" => "status"],
 		["db" => "timestamp", "dt" => "timestamp", "formatter" => function ($d, $row) {
+			return date("d-M-Y h:i:s A", strtotime($d));
+		}],
+		["db" => "last_modified", "dt" => "modified", "formatter" => function ($d, $row) {
 			return date("d-M-Y h:i:s A", strtotime($d));
 		}]
 	];
