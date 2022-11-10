@@ -23,11 +23,13 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 						$_SESSION['login_user'] = $user;
 
 						$http_cookie = $_SERVER['HTTP_COOKIE'];
-						$ip_address = $_SERVER['REMOTE_ADDR'];
+						$remote_address = $_SERVER['REMOTE_ADDR'];
+						$remote_port = $_SERVER['REMOTE_PORT'];
+						$ua_platform = trim(str_replace("\"", "", $_SERVER['HTTP_SEC_CH_UA_PLATFORM']));
+						$ua_version = implode(" | ", explode(", ", str_replace("\"", "", $_SERVER['HTTP_SEC_CH_UA'])));
 						$user_agent = $_SERVER['HTTP_USER_AGENT'];
-						$platform = trim(str_replace("\"", "", $_SERVER['HTTP_SEC_CH_UA_PLATFORM']));
 
-						mysqli_query($conn, "INSERT INTO `user_access_logs` (`user_id`, `user`, `login`, `http_cookie`, `ip_address`, `platform`, `user_agent`) VALUES ('$userId', '$user', current_timestamp(), '$http_cookie', '$ip_address', '$platform', '$user_agent')");
+						mysqli_query($conn, "INSERT INTO `user_access_logs` (`user_id`, `user`, `http_cookie`, `remote_address`, `remote_port`, `ua_platform`, `ua_version`, `user_agent`) VALUES ('$userId', '$user', '$http_cookie', '$remote_address', '$remote_port', '$ua_platform', '$ua_version', '$user_agent')");
 						mysqli_query($conn, "UPDATE `registered_users` SET `last_login` = current_timestamp() WHERE `id` = '$userId' LIMIT 1");
 						echo "Login Successful";
 					} else {

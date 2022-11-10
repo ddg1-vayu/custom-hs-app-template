@@ -23,6 +23,11 @@ $(document).ready(function () {
 				className: "webhook_type",
 			},
 			{
+				name: "portal",
+				data: "portal",
+				className: "webhook_portal",
+			},
+			{
 				name: "source",
 				data: "source",
 				className: "webhook_source",
@@ -66,7 +71,7 @@ $(document).ready(function () {
 		],
 		columnDefs: [
 			{
-				targets: 4,
+				targets: 5,
 				render: function (data, type, row) {
 					var bg_color, text;
 					if (data == "processed" || data == 1) {
@@ -76,7 +81,13 @@ $(document).ready(function () {
 						bg_color = "#FF0000";
 						text = "Not Processed";
 					}
-					return '<span class="status-span" style="background-color:' + bg_color + '">' + text + "</span>";
+					return (
+						'<span class="status-span" style="background-color:' +
+						bg_color +
+						'">' +
+						text +
+						"</span>"
+					);
 				},
 			},
 		],
@@ -100,7 +111,7 @@ $(document).ready(function () {
 			[15, 30, 60, 120, 240, 480],
 			[15, 30, 60, 120, 240, 480],
 		],
-		order: [[5, "desc"]],
+		order: [[6, "desc"]],
 		pageLength: 15,
 		pagingType: "simple_numbers",
 		processing: true,

@@ -2,8 +2,7 @@
 
 .loader {
 	border: 0.5rem solid #f3f3f3;
-	/* border-top: 0.5rem solid #005c97; */
-	border-top: 0.5rem solid #0b5ed7;
+	border-top: 0.5rem solid #005c97;
 	border-radius: 50%;
 	height: 3rem;
 	width: 3rem;

@@ -14,6 +14,7 @@ if (empty($dbServer) == false || empty($dbUser) == false || empty($dbPassword) =
 
 	$columns = [
 		["db" => "id", "dt" => "id"],
+		["db" => "hub_portal_id", "dt" => "portal"],
 		["db" => "source", "dt" => "source"],
 		["db" => "type", "dt" => "type"],
 		["db" => "file", "dt" => "file"],

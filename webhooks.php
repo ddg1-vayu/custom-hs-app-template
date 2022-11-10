@@ -1,4 +1,4 @@
-<?php include("session.php"); ?>
+<?php //include("session.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +29,7 @@
 						<table class="table table-bordered align-middle" id="webhooks_tbl">
 							<thead class="text-center">
 								<th class="webhook_type"> Type </th>
+								<th class="webhook_portal"> Portal </th>
 								<th class="webhook_source"> Source </th>
 								<th class="webhook_file"> File </th>
 								<th class="webhook_payload"> Payload </th>

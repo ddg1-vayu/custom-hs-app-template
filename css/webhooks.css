@@ -2,8 +2,7 @@
 
 .loader {
 	border: 0.5rem solid #f3f3f3;
-	/* border-top: 0.5rem solid #005c97; */
-	border-top: 0.5rem solid #0b5ed7;
+	border-top: 0.5rem solid #005c97;
 	border-radius: 50%;
 	height: 3rem;
 	width: 3rem;
@@ -49,6 +48,7 @@ table.dataTable {
 }
 
 .webhook_source,
+.webhook_portal,
 .webhook_file,
 .webhook_payload,
 .webhook_status,
@@ -59,7 +59,10 @@ table.dataTable {
 
 .webhook_type {
 	width: 6rem !important;
-	text-transform: capitalize;
+}
+
+.webhook_portal {
+	width: 3rem !important;
 }
 
 .webhook_source,
@@ -226,7 +229,8 @@ pre {
 	overflow: auto;
 	font-size: 0.75rem;
 	font-size: clamp(0.75rem, 0.725rem + 0.125vw, 0.875rem);
-	padding: 0 0.5rem 0.5rem 0;
+	padding: 0;
+	padding-right: 0.5rem;
 }
 
 #webhooks_tbl_processing.card {
@@ -269,8 +273,9 @@ div.dataTables_wrapper div.dataTables_processing {
 }
 
 @media screen and (max-width: 953px) {
-	.webhook_source,
 	.webhook_type,
+	.webhook_portal,
+	.webhook_source,
 	.webhook_file,
 	.webhook_payload,
 	.webhook_status,
