@@ -57,8 +57,10 @@ table.dataTable {
 	text-align: center;
 }
 
-.webhook_type {
-	width: 6rem !important;
+.webhook_type,
+.webhook_timestamp,
+.webhook_modified {
+	width: 5rem !important;
 }
 
 .webhook_portal {
@@ -69,11 +71,6 @@ table.dataTable {
 .webhook_file,
 .webhook_payload,
 .webhook_status {
-	width: 4.5rem !important;
-}
-
-.webhook_timestamp,
-.webhook_modified {
 	width: 4rem !important;
 }
 
