@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700;800&display=swap");
 
 * {
 	scroll-behavior: smooth;
@@ -16,14 +17,17 @@ body {
 ::-webkit-scrollbar {
 	width: 0.675rem;
 	height: 0.675rem;
+	border-radius: 1rem;
 }
 
 ::-webkit-scrollbar-thumb {
 	background: #605c5c;
+	border-radius: 1rem;
 }
 
 ::-webkit-scrollbar-track {
 	background: #ececec;
+	border-radius: 1rem;
 }
 
 ::placeholder {
@@ -78,7 +82,8 @@ main {
 
 .logo {
 	width: 100%;
-	max-width: 3rem !important;
+	max-width: 3rem;
+	border-radius: 0.375rem;
 }
 
 .navbar {
@@ -113,7 +118,7 @@ main {
 }
 
 .nav-link {
-	padding: 0.5rem 0.875rem !important;
+	padding: 0.5rem 0.75rem !important;
 }
 
 .navbar-nav li.nav-item {
@@ -161,14 +166,18 @@ main {
 	max-width: 66.67%;
 }
 
+.modal-dialog .btn {
+	text-transform: uppercase;
+	font-size: 1.125rem !important;
+}
+
 .modal-header {
-	padding: 0.75rem 0.75rem !important;
+	padding: 0.75rem 1rem !important;
 	border-top-left-radius: 0.375rem !important;
 	border-top-right-radius: 0.375rem !important;
 }
 
-.modal-header > .btn-danger {
-	font-size: 1.125rem !important;
+.modal-header .btn-danger {
 	padding: 0.325rem 0.625rem !important;
 }
 
@@ -178,18 +187,22 @@ main {
 }
 
 .modal-body {
-	padding: 0.75rem !important;
-	max-height: 36rem !important;
+	padding: 1rem !important;
+	max-height: 40rem !important;
+}
+
+.modal-footer {
+	padding: 0.75rem 1rem !important;
 }
 
 pre {
 	font-family: "Fira Code", monospace, sans-serif;
-	font-weight: 600;
 	font-size: 0.75rem;
 	font-size: clamp(0.75rem, 0.725rem + 0.125vw, 0.875rem);
+	font-weight: 600;
 	line-height: normal;
-	max-height: 32rem;
 	margin: 0;
+	max-height: 36rem;
 	overflow: auto;
 	padding-right: 0.375rem;
 }
@@ -214,6 +227,10 @@ pre::-webkit-scrollbar-track {
 	transition: 0.5s all ease;
 }
 
+.form-select {
+	padding-right: 2.25rem !important;
+}
+
 .btn,
 .form-select,
 .form-control,
@@ -223,10 +240,6 @@ footer {
 	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
 }
 
-.form-select {
-	padding-right: 2.25rem !important;
-}
-
 .form-select,
 .form-control,
 option {
@@ -234,7 +247,8 @@ option {
 }
 
 .form-label {
-	font-size: 1rem;
+	font-size: 0.875rem;
+	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
 	text-transform: uppercase;
 	font-weight: 600;
 }
@@ -256,96 +270,8 @@ option {
 	transition: 0.5s all ease;
 }
 
-.view-btn {
-	word-break: keep-all;
-	padding: 0.325rem 0.625rem !important;
-}
-
-#data-table {
-	align-items: center;
-	justify-content: space-between;
-}
-
-table {
-	font-size: 0.875rem !important;
-}
-
-table.dataTable th {
-	padding-top: 0.375rem !important;
-	padding-bottom: 0.375rem !important;
-	padding-left: 0.375rem !important;
-}
-
-table.dataTable td {
-	padding: 0.375rem !important;
-	font-weight: 500 !important;
-}
-
-.table-hover tbody tr td {
-	transition: 0.5s all ease !important;
-}
-
-.table-hover tbody tr:hover td {
-	transition: 0.5s all ease !important;
-}
-
-table.table-bordered.dataTable thead th {
-	border-bottom: 2px solid #000000 !important;
-}
-
-table.table-bordered.dataTable tfoot th {
-	border-top: 2px solid #000000 !important;
-}
-
-ul.pagination {
-	margin: 0 !important;
-}
-
-.page-link {
-	color: #0b5ed7;
-	font-size: 0.875rem;
-	font-weight: 700;
-	border-width: 0.125rem;
-	border-radius: 0.375rem !important;
-	margin-left: 0.5rem !important;
-	padding: 0.5rem 1rem !important;
-	transition: 0.5s all ease;
-}
-
-.page-link:focus {
-	outline: none;
-	background-color: transparent !important;
-	color: #0b5ed7;
-	border-color: #0b5ed7;
-	transition: 0.5s all ease;
-}
-
-.page-link:hover {
-	z-index: 2 !important;
-	color: white !important;
-	background-color: #0b5ed7 !important;
-	border-color: #0b5ed7 !important;
-	transition: 0.5s all ease;
-}
-
-.page-item.active .page-link,
-.page-item.active .page-link:hover {
-	background-color: #0b5ed7;
-	border-color: #0b5ed7;
-}
-
-table.dataTable > tbody > tr.dt-hasChild.parent,
-table.dataTable > tbody > tr.child {
-	transition: 0.5s all ease;
-}
-
-table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control,
-table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control {
-	padding-left: 2rem !important;
-}
-
-table.dataTable > tbody > tr.child ul.dtr-details {
-	display: block !important;
+.btn.btn-secondary {
+	padding: 0.5rem 0.875rem !important;
 }
 
 textarea {
@@ -409,44 +335,6 @@ footer span a:hover {
 	.navbar-nav li.nav-item > a.nav-link {
 		margin-left: 0 !important;
 		margin-top: 0.25rem !important;
-	}
-}
-
-@media screen and (max-width: 953px) {
-	table.dataTable > tbody > tr.child span.dtr-title {
-		display: block !important;
-		text-align: left;
-		margin-right: 0.75rem;
-		min-width: none;
-	}
-
-	table.dataTable > tbody > tr.child {
-		padding: 0 !important;
-	}
-
-	table.dataTable td.child {
-		padding: 0 !important;
-	}
-
-	table.dataTable > tbody > tr.child ul.dtr-details > li:first-child {
-		padding-top: 0.5em !important;
-	}
-
-	table.dataTable > tbody > tr.child ul.dtr-details > li {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0.5em !important;
-	}
-
-	table.dataTable
-		> tbody
-		> tr.child
-		ul.dtr-details
-		> li.curl_url
-		> span.dtr-data {
-		word-break: break-all;
 	}
 }
 
