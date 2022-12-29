@@ -102,6 +102,8 @@ $(document).ready(function () {
 			searchPlaceholder: "Search logs...",
 			zeroRecords: "No records available!",
 			paginate: {
+				first: "First",
+				last: "Last",
 				next: "Next",
 				previous: "Prev",
 			},
@@ -112,7 +114,7 @@ $(document).ready(function () {
 		],
 		order: [[9, "desc"]],
 		pageLength: 15,
-		pagingType: "simple_numbers",
+		pagingType: "full_numbers",
 		processing: true,
 		responsive: true,
 		searchDelay: 500,
@@ -132,7 +134,7 @@ $(document).ready(function () {
 						color = "#FF0000";
 					} else {
 					}
-					return '<span style="color:' + color + '">' + data + "</span>";
+					return '<span style="font-size:1rem; color:' + color + '">' + data + "</span>";
 				},
 			},
 		],

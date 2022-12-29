@@ -54,6 +54,22 @@ $(document).ready(function () {
 				},
 			},
 			{
+				name: "webhook_payload",
+				data: "id",
+				className: "webhook_payload",
+				searchable: false,
+				orderable: false,
+				targets: 1,
+				render: function (data, row, type) {
+					var rowId = type.id;
+					return (
+						'<button type="button" class="btn btn-primary view-btn" title="View" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="displayWebhookJSON(' +
+						rowId +
+						')"><i class="fa fa-eye" aria-hidden="true"></i></button>'
+					);
+				},
+			},
+			{
 				name: "status",
 				data: "status",
 				className: "webhook_status",
@@ -71,7 +87,7 @@ $(document).ready(function () {
 		],
 		columnDefs: [
 			{
-				targets: 5,
+				targets: 6,
 				render: function (data, type, row) {
 					var bg_color, text;
 					if (data == "processed" || data == 1) {
@@ -92,7 +108,7 @@ $(document).ready(function () {
 			},
 		],
 		deferRender: true,
-		dom: '<"#webhooks.row"<"#buttons.col-lg-3 col-md-6 col-sm-4 order-lg-0"B><"#length.col-lg-2 col-md-6 col-sm-6 order-lg-1"l><"#filter.col-lg-3 col-md-12 col-sm-12 order-lg-2 order-sm-0"f><"#table.col-lg-12 col-md-12 col-sm-12 order-lg-3"t><"#count.col-lg-4 col-md-12 col-sm-12 order-lg-4"i><"#pages.col-lg-8 col-md-12 col-sm-12 order-lg-5"p>>r',
+		dom: '<"#data-table.row"<"#buttons.col-lg-3 col-md-6 col-sm-4 order-lg-0"B><"#length.col-lg-2 col-md-6 col-sm-6 order-lg-1"l><"#filter.col-lg-3 col-md-12 col-sm-12 order-lg-2 order-sm-0"f><"#table.col-lg-12 col-md-12 col-sm-12 order-lg-3"t><"#count.col-lg-4 col-md-12 col-sm-12 order-lg-4"i><"#pages.col-lg-8 col-md-12 col-sm-12 order-lg-5"p>>r',
 		language: {
 			lengthMenu: "Viewing _MENU_ webhooks",
 			info: "Showing _START_ to _END_ of _TOTAL_ webhooks",
@@ -103,6 +119,8 @@ $(document).ready(function () {
 			searchPlaceholder: "Search webhooks...",
 			zeroRecords: "No records available!",
 			paginate: {
+        first: "First",
+        last: "Last",
 				next: "Next",
 				previous: "Prev",
 			},
@@ -111,9 +129,9 @@ $(document).ready(function () {
 			[15, 30, 60, 120, 240, 480],
 			[15, 30, 60, 120, 240, 480],
 		],
-		order: [[6, "desc"]],
+		order: [[7, "desc"]],
 		pageLength: 15,
-		pagingType: "simple_numbers",
+		pagingType: "full_numbers",
 		processing: true,
 		searchDelay: 500,
 		serverSide: true,
@@ -130,6 +148,30 @@ function displayWebhook(recordId) {
 		url: "get_data.php",
 		data: {
 			action: "get_webhook",
+			recordId: recordId,
+		},
+		success: function (response) {
+			$("#data-modal-label").html("WEBHOOK");
+			if (response == "null" || response == null) {
+				$("#data-modal-content").html(
+					'<div class="alert alert-info fw-bold m-0"> No response received. </div>'
+				);
+			} else {
+				$("#data-modal-content").html("<pre>" + response + "</pre>");
+			}
+		},
+		error: function (response) {
+			console.log(response);
+		},
+	});
+}
+
+function displayWebhookJSON(recordId) {
+	$.ajax({
+		type: "POST",
+		url: "get_data.php",
+		data: {
+			action: "get_webhook_json",
 			recordId: recordId,
 		},
 		success: function (response) {
