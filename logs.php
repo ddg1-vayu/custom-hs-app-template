@@ -1,4 +1,4 @@
-<?php include("session.php"); ?>
+<?php //include("session.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +7,7 @@
 	<?php include("head.php"); ?>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.5/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/r-2.2.9/sc-2.0.5/sb-1.3.2/sp-2.0.0/sl-1.3.4/sr-1.1.0/datatables.min.css" />
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.5/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/r-2.2.9/sc-2.0.5/sb-1.3.2/sp-2.0.0/sl-1.3.4/sr-1.1.0/datatables.min.js"></script>
+	<link rel="stylesheet" href="css/datatables.css">
 	<link rel="stylesheet" href="css/logs.css">
 </head>
 

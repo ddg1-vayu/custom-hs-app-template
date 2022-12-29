@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.5/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/r-2.2.9/sc-2.0.5/sb-1.3.2/sp-2.0.0/sl-1.3.4/sr-1.1.0/datatables.min.css" />
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.5/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/r-2.2.9/sc-2.0.5/sb-1.3.2/sp-2.0.0/sl-1.3.4/sr-1.1.0/datatables.min.js"></script>
 	<link rel="stylesheet" href="css/webhooks.css">
+	<link rel="stylesheet" href="css/datatables.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -33,6 +34,7 @@
 								<th class="webhook_source"> Source </th>
 								<th class="webhook_file"> File </th>
 								<th class="webhook_payload"> Payload </th>
+								<th class="webhook_payload"> Payload JSON </th>
 								<th class="webhook_status"> Status </th>
 								<th class="webhook_timestamp"> Timestamp </th>
 								<th class="webhook_modified"> Last Modified </th>
@@ -44,7 +46,7 @@
 		</div>
 	</main>
 
-	<div class="modal fade" id="data-modal" tabindex="-1" aria-hidden="true" aria-labelledby="data-modal-label">
+	<div class="modal fade" id="data-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" aria-labelledby="data-modal-label">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">

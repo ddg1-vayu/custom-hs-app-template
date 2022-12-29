@@ -7,10 +7,22 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 	$recordId = $_POST['recordId'];
 
 	switch ($action) {
+		case "get_endpoint":
+			$getEndpoint = mysqli_query($conn, "SELECT `curl_url` FROM `api_logs` WHERE `id` = '$recordId'");
+			$rows = mysqli_fetch_assoc($getEndpoint);
+			$endpoint = $rows['curl_url'];
+
+			if (is_null($endpoint) == false && empty($endpoint) == false) {
+				echo $endpoint;
+			} else {
+				echo "null";
+			}
+			break;
 		case "get_payload":
 			$getPayload = mysqli_query($conn, "SELECT `curl_payload` FROM `api_logs` WHERE `id` = '$recordId'");
 			$rows = mysqli_fetch_assoc($getPayload);
 			$payload = $rows['curl_payload'];
+
 			if (is_null($payload) == false && empty($payload) == false) {
 				if (strncmp($payload, "grant_type=refresh_token", 24) === 0) {
 					$output = [];
@@ -34,9 +46,6 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 					$output['client_secret'] = mask_string($output['client_secret'], 12);
 					$output['code'] = mask_string($output['code'], 12);
 					print_r($output);
-				} else if (strncmp($payload, "To=", 3) === 0) {
-					$newArr = explode("&", $payload);
-					print_r($newArr);
 				} else {
 					$sanitize = preg_replace("/[\r\n]+/", " ", $payload);
 					$dec_payload = json_decode(utf8_encode($sanitize), true);
@@ -50,12 +59,14 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 			$getResponse = mysqli_query($conn, "SELECT `curl_response` FROM `api_logs` WHERE `id` = '$recordId'");
 			$rows = mysqli_fetch_assoc($getResponse);
 			$response = $rows['curl_response'];
-			if (is_null($response) == false && empty($response) == false) {
-				if (strncmp($response, "<html>", 6) === 0) {
+
+			if (empty($response) == false && $response != "null" && $response != NULL) {
+				if (strncmp($response, "<html>", 6) === 0 || strncmp($response, "<!DOCTYPE", 8) === 0) {
 					echo $response;
 				} else {
 					$sanitize = preg_replace("/[\r\n]+/", " ", $response);
 					$dec_response = json_decode(utf8_encode($sanitize), true);
+
 					if (isset($dec_response['token_type']) && isset($dec_response['refresh_token'])) {
 						$token_arr = $dec_response;
 						$token_arr['refresh_token'] = mask_string($token_arr['refresh_token'], 12);
@@ -70,13 +81,25 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 			}
 			break;
 		case "get_webhook":
-			$getWebhook = mysqli_query($conn, "SELECT * FROM `webhooks` WHERE `id` = '$recordId'");
+			$getWebhook = mysqli_query($conn, "SELECT `payload` FROM `webhooks` WHERE `id` = '$recordId'");
 			if (mysqli_num_rows($getWebhook) > 0) {
 				$webhookData = mysqli_fetch_assoc($getWebhook);
 				$response = $webhookData['payload'];
 				$sanitize = preg_replace("/[\r\n]+/", " ", $response);
 				$dec_response = json_decode(utf8_encode($sanitize), true);
 				print_r($dec_response);
+			} else {
+				echo "null";
+			}
+			break;
+		case "get_webhook_json":
+			$getWebhook = mysqli_query($conn, "SELECT `payload` FROM `webhooks` WHERE `id` = '$recordId'");
+			if (mysqli_num_rows($getWebhook) > 0) {
+				$webhookData = mysqli_fetch_assoc($getWebhook);
+				$response = $webhookData['payload'];
+				$sanitize = preg_replace("/[\r\n]+/", " ", $response);
+				$dec_response = json_decode(utf8_encode($sanitize), true);
+				echo json_encode($dec_response, JSON_PRETTY_PRINT);
 			} else {
 				echo "null";
 			}
