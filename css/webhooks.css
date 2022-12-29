@@ -2,7 +2,7 @@
 
 .modal-dialog {
 	margin: 4rem auto !important;
-	max-width: 75% !important;
+	max-width: 50% !important;
 }
 
 .webhook_source,
