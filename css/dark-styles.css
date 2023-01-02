@@ -1,4 +1,16 @@
 @media (prefers-color-scheme: dark) {
+	* {
+		scrollbar-color: #005c97 #ececec;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: #005c97;
+	}
+
+	::-webkit-scrollbar-track {
+		background: #ececec;
+	}
+
 	body,
 	.form-control,
 	.form-control:focus,
@@ -48,6 +60,7 @@
 	#webhooks_tbl_length label,
 	#api_logs_info,
 	#webhooks_tbl_info,
+	.modal-body span,
 	footer span,
 	footer span a,
 	footer span a:hover {

@@ -122,12 +122,12 @@ main {
 }
 
 .navbar-nav li.nav-item {
-	border-radius: 0.25rem !important;
+	border-radius: 0.375rem !important;
 }
 
 .navbar-nav li.nav-item > a.nav-link {
 	color: white;
-	border-radius: 0.25rem;
+	border-radius: 0.375rem;
 	transition: 0.5s all ease;
 	margin-left: 0.5rem !important;
 }
@@ -136,7 +136,8 @@ main {
 	margin-left: 0 !important;
 }
 
-.navbar-nav li.nav-item > a.nav-link:hover {
+.navbar-nav li.nav-item > a.nav-link:hover,
+.navbar-nav li.nav-item > a.nav-link.active {
 	color: #10107a !important;
 	background-color: white !important;
 	transition: 0.5s all ease !important;
@@ -203,7 +204,7 @@ pre {
 	margin: 0;
 	max-height: 36rem;
 	overflow: auto;
-	padding-right: 0.375rem;
+	padding: 0 0.375rem 0.375rem 0;
 }
 
 pre::-webkit-scrollbar {
