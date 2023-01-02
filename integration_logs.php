@@ -1,4 +1,9 @@
-<?php //include("session.php"); ?>
+<?php
+date_default_timezone_set("Asia/Kolkata");
+$fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
+$fileExtension = pathinfo(__FILE__, PATHINFO_EXTENSION);
+$file = $fileName . "." . $fileExtension;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,10 +12,9 @@
 	<title> Integration Logs </title>
 	<style>
 		@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700;800&display=swap");
-		.modal-dialog{margin:4rem auto!important;max-width:75%!important}
 		.form-control,.form-select{padding:.5rem!important}
 		.form-select{padding-right:2.25rem!important}
-		thead{border-bottom: 3px solid black;}
+		thead{border-bottom:3px solid #000}
 		th{text-transform:uppercase}
 		td{padding:6px!important;vertical-align:middle}
 		td>button.btn{padding:2px 8px;font-size:14px;font-weight:500;border-width:2px}
@@ -20,9 +24,7 @@
 		.page-link.active{background-color:#06c!important;border-color:#06c!important}
 		.page-link.disabled{color:#fff}
 		#record-count,#record-pagination{margin:.75rem 0}
-		@media screen and (max-width:767px){
-			#record-count{text-align:center} .page-item{margin:.25rem} .page-link{margin-left:0!important} #records-table{margin:0 0 1rem} ul.pagination{justify-content:center;flex-wrap:wrap}
-		}
+		@media screen and (max-width:767px){#record-count{text-align:center} .page-item{margin:.25rem} .page-link{margin-left:0!important} #records-table{margin:0 0 1rem} ul.pagination{justify-content:center;flex-wrap:wrap}}
 	</style>
 </head>
 
@@ -30,12 +32,12 @@
 	<?php include("header.php"); ?>
 
 	<script src="js/scroll-top.js"></script>
+	<script src="js/integration_logs.js"></script>
 
 	<?php
-	date_default_timezone_set("Asia/Kolkata");
-	$fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
-	$fileExtension = pathinfo(__FILE__, PATHINFO_EXTENSION);
-	$file = $fileName . "." . $fileExtension;
+	function startsWith($haystack, $needle)	{
+		return !strncmp($haystack, $needle, strlen($needle));
+	}
 	include("conn.php");
 	?>
 
@@ -44,7 +46,7 @@
 			<div class="white-container mb-3">
 				<div class="d-flex align-items-center justify-content-between">
 					<h4 class="fs-1 fw-bold m-0"> Integration Logs </h4>
-					<button class="btn btn-secondary" onclick="showFilters()"> Filter <i class="fa fa-filter ps-1" aria-hidden="true"></i> </button>
+					<button class="btn btn-primary" title="Show Filters" onclick="showFilters()"> <i class="fa fa-filter" aria-hidden="true"></i> </button>
 				</div>
 			</div>
 			<div class="white-container mb-3" id="filter-form" style="<?php echo isset($_GET['search']) ? 'display:block;' : 'display:none;'; ?>">
@@ -60,126 +62,179 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
 							<label for="hub_portal_id" class="form-label"> Portal </label>
-							<select name="hub_portal_id" id="hub_portal_id" class="form-select">
+							<select title="Portal" name="hub_portal_id" id="hub_portal_id" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
 								<?php
-								$getPortals = mysqli_query($conn, "SELECT DISTINCT `hub_portal_id` FROM `api_logs` WHERE `hub_portal_id` != '' ORDER BY `hub_portal_id` ASC");
+								$getPortals = mysqli_query($conn, "SELECT DISTINCT `hub_portal_id` FROM `api_logs` ORDER BY `hub_portal_id` ASC");
 								if (mysqli_num_rows($getPortals) > 0) {
 									while ($rows = mysqli_fetch_assoc($getPortals)) {
-										$hub_portal_sel = "";
-										if ($rows['hub_portal_id'] == $_REQUEST['hub_portal_id']) {
-											$hub_portal_sel = "selected='selected'";
-										}
+										$selectedPortal = (isset($_REQUEST['hub_portal_id']) && $_REQUEST['hub_portal_id'] == $rows['hub_portal_id']) ? "selected" : "";
 								?>
-										<option value="<?= $rows['hub_portal_id'] ?>" <?= $hub_portal_sel ?>><?= $rows['hub_portal_id'] ?></option>
-								<?php }
-								} ?>
-							</select>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
-							<label for="curl_type" class="form-label"> Type </label>
-							<select name="curl_type" id="curl_type" class="form-select">
-								<option value="" selected> --- SELECT --- </option>
-								<?php
-								$getType = mysqli_query($conn, "SELECT DISTINCT `curl_type` FROM `api_logs` WHERE `curl_type` != '' ORDER BY `curl_type` ASC");
-								if (mysqli_num_rows($getType) > 0) {
-									while ($rows = mysqli_fetch_assoc($getType)) {
-										$hub_portal_sel = "";
-										if ($rows['curl_type'] == $_REQUEST['curl_type']) {
-											$hub_portal_sel = "selected='selected'";
-										}
-								?>
-										<option value="<?= $rows['curl_type'] ?>" <?= $hub_portal_sel ?>><?= $rows['curl_type'] ?></option>
-								<?php }
-								} ?>
-							</select>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
-							<label for="file_name" class="form-label"> File </label>
-							<select name="file_name" id="file_name" class="form-select">
-								<option value="" selected> --- SELECT --- </option>
-								<?php
-								$getFileNames = mysqli_query($conn, "SELECT DISTINCT `file_name` FROM `api_logs` WHERE `file_name` != '' ORDER BY `file_name` ASC");
-								if (mysqli_num_rows($getFileNames) > 0) {
-									while ($rows = mysqli_fetch_assoc($getFileNames)) {
-										$hub_portal_sel = "";
-										if ($rows['file_name'] == $_REQUEST['file_name']) {
-											$hub_portal_sel = "selected='selected'";
-										}
-								?>
-										<option value="<?= $rows['file_name'] ?>" <?= $hub_portal_sel ?>><?= $rows['file_name'] ?></option>
+										<option value="<?= $rows['hub_portal_id'] ?>" <?= $selectedPortal ?>><?= $rows['hub_portal_id'] ?></option>
 								<?php }
 								} ?>
 							</select>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
 							<label for="api_origin" class="form-label"> API Origin </label>
-							<select name="api_origin" id="api_origin" class="form-select">
+							<select title="API Origin" name="api_origin" id="api_origin" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
 								<?php
 								$getApiOrigin = mysqli_query($conn, "SELECT DISTINCT `api_origin` FROM `api_logs` WHERE `api_origin` != '' ORDER BY `api_origin` ASC");
 								if (mysqli_num_rows($getApiOrigin) > 0) {
 									while ($rows = mysqli_fetch_assoc($getApiOrigin)) {
-										$hub_portal_sel = "";
+										$selectedOrigin = "";
 										if ($rows['api_origin'] == $_REQUEST['api_origin']) {
-											$hub_portal_sel = "selected='selected'";
+											$selectedOrigin = "selected='selected'";
 										}
 								?>
-										<option value="<?= $rows['api_origin'] ?>" <?= $hub_portal_sel ?>><?= $rows['api_origin'] ?></option>
+										<option value="<?= $rows['api_origin'] ?>" <?= $selectedOrigin ?>><?= $rows['api_origin'] ?></option>
+								<?php }
+								} ?>
+							</select>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+							<label for="curl_type" class="form-label"> Type </label>
+							<select title="Type" name="curl_type" id="curl_type" class="form-select">
+								<option value="" selected> --- SELECT --- </option>
+								<?php
+								$allValues = $filteredValues = $allLabels = $labels = $otherValues = [];
+								$getType = mysqli_query($conn, "SELECT DISTINCT `curl_type` FROM `api_logs` WHERE `curl_type` != '' ORDER BY `curl_type` ASC");
+								if (mysqli_num_rows($getType) > 0) {
+									while ($rows = mysqli_fetch_assoc($getType)) {
+										$curlType = $rows['curl_type'];
+										$labelArr = explode(" ", $curlType);
+										array_push($allValues, $curlType);
+										array_push($allLabels, $labelArr[0]);
+									}
+
+									$uniqueLabels = array_unique($allLabels);
+									foreach ($uniqueLabels as $value) {
+										if (strpos($value, '_') !== false) {
+											array_push($otherValues, $value);
+										} else {
+											array_push($labels, $value);
+										}
+									}
+
+									$array = array_diff($allValues, $otherValues);
+									foreach ($array as $value) {
+										array_push($filteredValues, $value);
+									}
+
+									$selectedType = "";
+									for ($x = 0; $x < count($labels); $x++) { ?>
+										<optgroup label="<?= $labels[$x] ?>">
+											<?php
+											foreach ($filteredValues as $values) {
+												if (startsWith($values, $labels[$x])) {
+													$selectedType = (isset($_REQUEST['curl_type']) && $_REQUEST['curl_type'] == $values)  ? "selected" : "";
+											?>
+													<option value="<?= $values ?>" <?= $selectedType ?>><?= $values ?></option>
+											<?php
+												}
+											}
+											?>
+										</optgroup>
+									<?php
+									}
+									if (empty($otherValues) == false) {
+									?>
+										<optgroup label="Others">
+											<?php
+											foreach ($otherValues as $values) {
+												$selectedType = (isset($_REQUEST['curl_type']) && $_REQUEST['curl_type'] == $values)  ? "selected" : "";
+											?>
+												<option value="<?= $values ?>" <?= $selectedType ?>><?= $values ?></option>
+											<?php
+											} ?>
+										</optgroup>
+								<?php
+									}
+								}
+								?>
+							</select>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+							<label for="file_name" class="form-label"> File </label>
+							<select title="File" name="file_name" id="file_name" class="form-select">
+								<option value="" selected> --- SELECT --- </option>
+								<?php
+								$getFileNames = mysqli_query($conn, "SELECT DISTINCT `file_name` FROM `api_logs` WHERE `file_name` != '' ORDER BY `file_name` ASC");
+								if (mysqli_num_rows($getFileNames) > 0) {
+									while ($rows = mysqli_fetch_assoc($getFileNames)) {
+										$selectedFile = (isset($_REQUEST['file_name']) && $_REQUEST['file_name'] == $rows['file_name']) ? "selected" : "";
+								?>
+										<option value="<?= $rows['file_name'] ?>" <?= $selectedFile ?>><?= $rows['file_name'] ?></option>
 								<?php }
 								} ?>
 							</select>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
 							<label for="curl_url" class="form-label"> Endpoint </label>
-							<select name="curl_url" id="curl_url" class="form-select">
+							<select title="Endpoint" name="curl_url" id="curl_url" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
 								<?php
-								$getEndpoints = mysqli_query($conn, "SELECT DISTINCT `curl_url` FROM `api_logs` WHERE `curl_url` != '' ORDER BY `curl_url` ASC");
-								if (mysqli_num_rows($getEndpoints) > 0) {
-									while ($rows = mysqli_fetch_assoc($getEndpoints)) {
-										$hub_portal_sel = "";
-										if ($rows['curl_url'] == $_REQUEST['curl_url']) {
-											$hub_portal_sel = "selected='selected'";
+								$selectedEndpoint = "";
+								$hubspotEndpoints = $staxEndpoints = [];
+								$getEndpoint = mysqli_query($conn, "SELECT DISTINCT `curl_url` FROM `api_logs` WHERE `curl_url` != '' ORDER BY `curl_url` ASC");
+								if (mysqli_num_rows($getEndpoint) > 0) {
+									while ($rows = mysqli_fetch_assoc($getEndpoint)) {
+										$curlEndpoint = $rows['curl_url'];
+										if (startsWith($curlEndpoint, "https://api.hubapi.com/") || startsWith($curlEndpoint, "https://api.hubspot.com/crm/")) {
+											array_push($hubspotEndpoints, $curlEndpoint);
+										} else {
+											array_push($staxEndpoints, $curlEndpoint);
 										}
+									}
 								?>
-										<option value="<?= $rows['curl_url'] ?>" <?= $hub_portal_sel ?>><?= $rows['curl_url'] ?></option>
-								<?php }
-								} ?>
+									<optgroup label="HubSpot">
+										<?php
+										foreach ($hubspotEndpoints as $endpoints) {
+											$selectedEndpoint = (isset($_REQUEST['curl_url']) && $_REQUEST['curl_url'] == $endpoints)  ? "selected" : "";
+											echo "<option value = '$endpoints' $selectedEndpoint> $endpoints </option>";
+										}
+										?>
+									</optgroup>
+									<optgroup label="StaxBill">
+										<?php
+										foreach ($staxEndpoints as $endpoints) {
+											$selectedEndpoint = (isset($_REQUEST['curl_url']) && $_REQUEST['curl_url'] == $endpoints)  ? "selected" : "";
+											echo "<option value = '$endpoints' $selectedEndpoint> $endpoints </option>";
+										}
+										?>
+									</optgroup>
+								<?php
+								}
+								?>
 							</select>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
 							<label for="curl_method" class="form-label"> Method </label>
-							<select name="curl_method" id="curl_method" class="form-select">
+							<select title="Method" name="curl_method" id="curl_method" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
 								<?php
 								$getMethods = mysqli_query($conn, "SELECT DISTINCT `curl_method` FROM `api_logs` WHERE `curl_method` != '' ORDER BY `curl_method` ASC");
 								if (mysqli_num_rows($getMethods) > 0) {
 									while ($rows = mysqli_fetch_assoc($getMethods)) {
-										$hub_portal_sel = "";
-										if ($rows['curl_method'] == $_REQUEST['curl_method']) {
-											$hub_portal_sel = "selected='selected'";
-										}
+										$selectedMethod = (isset($_REQUEST['curl_method']) && $_REQUEST['curl_method'] == $rows['curl_method']) ? "selected" : "";
 								?>
-										<option value="<?= $rows['curl_method'] ?>" <?= $hub_portal_sel ?>><?= $rows['curl_method'] ?></option>
+										<option value="<?= $rows['curl_method'] ?>" <?= $selectedMethod ?>><?= $rows['curl_method'] ?></option>
 								<?php }
 								} ?>
 							</select>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
 							<label for="curl_http_code" class="form-label"> HTTP Response Code </label>
-							<select name="curl_http_code" id="curl_http_code" class="form-select">
+							<select title="HTTP Response Code" name="curl_http_code" id="curl_http_code" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
 								<?php
 								$getResponseCodes = mysqli_query($conn, "SELECT DISTINCT `curl_http_code` FROM `api_logs` WHERE `curl_http_code` != '' ORDER BY `curl_http_code` ASC");
 								if (mysqli_num_rows($getResponseCodes) > 0) {
 									while ($rows = mysqli_fetch_assoc($getResponseCodes)) {
-										$hub_portal_sel = "";
-										if ($rows['curl_http_code'] == $_REQUEST['curl_http_code']) {
-											$hub_portal_sel = "selected='selected'";
-										}
+										$selectedResponseCode = (isset($_REQUEST['curl_http_code']) && $_REQUEST['curl_http_code'] == $rows['curl_http_code']) ? "selected" : "";
 								?>
-										<option value="<?= $rows['curl_http_code'] ?>" <?= $hub_portal_sel ?>><?= $rows['curl_http_code'] ?></option>
+										<option value="<?= $rows['curl_http_code'] ?>" <?= $selectedResponseCode ?>><?= $rows['curl_http_code'] ?></option>
 								<?php }
 								} ?>
 							</select>
@@ -193,20 +248,6 @@
 				</form>
 			</div>
 
-			<script>
-				function showFilters() {
-					if (!$('#filter-form').is(':visible')) {
-						$('#filter-form').show();
-					} else {
-						$('#filter-form').hide();
-					}
-				}
-
-				function resetFilters() {
-					window.location = window.location.href.split("?")[0];
-				}
-			</script>
-
 			<?php
 			$whereConditions = "";
 
@@ -218,8 +259,8 @@
 				$whereConditions .= " AND date(al.`timestamp`) <= '" . date('Y-m-d', strtotime(trim($_REQUEST['end_date']))) . "'";
 			}
 
-			if (isset($_REQUEST['hub_portal_id']) && empty($_REQUEST['hub_portal_id']) == false) {
-				$whereConditions .= " AND al.hub_portal_id = '" . trim($_REQUEST['hub_portal_id']) . "'";
+			if (isset($_REQUEST['hub_portal_id']) && $_REQUEST['hub_portal_id'] != "") {
+				$whereConditions .= " AND al.hub_portal_id = " . trim($_REQUEST['hub_portal_id']) . "";
 			}
 
 			if (isset($_REQUEST['curl_type']) && empty($_REQUEST['curl_type']) == false) {
@@ -329,42 +370,23 @@
 									if ($_GET['page'] > 1) {
 										$previousPage = $_GET['page'] - 1;
 								?>
-										<li class="page-item"><a class="page-link prev-link" href="<?=$file . $pagination . 'page=' . $previousPage ?>" id="<?= $previousPage ?>">Prev</a></li>
+										<li class="page-item"><a class="page-link prev-link" href="<?= $file . $pagination . 'page=' . $previousPage ?>" id="<?= $previousPage ?>">Prev</a></li>
 									<?php
 									}
 									for ($i = $pageNum; $i < $nextPage; $i++) {
 									?>
-										<li class="page-item"><a class="page-link" href="<?=$file . $pagination . 'page=' . $i ?>" id="<?= $i ?>"> <?= $i ?> </a> </li>
+										<li class="page-item"><a class="page-link" href="<?= $file . $pagination . 'page=' . $i ?>" id="<?= $i ?>"> <?= $i ?> </a> </li>
 									<?php
 									}
 									if ($_GET['page'] < $pages) {
 										$nextPage = ($_GET['page'] + 1);
 									?>
-										<li class="page-item"><a class="page-link next-link" href="<?=$file . $pagination . 'page=' . $nextPage ?>" id="<?= $nextPage ?>">Next</a> </li>
+										<li class="page-item"><a class="page-link next-link" href="<?= $file . $pagination . 'page=' . $nextPage ?>" id="<?= $nextPage ?>">Next</a> </li>
 								<?php
 									}
 								}
 								?>
 							</ul>
-							<script>
-								var queryString = window.location.search;
-								if (queryString != "") {
-									const searchParams = new URLSearchParams(queryString);
-									var search = searchParams.get('search');
-									var pageNum = searchParams.get('page');
-									if (search != "" && pageNum != "") {
-										if (pageNum != "") {
-											$(".page-link#" + pageNum).addClass("active disabled");											
-										} else {
-											$(".page-link#1").addClass("active disabled");
-										}
-									} else {
-										$(".page-link#" + pageNum).addClass("active disabled");
-									}
-								} else {
-									$(".page-link#1").addClass("active disabled");
-								}
-							</script>
 						</div>
 					</div>
 				</div>
@@ -377,84 +399,10 @@
 			<?php
 			}
 			?>
-			<?php // echo "<div class='white-container mt-3' id='query-div'> <?= $recordsSql </div>" 
+			<?php //echo "<div class='white-container mt-3' id='query-div'> $recordsSql </div>" 
 			?>
 		</div>
 	</main>
-
-	<script>
-		function showEndpoint(recordId) {
-			$.ajax({
-				type: "POST",
-				url: "get_data.php",
-				data: {
-					action: "get_endpoint",
-					recordId: recordId,
-				},
-				success: function(response) {
-					$("#data-modal-label").html("ENDPOINT");
-					if (response == "null" || response == null) {
-						$("#data-modal-content").html(
-							'<div class="alert alert-info fw-bold m-0"> No endpoint sent with this request. </div>'
-						);
-					} else {
-						$("#data-modal-content").html("<span style='font-weight:500'>" + response + "</span>");
-					}
-				},
-				error: function(response) {
-					console.log(response);
-				},
-			});
-		}
-
-		function showPayload(recordId) {
-			$.ajax({
-				type: "POST",
-				url: "get_data.php",
-				data: {
-					action: "get_payload",
-					recordId: recordId,
-				},
-				success: function(response) {
-					$("#data-modal-label").html("PAYLOAD");
-					if (response == "null" || response == null) {
-						$("#data-modal-content").html(
-							'<div class="alert alert-info fw-bold m-0"> No payload sent with this request. </div>'
-						);
-					} else {
-						$("#data-modal-content").html("<pre>" + response + "</pre>");
-					}
-				},
-				error: function(response) {
-					console.log(response);
-				},
-			});
-		}
-
-		function showResult(recordId) {
-			$.ajax({
-				type: "POST",
-				url: "get_data.php",
-				data: {
-					action: "get_result",
-					recordId: recordId,
-				},
-				success: function(response) {
-					$("#data-modal-label").html("RESULT");
-					if (response == "null" || response == null) {
-						$("#data-modal-content").html(
-							'<div class="alert alert-info fw-bold m-0"> No response received. </div>'
-						);
-					} else {
-						$("#data-modal-content").html("<pre>" + response + "</pre>");
-					}
-				},
-				error: function(response) {
-					console.log(response);
-				},
-			});
-		}
-	</script>
 
 	<div class="modal fade" id="data-modal" tabindex="-1" aria-hidden="true" aria-labelledby="data-modal-label">
 		<div class="modal-dialog">
