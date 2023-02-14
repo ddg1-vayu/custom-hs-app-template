@@ -4,8 +4,6 @@ $objectId = empty($_GET['associatedObjectId']) ? NULL : $_GET['associatedObjectI
 $userId = empty($_GET['userId']) ? NULL : $_GET['userId'];
 $userEmail = empty($_GET['userEmail']) ? NULL : $_GET['userEmail'];
 
-$targetFile = "";
-
 $link = "";
 $frameLink = "";
 
@@ -13,7 +11,7 @@ $payload = [
 	"results" => [
 		[
 			"objectId" => $objectId,
-			"title" => "Custom HubSpot App",
+			"title" => "CRM Card",
 			"link" => $link,
 			"properties" => [
 				[
