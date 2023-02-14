@@ -1,0 +1,474 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700;800&display=swap");
+
+* {
+	scroll-behavior: smooth;
+	scrollbar-width: thin;
+	scrollbar-color: #605c5c #e1e1e1;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Fira Sans", Arial, Helvetica, sans-serif;
+	background: #f5f8fa;
+	transition: 0.5s all ease;
+}
+
+::-webkit-scrollbar {
+	width: 0.625rem;
+	height: 0.625rem;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #605c5c;
+}
+
+::-webkit-scrollbar-track {
+	background: #e1e1e1;
+}
+
+::placeholder {
+	font-weight: 600 !important;
+	font-size: 0.875rem;
+	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
+}
+
+::-webkit-input-placeholder {
+	font-weight: 600 !important;
+	font-size: 0.875rem;
+	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
+}
+
+::-moz-placeholder {
+	font-weight: 600 !important;
+	font-size: 0.875rem;
+	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
+}
+
+:-moz-placeholder {
+	font-weight: 600 !important;
+	font-size: 0.875rem;
+	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
+}
+
+::-ms-input-placeholder {
+	font-weight: 600 !important;
+	font-size: 0.875rem;
+	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
+}
+
+:-ms-input-placeholder {
+	font-weight: 600 !important;
+	font-size: 0.875rem;
+	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
+}
+
+main {
+	padding: 1rem 0.25rem;
+}
+
+.white-container,
+.form-container {
+	background: #feffff;
+	border-radius: 0.5rem;
+}
+
+.white-container {
+	padding: 0.875rem;
+}
+
+.logo {
+	width: 100%;
+	max-width: 3rem;
+	border-radius: 0.375rem;
+}
+
+.navbar {
+	padding: 0.5rem 0.25rem;
+	background: #10107a !important;
+}
+
+/* 30cff2 */
+
+.navbar-dark .navbar-nav .nav-link {
+	color: #feffff !important;
+}
+
+.navbar-brand .app-title {
+	line-height: normal;
+	margin-left: 0.5rem !important;
+	color: #feffff;
+}
+
+.navbar-brand .app-title .org-info {
+	font-weight: 500;
+	font-size: 0.875rem;
+}
+
+.navbar-light .navbar-toggler {
+	border-color: rgba(0, 0, 0, 0.25);
+}
+
+.navbar-toggler {
+	padding: 0.25rem 0.5rem !important;
+}
+
+.navbar-toggler:focus {
+	box-shadow: 0 0 0 0.125rem !important;
+}
+
+.nav-link {
+	padding: 0.5rem 0.75rem !important;
+}
+
+.navbar-nav li.nav-item {
+	border-radius: 0.375rem !important;
+}
+
+.navbar-nav li.nav-item > a.nav-link {
+	border-radius: 0.375rem;
+	color: #feffff;
+	margin-left: 0.5rem !important;
+	transition: 0.5s all ease;
+}
+
+.navbar-nav li.nav-item:first-child > a.nav-link {
+	margin-left: 0 !important;
+}
+
+.navbar-nav li.nav-item > a.nav-link:hover,
+.navbar-nav li.nav-item > a.nav-link.active {
+	color: #10107a !important;
+	background-color: #feffff !important;
+	transition: 0.5s all ease !important;
+}
+
+.navbar-nav li.nav-item:last-child > a.nav-link:hover {
+	color: #feffff !important;
+	background-color: crimson !important;
+	transition: 0.5s all ease;
+}
+
+.form-container {
+	padding: 1.25rem;
+}
+
+.placeholder-img {
+	padding: 0.25rem;
+	border: 0.125rem solid var(--bs-border-color);
+	border-radius: 50%;
+	width: 100%;
+	max-width: 12rem !important;
+	margin: 0 0 2rem;
+}
+
+.modal-dialog {
+	margin: 4rem auto !important;
+	max-width: 66.67%;
+}
+
+.modal-dialog .btn {
+	text-transform: uppercase;
+}
+
+.modal-header {
+	padding: 0.75rem !important;
+	border-top-left-radius: 0.375rem !important;
+	border-top-right-radius: 0.375rem !important;
+}
+
+.modal-header .btn-danger {
+	padding: 0.325rem 0.625rem !important;
+}
+
+.modal-content {
+	border-radius: 0.375rem !important;
+	border: 0 !important;
+}
+
+.modal-body {
+	padding: 0.75rem !important;
+	max-height: 40rem !important;
+}
+
+.modal-footer {
+	padding: 0.75rem !important;
+}
+
+pre {
+	font-family: "Fira Code", monospace, sans-serif;
+	font-size: 0.75rem;
+	font-size: clamp(0.75rem, 0.725rem + 0.125vw, 0.875rem);
+	font-weight: 600;
+	line-height: normal;
+	margin: 0;
+	max-height: 36rem;
+	overflow: auto;
+	padding: 0 0.375rem 0.375rem 0;
+}
+
+pre::-webkit-scrollbar,
+input::-webkit-scrollbar,
+textarea::-webkit-scrollbar {
+	width: 0.375rem;
+	height: 0.375rem;
+	border-radius: 2rem;
+}
+
+pre::-webkit-scrollbar-thumb,
+input::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb {
+	width: 0.375rem;
+	height: 0.375rem;
+	border-radius: 2rem;
+}
+
+pre::-webkit-scrollbar-track,
+input::-webkit-scrollbar-track,
+textarea::-webkit-scrollbar-track {
+	width: 0.375rem;
+	height: 0.375rem;
+	border-radius: 2rem;
+}
+
+table {
+	font-size: 0.875rem !important;
+}
+
+table.dataTable {
+	width: 100% !important;
+	margin: 0 !important;
+}
+
+table.dataTable th {
+	padding-top: 0.375rem !important;
+	padding-bottom: 0.375rem !important;
+	padding-left: 0.375rem !important;
+}
+
+table.dataTable td {
+	padding: 0.375rem !important;
+	font-weight: 500 !important;
+}
+
+.table-hover tbody tr td {
+	transition: 0.5s all ease !important;
+}
+
+.table-hover tbody tr:hover td {
+	transition: 0.5s all ease !important;
+}
+
+table.table-bordered.dataTable thead th {
+	border-bottom: 2px solid #000000 !important;
+}
+
+table.table-bordered.dataTable tfoot th {
+	border-top: 2px solid #000000 !important;
+}
+
+ul.pagination {
+	margin: 0 !important;
+}
+
+.page-link {
+	color: #0d6efd;
+	font-size: 0.875rem;
+	font-weight: 700;
+	border-width: 0.125rem;
+	border-radius: 0.375rem !important;
+	margin-left: 0.5rem !important;
+	padding: 0.5rem 1rem !important;
+	transition: 0.5s all ease;
+}
+
+.page-link:focus {
+	outline: none;
+	background-color: transparent !important;
+	border-color: #0d6efd;
+	transition: 0.5s all ease;
+}
+
+.page-link:hover {
+	z-index: 2 !important;
+	color: #feffff !important;
+	transition: 0.5s all ease;
+}
+
+.page-link.active,
+.page-link:hover,
+.page-item.active .page-link,
+.page-item.active .page-link:hover {
+	background-color: #0d6efd !important;
+	border-color: #0d6efd !important;
+}
+
+.form-select,
+.form-control {
+	padding: 0.625rem !important;
+	border-width: 0.125rem !important;
+	transition: 0.5s all ease;
+}
+
+.form-select {
+	padding-right: 2.25rem !important;
+}
+
+.btn,
+.form-select,
+.form-control,
+label,
+footer {
+	font-size: 0.875rem;
+	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
+}
+
+.form-select,
+.form-control,
+option {
+	font-weight: 500;
+}
+
+.form-label {
+	font-size: 0.875rem;
+	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
+	text-transform: uppercase;
+	font-weight: 600;
+}
+
+.form-control:focus,
+.form-control:hover,
+.form-select:focus,
+.form-select:hover {
+	outline: none;
+	box-shadow: none;
+	border-color: #0b5ed7;
+	transition: 0.5s all ease;
+}
+
+.btn {
+	font-weight: 700;
+	padding: 0.5rem 0.875rem;
+	transition: 0.5s all ease !important;
+}
+
+.btn:focus-visible,
+.page-link:focus {
+	box-shadow: unset;
+}
+
+.btn-secondary {
+	padding: 0.5rem 0.875rem !important;
+}
+
+textarea {
+	resize: none;
+	overflow-y: auto;
+	cursor: text;
+}
+
+.req {
+	color: #ff0000;
+	font-size: 0.875rem;
+	font-weight: 800;
+}
+
+.alert {
+	padding: 0.875rem;
+	transition: 0.5s all ease;
+}
+
+.modal-body > .alert {
+	border-width: 2px;
+	font-weight: bold;
+	margin: 0;
+	padding: 0.75rem;
+}
+
+.iti {
+	display: block !important;
+}
+
+.iti__country-list {
+	max-height: 256px !important;
+}
+
+.iti--separate-dial-code .iti__selected-dial-code {
+	margin-left: 0.5rem !important;
+	font-weight: 600 !important;
+	font-size: 0.875rem;
+	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
+}
+
+#phone {
+	padding-left: 5.25rem !important;
+}
+
+#btn-back-to-top {
+	display: none;
+	position: fixed;
+	font-size: 20px;
+	bottom: 48px;
+	right: 16px;
+	border-radius: 0.375rem;
+	padding: 6px 12px 9px !important;
+	z-index: 5;
+	transition: 0.5s all ease;
+}
+
+button#btn-back-to-top:focus {
+	outline: none;
+	box-shadow: none;
+	transition: 0.5s all ease;
+}
+
+footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.75rem 1rem;
+}
+
+footer span,
+footer span a,
+footer span a:hover {
+	color: black;
+}
+
+@media screen and (max-width: 996px) {
+	.nav-link {
+		padding: 0.5rem 0.75rem !important;
+	}
+
+	.navbar-nav li.nav-item:first-of-type > a.nav-link {
+		margin-left: 0 !important;
+		margin-top: 0.5rem !important;
+	}
+
+	.navbar-nav li.nav-item > a.nav-link {
+		margin-left: 0 !important;
+		margin-top: 0.25rem !important;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.modal-dialog {
+		max-width: 90%;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	footer {
+		padding: 0.5rem;
+		flex-direction: column;
+	}
+
+	.footer-copyright {
+		order: 1;
+		margin-top: 0.5rem;
+	}
+
+	.footer-link {
+		order: 0;
+	}
+}

@@ -4,9 +4,14 @@ $dbUser = "";
 $dbPassword = "";
 $db = "";
 
-$serverURL = "https://";
+$subdomain = "";
 
-$appId = 999999;
+$assetsFolder = "$subdomain/assets";
+$cssFolder = "$subdomain/css";
+$jsFolder = "$subdomain/js";
+
+$appId = 123;
+
 $devApiKey = "";
 
 $clientId = "";

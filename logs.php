@@ -1,10 +1,10 @@
-<?php //include("session.php"); ?>
+<?php include("session.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<title> Logs </title>
 	<?php include("head.php"); ?>
+	<title> Logs </title>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.5/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/r-2.2.9/sc-2.0.5/sb-1.3.2/sp-2.0.0/sl-1.3.4/sr-1.1.0/datatables.min.css" />
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.5/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/r-2.2.9/sc-2.0.5/sb-1.3.2/sp-2.0.0/sl-1.3.4/sr-1.1.0/datatables.min.js"></script>
 	<link rel="stylesheet" href="css/datatables.css">
@@ -15,13 +15,14 @@
 	<?php include("header.php"); ?>
 
 	<script src="js/scroll-top.js"></script>
+	<script src="js/ajax.js"></script>
 	<script src="js/logs.js"></script>
 
 	<main>
 		<section id="logs">
 			<div class="container-fluid">
 				<div class="row align-items-center">
-					<div class="col-lg-12 col-md-12 col-sm-12 mb-3 text-center">
+					<div class="col-lg-12 col-md-12 col-sm-12 mb-3">
 						<div class="white-container">
 							<h1 class="fs-1 fw-bold m-0">API Logs</h1>
 						</div>
@@ -38,6 +39,7 @@
 										<th class="curl_url"> Endpoint </th>
 										<th class="curl_method"> Method </th>
 										<th class="curl_payload"> Payload </th>
+										<th class="curl_payload"> Payload JSON </th>
 										<th class="curl_http_code"> HTTP Code </th>
 										<th class="curl_response"> Response </th>
 										<th class="curl_timestamp"> Timestamp </th>
@@ -51,7 +53,7 @@
 		</section>
 	</main>
 
-	<div class="modal fade" id="data-modal" tabindex="-1" aria-hidden="true" aria-labelledby="data-modal-label">
+	<div class="modal fade" id="data-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" aria-labelledby="data-modal-label">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -62,8 +64,6 @@
 			</div>
 		</div>
 	</div>
-
-	<button type="button" class="btn btn-primary" id="btn-back-to-top" title="Back to Top"><i class="fa fa-chevron-up"></i></button>
 
 	<?php include("footer.php"); ?>
 </body>

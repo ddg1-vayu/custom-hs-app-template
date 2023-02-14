@@ -1,5 +1,5 @@
 <?php
-// ini_set("display_errors", 1);
+ini_set("display_errors", 1);
 require("conn.php");
 
 if (isset($_POST['action']) && empty($_POST['action']) == false) {
@@ -19,13 +19,14 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 			}
 			break;
 		case "get_payload":
+			$output = [];
+
 			$getPayload = mysqli_query($conn, "SELECT `curl_payload` FROM `api_logs` WHERE `id` = '$recordId'");
 			$rows = mysqli_fetch_assoc($getPayload);
 			$payload = $rows['curl_payload'];
 
 			if (is_null($payload) == false && empty($payload) == false) {
 				if (strncmp($payload, "grant_type=refresh_token", 24) === 0) {
-					$output = [];
 					$array = explode("&", $payload);
 					for ($i = 0; $i < sizeof($array); $i++) {
 						list($key, $value) = explode("=", $array[$i]);
@@ -34,7 +35,6 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 					$output['client_id'] = mask_string($output['client_id'], 12);
 					$output['client_secret'] = mask_string($output['client_secret'], 12);
 					$output['refresh_token'] = mask_string($output['refresh_token'], 12);
-					print_r($output);
 				} elseif (strncmp($payload, "grant_type=authorization_code", 29) === 0) {
 					$output = [];
 					$array = explode("&", $payload);
@@ -45,17 +45,51 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 					$output['client_id'] = mask_string($output['client_id'], 12);
 					$output['client_secret'] = mask_string($output['client_secret'], 12);
 					$output['code'] = mask_string($output['code'], 12);
-					print_r($output);
 				} else {
 					$sanitize = preg_replace("/[\r\n]+/", " ", $payload);
-					$dec_payload = json_decode(utf8_encode($sanitize), true);
-					print_r($dec_payload);
+					$output = json_decode(mb_convert_encoding($sanitize, "UTF-8", mb_list_encodings()), true);
 				}
+				print_r($output);
 			} else {
 				echo "null";
 			}
 			break;
-		case "get_result":
+		case "get_payload_json":
+			$output = [];
+
+			$getPayload = mysqli_query($conn, "SELECT `curl_payload` FROM `api_logs` WHERE `id` = '$recordId'");
+			$rows = mysqli_fetch_assoc($getPayload);
+			$payload = $rows['curl_payload'];
+
+			if (is_null($payload) == false && empty($payload) == false) {
+				if (strncmp($payload, "grant_type=refresh_token", 24) === 0) {
+					$array = explode("&", $payload);
+					for ($i = 0; $i < sizeof($array); $i++) {
+						list($key, $value) = explode("=", $array[$i]);
+						$output[$key] = $value;
+					}
+					$output['client_id'] = mask_string($output['client_id'], 12);
+					$output['client_secret'] = mask_string($output['client_secret'], 12);
+					$output['refresh_token'] = mask_string($output['refresh_token'], 12);
+				} elseif (strncmp($payload, "grant_type=authorization_code", 29) === 0) {
+					$array = explode("&", $payload);
+					for ($i = 0; $i < sizeof($array); $i++) {
+						list($key, $value) = explode("=", $array[$i]);
+						$output[$key] = $value;
+					}
+					$output['client_id'] = mask_string($output['client_id'], 12);
+					$output['client_secret'] = mask_string($output['client_secret'], 12);
+					$output['code'] = mask_string($output['code'], 12);
+				} else {
+					$sanitize = preg_replace("/[\r\n]+/", " ", $payload);
+					$output = json_decode(mb_convert_encoding($sanitize, "UTF-8", mb_list_encodings()), true);
+				}
+				echo json_encode($output, JSON_PRETTY_PRINT);
+			} else {
+				echo "null";
+			}
+			break;
+		case "get_response":
 			$getResponse = mysqli_query($conn, "SELECT `curl_response` FROM `api_logs` WHERE `id` = '$recordId'");
 			$rows = mysqli_fetch_assoc($getResponse);
 			$response = $rows['curl_response'];
@@ -65,7 +99,7 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 					echo $response;
 				} else {
 					$sanitize = preg_replace("/[\r\n]+/", " ", $response);
-					$dec_response = json_decode(utf8_encode($sanitize), true);
+					$dec_response = json_decode(mb_convert_encoding($sanitize, "UTF-8", mb_list_encodings()), true);
 
 					if (isset($dec_response['token_type']) && isset($dec_response['refresh_token'])) {
 						$token_arr = $dec_response;
@@ -86,7 +120,7 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 				$webhookData = mysqli_fetch_assoc($getWebhook);
 				$response = $webhookData['payload'];
 				$sanitize = preg_replace("/[\r\n]+/", " ", $response);
-				$dec_response = json_decode(utf8_encode($sanitize), true);
+				$dec_response = json_decode(mb_convert_encoding($sanitize, "UTF-8", mb_list_encodings()), true);
 				print_r($dec_response);
 			} else {
 				echo "null";
@@ -98,7 +132,7 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 				$webhookData = mysqli_fetch_assoc($getWebhook);
 				$response = $webhookData['payload'];
 				$sanitize = preg_replace("/[\r\n]+/", " ", $response);
-				$dec_response = json_decode(utf8_encode($sanitize), true);
+				$dec_response = json_decode(mb_convert_encoding($sanitize, "UTF-8", mb_list_encodings()), true);
 				echo json_encode($dec_response, JSON_PRETTY_PRINT);
 			} else {
 				echo "null";
@@ -120,7 +154,7 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
  * @return string $masked_string
  */
 function mask_string($string, $length) {
-	$maskCharacter = "*";
+	$maskCharacter = "x";
 	$mask_from_end = true;
 	$maskLength = strlen($string) - $length;
 	$maskedString = substr_replace($string, str_repeat($maskCharacter, $maskLength), $mask_from_end ? -$maskLength : 0, $maskLength);

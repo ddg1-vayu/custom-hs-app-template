@@ -17,7 +17,7 @@ if (empty($dbServer) == false || empty($dbUser) == false || empty($dbPassword) =
 		["db" => "hub_portal_id", "dt" => "portal"],
 		["db" => "source", "dt" => "source"],
 		["db" => "type", "dt" => "type"],
-		["db" => "file", "dt" => "file"],
+		["db" => "file_name", "dt" => "file_name"],
 		["db" => "status", "dt" => "status"],
 		["db" => "timestamp", "dt" => "timestamp", "formatter" => function ($d, $row) {
 			return date("d-M-Y h:i:s A", strtotime($d));

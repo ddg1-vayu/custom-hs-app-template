@@ -1,0 +1,72 @@
+.curl_type {
+	width: 12rem !important;
+}
+
+.curl_timestamp {
+	width: 12.5rem !important;
+}
+
+.curl_file {
+	width: 5rem !important;
+}
+
+.curl_app,
+.curl_portal,
+.curl_origin,
+.curl_method,
+.curl_payload,
+.curl_response {
+	width: 4rem !important;
+}
+
+.curl_url {
+	width: 48rem !important;
+}
+
+.curl_http_code {
+	width: 3rem !important;
+}
+
+td.curl_url,
+td.curl_payload,
+td.curl_response {
+	word-break: break-all;
+}
+
+td.curl_app,
+td.curl_file,
+td.curl_portal,
+td.curl_origin,
+td.curl_method,
+td.curl_payload,
+td.curl_http_code,
+td.curl_response,
+td.curl_timestamp {
+	text-align: center;
+}
+
+@media screen and (max-width: 953px) {
+	.curl_app,
+	.curl_payload,
+	.curl_response,
+	.curl_http_code,
+	.curl_timestamp,
+	.curl_method,
+	.curl_type,
+	.curl_portal,
+	.curl_origin {
+		width: auto !important;
+	}
+}
+
+@media screen and (max-width: 576px) {
+	.curl_url {
+		width: auto !important;
+	}
+}
+
+@media screen and (max-width: 455px) {
+	td.curl_file {
+		word-break: break-all;
+	}
+}
