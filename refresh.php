@@ -65,7 +65,7 @@ function token_refresh($portalId, $refreshToken, $fileName) {
 	curl_close($curlQuery);
 
 	global $conn;
-	mysqli_query($conn, "INSERT INTO `api_logs` (`app_name`, `hub_portal_id`, `api_origin`, `curl_url`, `curl_payload`, `curl_method`, `curl_response`, `curl_http_code`, `curl_type`, `file_name`) VALUES ('Combined', '$portalId', '$origin', '$endpoint', '" . addslashes($data) . "', '$method', '" . addslashes($response) . "', '$httpCode', '$type', '" . addslashes($fileName) . "')");
+	mysqli_query($conn, "INSERT INTO `api_logs` (`hub_portal_id`, `api_origin`, `curl_url`, `curl_payload`, `curl_method`, `curl_response`, `curl_http_code`, `curl_type`, `file_name`) VALUES ('$portalId', '$origin', '$endpoint', '" . addslashes($data) . "', '$method', '" . addslashes($response) . "', '$httpCode', '$type', '" . addslashes($fileName) . "')");
 
 	$responseArr = json_decode($response, true);
 	$newAccessToken = $responseArr['access_token'];
