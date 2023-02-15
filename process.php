@@ -25,13 +25,13 @@ if (isset($_REQUEST['code']) && empty($_REQUEST['code']) == false) {
 	$responseArr = json_decode($response, true);
 
 	if (isset($responseArr['status']) && $responseArr['status'] == "error") {
-		log_request($twAppName, $portalId, $origin, $endpoint, $payload, $method, $response, $httpCode, $type, $fileName);
+		log_request($portalId, $origin, $endpoint, $payload, $method, $response, $httpCode, $type, $fileName);
 		req_response("<h3 class='fw-bold text-danger'>" . strtoupper($responseArr['status']) . ": " . $responseArr['message'] . "</h3>");
 	} else {
 		$refreshToken = $responseArr['refresh_token'];
 		$accessToken = $responseArr['access_token'];
 
-		$portalInfo = hsAccountInfo($twAppName, $accessToken, $fileName);
+		$portalInfo = hsAccountInfo($accessToken, $fileName);
 		$portalId = $portalInfo['portalId'];
 		$timeZone = $portalInfo['timeZone'];
 
@@ -43,7 +43,7 @@ if (isset($_REQUEST['code']) && empty($_REQUEST['code']) == false) {
 		}
 		$execQuery = mysqli_query($conn, $sql);
 		if ($execQuery) {
-			log_request($twAppName, $portalId, $origin, $endpoint, $payload, $method, $response, $httpCode, $type, $fileName);
+			log_request($portalId, $origin, $endpoint, $payload, $method, $response, $httpCode, $type, $fileName);
 	
 			req_response("<div class='col-lg-12 col-md-12 col-sm-12 text-center'> <div class='alert alert-success text-center p-2'> Application Installed! </div> <a href='https://app-eu1.hubspot.com/home?portalId=$portalId' title='Return to HubSpot' class='fluid-font btn btn-primary'> Return to HubSpot </a> </div>");
 		}
