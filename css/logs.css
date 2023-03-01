@@ -1,42 +1,57 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700;800&display=swap");
-
 td {
 	text-align: center;
 }
 
-.webhook_type,
-.webhook_timestamp,
-.webhook_modified {
-	width: 6rem !important;
+.curl_type,
+.curl_timestamp {
+	width: 12rem !important;
 }
 
-.webhook_app,
-.webhook_portal,
-.webhook_source,
-.webhook_file,
-.webhook_payload,
-.webhook_status {
-	width: 3.5rem !important;
+.curl_file {
+	width: 5rem !important;
 }
 
-.status-span {
-	padding: 0.25rem 0.75rem;
-	text-transform: uppercase;
-	border-radius: 2rem;
-	color: white;
-	font-weight: bold;
+.curl_app,
+.curl_portal,
+.curl_origin,
+.curl_method {
+	width: 4rem !important;
+}
+
+.curl_url,
+.curl_payload,
+.curl_response {
+	width: 5rem !important;
+}
+
+.curl_http_code {
+	width: 3rem !important;
+}
+
+td.curl_url,
+td.curl_payload,
+td.curl_response {
+	word-break: break-all;
 }
 
 @media screen and (max-width: 953px) {
-	.webhook_app,
-	.webhook_type,
-	.webhook_portal,
-	.webhook_source,
-	.webhook_file,
-	.webhook_payload,
-	.webhook_status,
-	.webhook_timestamp,
-	.webhook_modified {
+	.curl_app,
+	.curl_file,
+	.curl_http_code,
+	.curl_method,
+	.curl_origin,
+	.curl_payload,
+	.curl_portal,
+	.curl_response,
+	.curl_timestamp,
+	.curl_url,
+	.curl_type {
 		width: auto !important;
+	}
+}
+
+@media screen and (max-width: 455px) {
+	td.curl_file {
+		word-break: break-all;
 	}
 }
