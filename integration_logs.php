@@ -1,5 +1,5 @@
 <?php
-include("session.php");
+// include("session.php");
 date_default_timezone_set("Asia/Kolkata");
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 $fileExtension = pathinfo(__FILE__, PATHINFO_EXTENSION);
@@ -28,12 +28,16 @@ function startsWith($haystack, $needle) {
 
 	<main>
 		<div class="container-fluid">
+
 			<div class="white-container mb-3">
 				<div class="d-flex align-items-center justify-content-between">
 					<h4 class="fs-1 fw-bold m-0"> API Logs </h4>
-					<button class="btn btn-primary" title="Show Filters" onclick="showFilters()"> <i class="fa fa-filter" aria-hidden="true"></i> </button>
+					<button type="button" class="btn btn-primary filter-btn" title="Show Filters" onclick="showFilters()">
+						<i class="fa-solid fa-filter" aria-hidden="true"></i>
+					</button>
 				</div>
 			</div>
+
 			<div class="white-container mb-3" id="filter-form" style="<?php echo isset($_GET['search']) ? 'display:block;' : 'display:none;'; ?>">
 				<form method="GET" id="search-form">
 					<div class="row align-items-center">
@@ -203,39 +207,23 @@ function startsWith($haystack, $needle) {
 			<?php
 			$whereConditions = "";
 
-			if (isset($_REQUEST['start_date']) && empty($_REQUEST['start_date']) == false) {
-				$whereConditions .= " AND date(al.`timestamp`) >= '" . date('Y-m-d', strtotime(trim($_REQUEST['start_date']))) . "'";
-			}
+			$whereConditions .= (isset($_REQUEST['start_date']) && empty($_REQUEST['start_date']) == false) ? " AND date(al.`timestamp`) >= '" . date('Y-m-d', strtotime(trim($_REQUEST['start_date']))) . "'" : "";
 
-			if (isset($_REQUEST['end_date']) && empty($_REQUEST['end_date']) == false) {
-				$whereConditions .= " AND date(al.`timestamp`) <= '" . date('Y-m-d', strtotime(trim($_REQUEST['end_date']))) . "'";
-			}
+			$whereConditions .= (isset($_REQUEST['end_date']) && empty($_REQUEST['end_date']) == false) ? " AND date(al.`timestamp`) <= '" . date('Y-m-d', strtotime(trim($_REQUEST['end_date']))) . "'" : "";
 
-			if (isset($_REQUEST['hub_portal_id']) && $_REQUEST['hub_portal_id'] != "") {
-				$whereConditions .= " AND al.hub_portal_id = '" . trim($_REQUEST['hub_portal_id']) . "'";
-			}
+			$whereConditions .= (isset($_REQUEST['hub_portal_id']) && $_REQUEST['hub_portal_id'] != "") ? " AND al.hub_portal_id = '" . trim($_REQUEST['hub_portal_id']) . "'" : "";
 
-			if (isset($_REQUEST['api_origin']) && empty($_REQUEST['api_origin']) == false) {
-				$whereConditions .= " AND al.api_origin = '" . trim($_REQUEST['api_origin']) . "'";
-			}
+			$whereConditions .= (isset($_REQUEST['api_origin']) && empty($_REQUEST['api_origin']) == false) ? " AND al.api_origin = '" . trim($_REQUEST['api_origin']) . "'" : "";
 
-			if (isset($_REQUEST['curl_method']) && empty($_REQUEST['curl_method']) == false) {
-				$whereConditions .= " AND al.curl_method = '" . trim($_REQUEST['curl_method']) . "'";
-			}
+			$whereConditions .= (isset($_REQUEST['curl_method']) && empty($_REQUEST['curl_method']) == false) ? " AND al.curl_method = '" . trim($_REQUEST['curl_method']) . "'" : "";
 
-			if (isset($_REQUEST['curl_http_code']) && empty($_REQUEST['curl_http_code']) == false) {
-				$whereConditions .= " AND al.curl_http_code = '" . trim($_REQUEST['curl_http_code']) . "'";
-			}
+			$whereConditions .= (isset($_REQUEST['curl_http_code']) && $_REQUEST['curl_http_code'] != "") ? " AND al.curl_http_code = '" . trim($_REQUEST['curl_http_code']) . "'" : "";
 
-			if (isset($_REQUEST['curl_type']) && empty($_REQUEST['curl_type']) == false) {
-				$whereConditions .= " AND al.curl_type = '" . trim($_REQUEST['curl_type']) . "'";
-			}
+			$whereConditions .= (isset($_REQUEST['curl_type']) && empty($_REQUEST['curl_type']) == false) ? " AND al.curl_type LIKE '%" . trim($_REQUEST['curl_type']) . "%'" : "";
 
-			if (isset($_REQUEST['file_name']) && empty($_REQUEST['file_name']) == false) {
-				$whereConditions .= " AND al.file_name = '" . trim($_REQUEST['file_name']) . "'";
-			}
+			$whereConditions .= (isset($_REQUEST['file_name']) && empty($_REQUEST['file_name']) == false) ? " AND al.file_name = '" . trim($_REQUEST['file_name']) . "'" : "";
 
-			$limit = 25;
+			$limit = 15;
 			if (isset($_REQUEST['page'])) {
 				$offset = ($_REQUEST['page'] * $limit) - $limit;
 				$x = ($_REQUEST['page'] * $limit) - $limit + 1;
@@ -258,15 +246,17 @@ function startsWith($haystack, $needle) {
 						<table class="table table-hover table-responsive table-bordered text-center">
 							<thead>
 								<tr>
-									<th> Type </th>
+									<th> Action </th>
+									<th> Origin </th>
 									<th> Portal </th>
-									<th> API Origin </th>
 									<th> File </th>
 									<th> Endpoint </th>
-									<th> Payload </th>
 									<th> Method </th>
+									<th> Payload </th>
+									<th> Payload JSON </th>
 									<th> HTTP Code </th>
 									<th> Response </th>
+									<th> Response JSON </th>
 									<th> Timestamp </th>
 								</tr>
 							</thead>
@@ -276,14 +266,28 @@ function startsWith($haystack, $needle) {
 								?>
 									<tr>
 										<td> <?= $rows['curl_type'] ?> </td>
-										<td> <?= $rows['hub_portal_id'] ?> </td>
 										<td> <?= $rows['api_origin'] ?> </td>
+										<td> <?= $rows['hub_portal_id'] ?> </td>
 										<td> <?= $rows['file_name'] ?> </td>
-										<td> <button class="btn btn-outline-primary" title="View Endpoint" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showEndpoint('<?= $rows['id'] ?>')"> View </button> </td>
-										<td> <button class="btn btn-outline-primary" title="View Payload" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showPayload('<?= $rows['id'] ?>')"> View </button> </td>
+										<td>
+											<button type="button" class="btn btn-primary" title="View Endpoint" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showEndpoint('<?= $rows['id'] ?>')"> View </button>
+										</td>
 										<td> <?= $rows['curl_method'] ?> </td>
-										<td> <?= ($rows['curl_http_code'] >= 200 && $rows['curl_http_code'] < 400) ? "<span style='font-size:1rem; font-weight:500; color:#07c007'>" . $rows['curl_http_code'] . "</span>" : "<span style='font-size:1rem; font-weight:500; color:#FF0000'>" . $rows['curl_http_code'] . "</span>"; ?> </td>
-										<td> <button class="btn btn-outline-primary" title="View Response" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showResult('<?= $rows['id'] ?>')"> View </button> </td>
+										<td>
+											<button type="button" class="btn btn-primary" title="View Payload" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showPayload('<?= $rows['id'] ?>')"> View </button>
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary" title="View Payload JSON" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showPayload('<?= $rows['id'] ?>', 'json')"> View </button>
+										</td>
+										<td class="<?= ($rows['curl_http_code'] >= 200 && $rows['curl_http_code'] < 400) ? "success-code" : "error-code" ?>">
+											<?= $rows['curl_http_code']; ?>
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary" title="View Response" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showResponse('<?= $rows['id'] ?>')"> View </button>
+										</td>
+										<td>
+											<button type="button" class="btn btn-primary" title="View Response" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showResponse('<?= $rows['id'] ?>', 'json')"> View </button>
+										</td>
 										<td> <?= date("d-M-Y h:i:s A T", strtotime($rows['timestamp'])) ?> </td>
 									</tr>
 								<?php
@@ -296,7 +300,7 @@ function startsWith($haystack, $needle) {
 					<div class="row align-items-center">
 						<div id="record-count" class="col-lg-4 col-md-4 col-sm-12">
 							<div class="total-records">
-								<?= isset($_GET['search']) ? "Filtered Records" : "Total Records" ?> &xrarr; <?= $totalRecords ?>
+								<?= (isset($_GET['search']) && $_GET['search'] == "search") ? "Filtered Records" : "Total Records" ?> &xrarr; <?= $totalRecords ?>
 							</div>
 						</div>
 						<div id="record-pagination" class="col-lg-8 col-md-8 col-sm-12">
@@ -352,7 +356,7 @@ function startsWith($haystack, $needle) {
 				</div>
 			<?php
 			}
-			// echo "<div class='white-container mt-3' id='query-div'> $recordsSql </div>";
+			echo "<div class='white-container mt-3' id='query-div'> $recordsSql </div>";
 			?>
 		</div>
 	</main>
@@ -362,7 +366,7 @@ function startsWith($haystack, $needle) {
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title fw-bold text-uppercase" id="data-modal-label"></h4>
-					<button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close" title="Close">&#x2718;</button>
+					<i type="button" title="Close" class="fa-regular fa-circle-xmark text-danger fs-3" data-bs-dismiss="modal" aria-label="Close"></i>
 				</div>
 				<div class="modal-body text-start" id="data-modal-content"></div>
 			</div>
