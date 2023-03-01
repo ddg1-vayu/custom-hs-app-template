@@ -33,7 +33,7 @@ $currentPage = $pageArr[count($pageArr) - 1];
 							<a class="nav-link fw-bold text-uppercase<?= ($currentPage == "webhooks.php") ? " active" : "" ?>" href="webhooks.php" title="Webhooks"> Webhooks DT </a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link fw-bold text-uppercase" href="logout.php" onclick="return confirm('Logout')" title="Logout"> <i class="fa fa-sign-out fs-6"></i> </a>
+							<a class="nav-link fw-bold text-uppercase" href="logout.php" onclick="return confirm('Logout')" title="Logout"> <i class="fa-solid fa-right-from-bracket fs-6"></i> </a>
 						</li>
 					</ul>
 				</div>
