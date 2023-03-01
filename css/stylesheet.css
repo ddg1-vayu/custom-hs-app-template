@@ -117,7 +117,7 @@ main {
 	box-shadow: 0 0 0 0.125rem !important;
 }
 
-.nav-link {
+.navbar-nav .nav-link {
 	padding: 0.5rem 0.75rem !important;
 }
 
@@ -357,8 +357,32 @@ option {
 	box-shadow: unset;
 }
 
-.btn-secondary {
-	padding: 0.5rem 0.875rem !important;
+.filter-btn {
+	padding: 0.5rem 0.75rem;
+}
+
+.success-code,
+.error-code {
+	font-weight: 500;
+	font-size: 1rem;
+}
+
+i.success-code,
+i.error-code {
+	font-size: 1.5rem;
+}
+
+td.success-code,
+td.error-code {
+	font-size: 1rem;
+}
+
+.success-code {
+	color: #07c007 !important;
+}
+
+.error-code {
+	color: #ff0000 !important;
 }
 
 textarea {
@@ -376,6 +400,11 @@ textarea {
 .alert {
 	padding: 0.875rem;
 	transition: 0.5s all ease;
+	border-width: 0.125rem !important;
+}
+
+.alert-danger {
+	color: #8b0000 !important;
 }
 
 .modal-body > .alert {
@@ -405,15 +434,16 @@ textarea {
 }
 
 #btn-back-to-top {
+	bottom: 96px;
 	display: none;
-	position: fixed;
 	font-size: 20px;
-	bottom: 48px;
+	padding: 5px 10px !important;
+	position: fixed;
 	right: 16px;
-	border-radius: 0.375rem;
-	padding: 6px 12px 9px !important;
 	z-index: 5;
-	transition: 0.5s all ease;
+	box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
+		rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+		rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
 button#btn-back-to-top:focus {
@@ -436,7 +466,7 @@ footer span a:hover {
 }
 
 @media screen and (max-width: 996px) {
-	.nav-link {
+	.navbar-nav .nav-link {
 		padding: 0.5rem 0.75rem !important;
 	}
 
