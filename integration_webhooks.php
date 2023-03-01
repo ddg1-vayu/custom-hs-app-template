@@ -1,14 +1,10 @@
 <?php
-include("session.php");
+// include("session.php");
 date_default_timezone_set("Asia/Kolkata");
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 $fileExtension = pathinfo(__FILE__, PATHINFO_EXTENSION);
 $file = $fileName . "." . $fileExtension;
 include("conn.php");
-
-function startsWith($haystack, $needle) {
-	return !strncmp($haystack, $needle, strlen($needle));
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +13,11 @@ function startsWith($haystack, $needle) {
 	<?php include("head.php"); ?>
 	<title> Integration Webhooks </title>
 	<link rel="stylesheet" href="css/integration.css">
-	<style> .modal-dialog { max-width: 50%; } </style>
+	<style>
+		.modal-dialog {
+			max-width: 66.67%;
+		}
+	</style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -32,24 +32,24 @@ function startsWith($haystack, $needle) {
 			<div class="white-container mb-3">
 				<div class="d-flex align-items-center justify-content-between">
 					<h4 class="fs-1 fw-bold m-0"> Webhooks </h4>
-					<button type="button" class="btn btn-primary" title="Show Filters" onclick="showFilters()">
-						<i class="fa fa-filter" aria-hidden="true"></i>
+					<button type="button" class="btn btn-primary filter-btn" title="Show Filters" onclick="showFilters()">
+						<i class="fa-solid fa-filter" aria-hidden="true"></i>
 					</button>
 				</div>
 			</div>
 
-			<div class="white-container mb-3" id="filter-form" style="<?php echo isset($_GET['search']) ? 'display:block;' : 'display:none;'; ?>">
+			<div class="white-container mb-3" id="filter-form" style="<?= isset($_GET['search']) ? 'display:block;' : 'display:none;'; ?>">
 				<form method="GET" id="search-form">
 					<div class="row align-items-center">
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12 mb-3">
 							<label for="start_date" class="form-label"> Start Date </label>
 							<input type="date" class="form-control" name="start_date" id='start_date' placeholder="From Date" title="From Date" value="<?= (isset($_REQUEST['start_date']) && $_REQUEST['start_date'] != '') ? $_REQUEST['start_date'] : "" ?>">
 						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12 mb-3">
 							<label for="end_date" class="form-label"> End Date </label>
 							<input type="date" class="form-control" name="end_date" id='end_date' placeholder="To Date" title="To Date" value="<?= (isset($_REQUEST['end_date']) && $_REQUEST['end_date'] != '') ? $_REQUEST['end_date'] : "" ?>">
 						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12 mb-3">
 							<label for="hub_portal_id" class="form-label"> Portal </label>
 							<select title="Portal" name="hub_portal_id" id="hub_portal_id" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -64,7 +64,7 @@ function startsWith($haystack, $needle) {
 								} ?>
 							</select>
 						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12 mb-3">
 							<label for="type" class="form-label"> Type </label>
 							<select title="Type" name="type" id="type" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -81,7 +81,7 @@ function startsWith($haystack, $needle) {
 								?>
 							</select>
 						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12 mb-3">
 							<label for="file_name" class="form-label"> File </label>
 							<select title="File" name="file_name" id="file_name" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -96,7 +96,7 @@ function startsWith($haystack, $needle) {
 								} ?>
 							</select>
 						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12 mb-3">
 							<label for="status" class="form-label"> Status </label>
 							<select title="Status" name="status" id="status" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -137,7 +137,7 @@ function startsWith($haystack, $needle) {
 
 			$whereConditions .= (isset($_REQUEST['status']) && $_REQUEST['status'] != "") ? " AND w.status = '" . trim($_REQUEST['status']) . "'" : "";
 
-			$limit = 25;
+			$limit = 15;
 			if (isset($_REQUEST['page'])) {
 				$offset = ($_REQUEST['page'] * $limit) - $limit;
 				$x = ($_REQUEST['page'] * $limit) - $limit + 1;
@@ -160,6 +160,7 @@ function startsWith($haystack, $needle) {
 						<table class="table table-hover table-responsive table-bordered text-center">
 							<thead>
 								<tr>
+									<th> Portal </th>
 									<th> Type </th>
 									<th> Source </th>
 									<th> File </th>
@@ -175,19 +176,22 @@ function startsWith($haystack, $needle) {
 								while ($rows = mysqli_fetch_assoc($getRecords)) {
 								?>
 									<tr>
+										<td> <?= empty($rows['hub_portal_id'] == false) ? $rows['hub_portal_id'] : "&mdash;" ?> </td>
 										<td> <?= empty($rows['type'] == false) ? $rows['type'] : "&mdash;" ?> </td>
 										<td> <?= empty($rows['source'] == false) ? $rows['source'] : "&mdash;" ?> </td>
 										<td> <?= empty($rows['file_name'] == false) ? $rows['file_name'] : "&mdash;" ?> </td>
 										<td>
-											<button type="button" class="btn btn-outline-primary" title="Payload" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showWebhook('<?= $rows['id'] ?>')"> View </button>
+											<button type="button" class="btn btn-primary" title="Payload" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showWebhook('<?= $rows['id'] ?>')"> View </button>
 										</td>
 										<td>
-											<button type="button" class="btn btn-outline-primary" title="Payload" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showWebhookJSON('<?= $rows['id'] ?>')"> View </button>
+											<button type="button" class="btn btn-primary" title="Payload" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showWebhook('<?= $rows['id'] ?>', 'json')"> View </button>
 										</td>
-										<td>
-											<span class="<?= ($rows['status'] == "processed" || $rows['status'] == 1) ? "success" : "error" ?>">
-												<?= ($rows['status'] == "processed" || $rows['status'] == 1) ? "&#10004;" : "&#10006;" ?>
-											</span>
+										<td class="lh-1">
+											<?php if ($rows['status'] == "processed" || $rows['status'] == 1) { ?>
+												<i class="fa-regular fa-circle-check fa-fw success-code" aria-hidden="true" title="Processed"></i>
+											<?php } else { ?>
+												<i class="fa-regular fa-circle-xmark fa-fw error-code" aria-hidden="true" title="Not Processed"></i>
+											<?php } ?>
 										</td>
 										<td> <?= date("d-M-Y h:i:s A T", strtotime($rows['timestamp'])) ?> </td>
 										<td> <?= date("d-M-Y h:i:s A T", strtotime($rows['last_modified'])) ?> </td>
@@ -257,7 +261,7 @@ function startsWith($haystack, $needle) {
 				</div>
 			<?php
 			}
-			// echo "<div class='white-container mt-3' id='query-div'> $recordsSql </div>";
+			echo "<div class='white-container mt-3' id='query-div'> $recordsSql </div>";
 			?>
 		</div>
 	</main>
@@ -267,7 +271,7 @@ function startsWith($haystack, $needle) {
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title fw-bold text-uppercase" id="data-modal-label"></h4>
-					<button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close" title="Close">&#x2718;</button>
+					<i type="button" title="Close" class="fa-regular fa-circle-xmark text-danger fs-3" data-bs-dismiss="modal" aria-label="Close"></i>
 				</div>
 				<div class="modal-body text-start" id="data-modal-content"></div>
 			</div>
