@@ -1,13 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700;800&display=swap");
 
-.webhook_app,
-.webhook_source,
-.webhook_portal,
-.webhook_file,
-.webhook_payload,
-.webhook_status,
-.webhook_timestamp,
-.webhook_modified {
+td {
 	text-align: center;
 }
 
