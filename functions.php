@@ -446,11 +446,11 @@ $successCodes = [200, 201, 202, 203, 204, 205];
 		echo '<!DOCTYPE html>
 		<html lang="en">
 			<head>
-				<title> Divine Connection </title>
+				<title> Custom App </title>
 				<meta charset="UTF-8">
 				<meta http-equiv="X-UA-Compatible" content="IE=edge">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<link rel="shortcut icon" href="assets/hs-logo.png" type="image/x-icon">
+				<link rel="shortcut icon" href="assets/logo.png" type="image/x-icon">
 				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 				<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 				<style>
