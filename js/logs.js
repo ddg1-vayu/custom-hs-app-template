@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	$("#api_logs").DataTable({
+	var logsTable = $("#api_logs").DataTable({
 		ajax: "get_logs.php",
 		buttons: [
 			{
@@ -8,7 +8,7 @@ $(document).ready(function () {
 				titleAttr: "Toggle Columns",
 			},
 			{
-				text: '<i class = "fa fa-refresh fs-6">',
+				text: '<i class="fa-solid fa-arrows-rotate fs-6"></i>',
 				action: function (e, dt, node, config) {
 					dt.ajax.reload();
 				},
@@ -23,9 +23,9 @@ $(document).ready(function () {
 				className: "curl_type",
 			},
 			{
-				name: "file_name",
-				data: "file_name",
-				className: "curl_file",
+				name: "api_origin",
+				data: "api_origin",
+				className: "curl_origin",
 			},
 			{
 				name: "hub_portal_id",
@@ -33,14 +33,21 @@ $(document).ready(function () {
 				className: "curl_portal",
 			},
 			{
-				name: "api_origin",
-				data: "api_origin",
-				className: "curl_origin",
+				name: "file_name",
+				data: "file_name",
+				className: "curl_file",
 			},
 			{
 				name: "curl_url",
-				data: "curl_url",
+				data: "id",
 				className: "curl_url",
+				searchable: false,
+				orderable: false,
+				targets: 1,
+				render: function (data, row, type) {
+					var rowId = type.id;
+					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showEndpoint(${rowId})"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
+				},
 			},
 			{
 				name: "curl_method",
@@ -56,11 +63,7 @@ $(document).ready(function () {
 				targets: 1,
 				render: function (data, row, type) {
 					var rowId = type.id;
-					return (
-						'<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showPayload(' +
-						rowId +
-						')"><i class="fa fa-eye" aria-hidden="true"></i></button>'
-					);
+					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showPayload(${rowId})"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
 				},
 			},
 			{
@@ -72,11 +75,7 @@ $(document).ready(function () {
 				targets: 1,
 				render: function (data, row, type) {
 					var rowId = type.id;
-					return (
-						'<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showPayloadJSON(' +
-						rowId +
-						')"><i class="fa fa-eye" aria-hidden="true"></i></button>'
-					);
+					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showPayload(${rowId}, 'json')"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
 				},
 			},
 			{
@@ -93,11 +92,19 @@ $(document).ready(function () {
 				targets: 1,
 				render: function (data, row, type) {
 					var rowId = type.id;
-					return (
-						'<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showResult(' +
-						rowId +
-						')"><i class="fa fa-eye" aria-hidden="true"></i></button>'
-					);
+					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showResponse(${rowId})"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
+				},
+			},
+			{
+				name: "curl_response",
+				data: "id",
+				className: "curl_response",
+				searchable: false,
+				orderable: false,
+				targets: 1,
+				render: function (data, row, type) {
+					var rowId = type.id;
+					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showResponse(${rowId}, 'json')"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
 				},
 			},
 			{
@@ -108,6 +115,25 @@ $(document).ready(function () {
 		],
 		deferRender: true,
 		dom: '<"#data-table.row"<"#buttons.col-lg-3 col-md-6 col-sm-4 order-lg-0"B><"#length.col-lg-2 col-md-6 col-sm-6 order-lg-1"l><"#filter.col-lg-3 col-md-12 col-sm-12 order-lg-2 order-sm-0"f><"#table.col-lg-12 col-md-12 col-sm-12 order-lg-3"t><"#count.col-lg-4 col-md-12 col-sm-12 order-lg-4"i><"#pages.col-lg-8 col-md-12 col-sm-12 order-lg-5"p>>r',
+		initComplete: function () {
+			var dataInfo = logsTable.page.info();
+			var totalRecords = dataInfo.recordsTotal;
+			var pageLength = dataInfo.length;
+
+			if (totalRecords > 0) {
+				if (totalRecords < pageLength) {
+					$("#length, #pages").hide();
+					$("#count").addClass("pb-1");
+				} else if (totalRecords == pageLength) {
+					$("#pages").hide();
+					$("#count").addClass("pb-1");
+				}
+			} else {
+				$("#api_logs_wrapper").html(
+					'<div class="alert alert-warning fw-bold text-center m-0" role="alert"> No Records Found! </div>'
+				);
+			}
+		},
 		language: {
 			lengthMenu: "Viewing _MENU_ logs",
 			info: "Showing _START_ to _END_ of _TOTAL_ logs",
@@ -118,8 +144,6 @@ $(document).ready(function () {
 			searchPlaceholder: "Search logs...",
 			zeroRecords: "No records available!",
 			paginate: {
-				first: "First",
-				last: "Last",
 				next: "Next",
 				previous: "Prev",
 			},
@@ -128,9 +152,9 @@ $(document).ready(function () {
 			[15, 30, 60, 120, 240, 480],
 			[15, 30, 60, 120, 240, 480],
 		],
-		order: [[10, "desc"]],
+		order: [[11, "desc"]],
 		pageLength: 15,
-		pagingType: "full_numbers",
+		pagingType: "simple_numbers",
 		processing: true,
 		responsive: true,
 		searchDelay: 500,
@@ -145,10 +169,9 @@ $(document).ready(function () {
 					} else if (data >= 200 && data < 300) {
 						color = "#07C007";
 					} else if (data >= 300 && data < 400) {
-						color = "#10107a";
+						color = "#10107A";
 					} else if (data >= 400) {
 						color = "#FF0000";
-					} else {
 					}
 					return (
 						'<span style="font-size:1rem; color:' +
@@ -162,6 +185,15 @@ $(document).ready(function () {
 		],
 	});
 
+	$.fn.DataTable.ext.pager.numbers_length = 7;
+
 	$("#api_logs_length").find("select").removeClass("form-select-sm");
 	$("#api_logs_filter").find("input").removeClass("form-control-sm");
+
+	window.setTimeout(function () {
+		if ($("#api_logs > tbody > tr > td").hasClass("dataTables_empty")) {
+			$("#length, #filter, #count, #pages").hide();
+			$("#table").css("margin-bottom", "0");
+		}
+	}, 100);
 });
