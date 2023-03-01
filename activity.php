@@ -13,7 +13,11 @@ include("conn.php");
 	<?php include("head.php"); ?>
 	<title> Activity Logs </title>
 	<link rel="stylesheet" href="css/integration.css">
-	<style> .comment {line-height: normal;} </style>
+	<style>
+		.comment {
+			line-height: normal;
+		}
+	</style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -24,12 +28,16 @@ include("conn.php");
 
 	<main>
 		<div class="container-fluid">
+
 			<div class="white-container mb-3">
 				<div class="d-flex align-items-center justify-content-between">
 					<h4 class="fs-1 fw-bold m-0"> Activity Logs </h4>
-					<button class="btn btn-primary" title="Show Filters" onclick="showFilters()"> <i class="fa fa-filter" aria-hidden="true"></i> </button>
+					<button type="button" class="btn btn-primary filter-btn" title="Show Filters" onclick="showFilters()">
+						<i class="fa-solid fa-filter" aria-hidden="true"></i>
+					</button>
 				</div>
 			</div>
+
 			<div class="white-container mb-3" id="filter-form" style="<?php echo isset($_GET['search']) ? 'display:block;' : 'display:none;'; ?>">
 				<form method="GET" id="search-form">
 					<div class="row align-items-center">
@@ -167,7 +175,7 @@ include("conn.php");
 
 					<div class="row align-items-center">
 						<div id="record-count" class="col-lg-4 col-md-4 col-sm-12">
-							<div class="total-records bg-secondary text-white">
+							<div class="total-records">
 								<?= isset($_GET['search']) ? "Filtered Logs" : "Total Logs" ?> &xrarr; <?= $totalRecords ?>
 							</div>
 						</div>
@@ -218,8 +226,7 @@ include("conn.php");
 				</div>
 			<?php
 			}
-			?>
-			<?php //echo "<div class='white-container mt-3' id='query-div'> $recordsSql </div>" 
+			echo "<div class='white-container mt-3' id='query-div'> $recordsSql </div>";
 			?>
 		</div>
 	</main>
