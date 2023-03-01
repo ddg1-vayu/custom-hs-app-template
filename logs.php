@@ -30,18 +30,19 @@
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<div class="white-container">
 							<table class="table table-responsive table-bordered align-middle" id="api_logs">
-								<thead class="text-center">
+								<thead class="text-center text-uppercase">
 									<tr>
 										<th class="curl_type"> Action </th>
-										<th class="curl_file"> File </th>
-										<th class="curl_portal"> Portal </th>
 										<th class="curl_origin"> Origin </th>
+										<th class="curl_portal"> Portal </th>
+										<th class="curl_file"> File </th>
 										<th class="curl_url"> Endpoint </th>
 										<th class="curl_method"> Method </th>
 										<th class="curl_payload"> Payload </th>
 										<th class="curl_payload"> Payload JSON </th>
 										<th class="curl_http_code"> HTTP Code </th>
 										<th class="curl_response"> Response </th>
+										<th class="curl_response"> Response JSON </th>
 										<th class="curl_timestamp"> Timestamp </th>
 									</tr>
 								</thead>
