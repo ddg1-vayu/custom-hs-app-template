@@ -27,7 +27,7 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 			$payload = $rows['curl_payload'];
 
 			if (is_null($payload) == false && empty($payload) == false) {
-				if (strncmp($response, "{", 1) === 0 || strncmp($response, "[", 1) === 0) {
+				if (strncmp($payload, "{", 1) === 0 || strncmp($payload, "[", 1) === 0) {
 					if (strncmp($payload, "grant_type=refresh_token", 24) === 0) {
 						$array = explode("&", $payload);
 						for ($i = 0; $i < sizeof($array); $i++) {
@@ -72,7 +72,7 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 
 			$output = [];
 
-			if (empty($response) == false && $response != "null" && $response != NULL) {
+			if (is_null($response) == false && empty($response) == false) {
 				if (strncmp($response, "{", 1) === 0 || strncmp($response, "[", 1) === 0) {
 					$sanitize = preg_replace("/[\r\n]+/", " ", $response);
 					$dec_response = json_decode(mb_convert_encoding($sanitize, "UTF-8", mb_list_encodings()), true);
