@@ -27,38 +27,36 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 			$payload = $rows['curl_payload'];
 
 			if (is_null($payload) == false && empty($payload) == false) {
-				if (strncmp($payload, "{", 1) === 0 || strncmp($payload, "[", 1) === 0) {
-					if (strncmp($payload, "grant_type=refresh_token", 24) === 0) {
-						$array = explode("&", $payload);
-						for ($i = 0; $i < sizeof($array); $i++) {
-							list($key, $value) = explode("=", $array[$i]);
-							$output[$key] = $value;
-						}
-						$output['client_id'] = mask_string($output['client_id'], 12);
-						$output['client_secret'] = mask_string($output['client_secret'], 12);
-						$output['refresh_token'] = mask_string($output['refresh_token'], 12);
-					} elseif (strncmp($payload, "grant_type=authorization_code", 29) === 0) {
-						$output = [];
-						$array = explode("&", $payload);
-						for ($i = 0; $i < sizeof($array); $i++) {
-							list($key, $value) = explode("=", $array[$i]);
-							$output[$key] = $value;
-						}
-						$output['client_id'] = mask_string($output['client_id'], 12);
-						$output['client_secret'] = mask_string($output['client_secret'], 12);
-						$output['code'] = mask_string($output['code'], 12);
-					} else {
-						$sanitize = preg_replace("/[\r\n]+/", " ", $payload);
-						$output = json_decode(mb_convert_encoding($sanitize, "UTF-8", mb_list_encodings()), true);
+				if (strncmp($payload, "grant_type=refresh_token", 24) === 0) {
+					$array = explode("&", $payload);
+					for ($i = 0; $i < sizeof($array); $i++) {
+						list($key, $value) = explode("=", $array[$i]);
+						$output[$key] = $value;
 					}
-
-					if ($action == "get_payload") {
-						print_r($output);
-					} elseif ($action == "get_payload_json") {
-						echo json_encode($output, JSON_PRETTY_PRINT);
+					$output['client_id'] = mask_string($output['client_id'], 12);
+					$output['client_secret'] = mask_string($output['client_secret'], 12);
+					$output['refresh_token'] = mask_string($output['refresh_token'], 12);
+				} elseif (strncmp($payload, "grant_type=authorization_code", 29) === 0) {
+					$output = [];
+					$array = explode("&", $payload);
+					for ($i = 0; $i < sizeof($array); $i++) {
+						list($key, $value) = explode("=", $array[$i]);
+						$output[$key] = $value;
 					}
+					$output['client_id'] = mask_string($output['client_id'], 12);
+					$output['client_secret'] = mask_string($output['client_secret'], 12);
+					$output['code'] = mask_string($output['code'], 12);
+				} elseif (strncmp($payload, "{", 1) === 0 || strncmp($payload, "[", 1) === 0) {
+					$sanitize = preg_replace("/[\r\n]+/", " ", $payload);
+					$output = json_decode(mb_convert_encoding($sanitize, "UTF-8", mb_list_encodings()), true);
 				} else {
 					echo $payload;
+				}
+
+				if ($action == "get_payload") {
+					print_r($output);
+				} elseif ($action == "get_payload_json") {
+					echo json_encode($output, JSON_PRETTY_PRINT);
 				}
 			} else {
 				echo "null";
