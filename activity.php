@@ -1,5 +1,5 @@
 <?php
-include("session.php");
+// include("session.php");
 date_default_timezone_set("Asia/Kolkata");
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 $fileExtension = pathinfo(__FILE__, PATHINFO_EXTENSION);
