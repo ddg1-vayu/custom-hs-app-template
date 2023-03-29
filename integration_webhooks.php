@@ -21,6 +21,11 @@ include("conn.php");
 </head>
 
 <body class="d-flex flex-column min-vh-100">
+	<script src="js/preload.js"></script>
+	<div class="preloader">
+		<img src="assets/preloader.gif" alt="Loading...">
+	</div>
+
 	<?php include("header.php"); ?>
 
 	<script src="js/scroll-top.js"></script>

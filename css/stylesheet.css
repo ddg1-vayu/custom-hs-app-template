@@ -63,6 +63,35 @@ body {
 	font-size: clamp(0.875rem, 0.875rem + 0.125vw, 1rem);
 }
 
+.preloader {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background-color: #feffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 1;
+	transition: opacity 0.5s ease-in-out, z-index 0.5s ease-in-out;
+}
+
+.preloader.hide {
+	opacity: 0;
+	z-index: -1;
+}
+
+.preloader img {
+	width: 128px;
+	height: 128px;
+}
+
+body.preloading {
+	overflow: hidden;
+}
+
 main {
 	padding: 1rem 0.25rem;
 }
