@@ -12,7 +12,6 @@ $(document).ready(function () {
 				action: function (e, dt, node, config) {
 					dt.ajax.reload();
 				},
-				className: "refreshBtn",
 				titleAttr: "Refresh",
 			},
 		],
@@ -83,21 +82,14 @@ $(document).ready(function () {
 			{
 				targets: 6,
 				render: function (data, type, row) {
-					var bg_color, text;
-					if (data == "processed" || data == 1) {
-						bg_color = "#07c007";
-						text = "Processed";
-					} else if (data == "not processed" || data == 0) {
-						bg_color = "#FF0000";
-						text = "Not Processed";
-					}
-					return (
-						'<span class="status-span" style="background-color:' +
-						bg_color +
-						'">' +
-						text +
-						"</span>"
-					);
+					var status;
+					"processed" == data || 1 == data
+						? (status =
+								'<i class="fa-regular fa-circle-check fa-fw success-code" aria-hidden="true" title="Processed"></i>')
+						: ("not processed" != data && 0 != data) ||
+						  (status =
+								'<i class="fa-regular fa-circle-xmark fa-fw error-code" aria-hidden="true" title="Not Processed"></i>');
+					return status;
 				},
 			},
 		],

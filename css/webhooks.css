@@ -1,42 +1,62 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700;800&display=swap");
 
-td {
-	text-align: center;
-}
-
-.webhook_type,
+.webhook_app,
+.webhook_file,
+.webhook_modified,
+.webhook_payload,
+.webhook_portal,
+.webhook_source,
+.webhook_status,
 .webhook_timestamp,
-.webhook_modified {
-	width: 6rem !important;
+.webhook_type {
+	text-align: center;
 }
 
 .webhook_app,
 .webhook_portal,
-.webhook_source,
-.webhook_file,
-.webhook_payload,
-.webhook_status {
+.webhook_source {
+	width: 2.5rem !important;
+}
+
+.webhook_type {
+	width: 6rem !important;
+}
+
+.webhook_file {
+	width: 4rem !important;
+}
+
+.webhook_payload {
 	width: 3.5rem !important;
 }
 
-.status-span {
-	padding: 0.25rem 0.75rem;
-	text-transform: uppercase;
-	border-radius: 2rem;
-	color: white;
-	font-weight: bold;
+.webhook_status {
+	width: 3rem !important;
+}
+
+td.webhook_status {
+	line-height: 1;
+}
+
+.webhook_timestamp,
+.webhook_modified {
+	width: 6.5rem !important;
+}
+
+.webhook_status .dtr-data {
+	line-height: 1;
 }
 
 @media screen and (max-width: 953px) {
 	.webhook_app,
-	.webhook_type,
+	.webhook_file,
+	.webhook_modified,
+	.webhook_payload,
 	.webhook_portal,
 	.webhook_source,
-	.webhook_file,
-	.webhook_payload,
 	.webhook_status,
 	.webhook_timestamp,
-	.webhook_modified {
+	.webhook_type {
 		width: auto !important;
 	}
 }

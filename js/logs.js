@@ -12,7 +12,6 @@ $(document).ready(function () {
 				action: function (e, dt, node, config) {
 					dt.ajax.reload();
 				},
-				className: "refreshBtn",
 				titleAttr: "Refresh",
 			},
 		],
@@ -113,6 +112,23 @@ $(document).ready(function () {
 				className: "curl_timestamp",
 			},
 		],
+		columnDefs: [
+			{
+				targets: 8,
+				render: function (data, type, row) {
+					var status;
+					data >= 100 && data < 200
+						? (status = "status-100-200")
+						: data >= 200 && data < 300
+						? (status = "status-200-300")
+						: data >= 300 && data < 400
+						? (status = "status-300-400")
+						: data >= 400 && (status = "status-400-500");
+
+					return `<span class="${status}" title="${data}"> ${data} </span>`;
+				},
+			},
+		],
 		deferRender: true,
 		dom: '<"#data-table.row"<"#buttons.col-lg-3 col-md-6 col-sm-4 order-lg-0"B><"#length.col-lg-2 col-md-6 col-sm-6 order-lg-1"l><"#filter.col-lg-3 col-md-12 col-sm-12 order-lg-2 order-sm-0"f><"#table.col-lg-12 col-md-12 col-sm-12 order-lg-3"t><"#count.col-lg-4 col-md-12 col-sm-12 order-lg-4"i><"#pages.col-lg-8 col-md-12 col-sm-12 order-lg-5"p>>r',
 		initComplete: function () {
@@ -159,30 +175,6 @@ $(document).ready(function () {
 		responsive: true,
 		searchDelay: 500,
 		serverSide: true,
-		columnDefs: [
-			{
-				targets: 8,
-				render: function (data, type, row) {
-					var color;
-					if (data >= 100 && data < 200) {
-						color = "#808080";
-					} else if (data >= 200 && data < 300) {
-						color = "#07C007";
-					} else if (data >= 300 && data < 400) {
-						color = "#10107A";
-					} else if (data >= 400) {
-						color = "#FF0000";
-					}
-					return (
-						'<span style="font-size:1rem; color:' +
-						color +
-						'">' +
-						data +
-						"</span>"
-					);
-				},
-			},
-		],
 	});
 
 	$.fn.DataTable.ext.pager.numbers_length = 7;

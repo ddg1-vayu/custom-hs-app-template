@@ -12,7 +12,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-	<script src="js/preload.js"></script>
+	<script src="js/preloader.js"></script>
 	<div class="preloader">
 		<img src="assets/preloader.gif" alt="Loading...">
 	</div>
@@ -34,7 +34,7 @@
 				<div class="col-lg-12 col-md-12 col-sm-12">
 					<div class="white-container">
 						<table class="table table-bordered align-middle" id="webhooks_tbl">
-							<thead class="text-center">
+							<thead class="text-uppercase text-center">
 								<th class="webhook_type"> Type </th>
 								<th class="webhook_portal"> Portal </th>
 								<th class="webhook_source"> Source </th>

@@ -12,7 +12,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-	<script src="js/preload.js"></script>
+	<script src="js/preloader.js"></script>
 	<div class="preloader">
 		<img src="assets/preloader.gif" alt="Loading...">
 	</div>

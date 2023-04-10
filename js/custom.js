@@ -3,22 +3,35 @@ document.addEventListener("DOMContentLoaded", function () {
 	if (queryString != "") {
 		const searchParams = new URLSearchParams(queryString);
 		var pageNum = searchParams.get("page");
-		if (pageNum == null) {
-			$(".page-link#1").addClass("active disabled");
-		} else {
-			$(".page-link#" + pageNum).addClass("active disabled");
-		}
+		null == pageNum
+			? $(".page-link#1").addClass("active disabled")
+			: $(".page-link#" + pageNum).addClass("active disabled");
 	} else {
 		$(".page-link#1").addClass("active disabled");
 	}
 });
 
+function loader() {
+	$("body").addClass("preloading");
+	setTimeout(function () {
+		$(".preloader").addClass("hide");
+		$("body").removeClass("preloading");
+	}, 1500);
+}
+
+function showLoader() {
+	$("body").addClass("preloading");
+	$(".preloader").removeClass("hide");
+}
+
+function hideLoader() {
+	$(".preloader").addClass("hide");
+	$("body").removeClass("preloading");
+}
+
 function showFilters() {
-	if (!$("#filter-form").is(":visible")) {
-		$("#filter-form").show();
-	} else {
-		$("#filter-form").hide();
-	}
+	var form = $("#filter-form");
+	form.is(":visible") ? form.hide() : form.show();
 }
 
 function resetFilters() {

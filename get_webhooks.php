@@ -20,10 +20,10 @@ if (empty($dbServer) == false || empty($dbUser) == false || empty($dbPassword) =
 		["db" => "file_name", "dt" => "file_name"],
 		["db" => "status", "dt" => "status"],
 		["db" => "timestamp", "dt" => "timestamp", "formatter" => function ($d, $row) {
-			return date("d-M-Y h:i:s A", strtotime($d));
+			return date("d-M-Y h:i:s A T", strtotime($d));
 		}],
 		["db" => "last_modified", "dt" => "modified", "formatter" => function ($d, $row) {
-			return date("d-M-Y h:i:s A", strtotime($d));
+			return date("d-M-Y h:i:s A T", strtotime($d));
 		}]
 	];
 

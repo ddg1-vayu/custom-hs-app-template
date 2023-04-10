@@ -21,7 +21,7 @@ include("conn.php");
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-	<script src="js/preload.js"></script>
+	<script src="js/preloader.js"></script>
 	<div class="preloader">
 		<img src="assets/preloader.gif" alt="Loading...">
 	</div>
@@ -163,7 +163,7 @@ include("conn.php");
 				<div class="white-container">
 					<div id="records-table" style="width:100%; overflow-x:auto;">
 						<table class="table table-hover table-responsive table-bordered text-center">
-							<thead>
+							<thead class="text-uppercase">
 								<tr>
 									<th> Portal </th>
 									<th> Type </th>
@@ -176,7 +176,7 @@ include("conn.php");
 									<th> Last Modified </th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="align-middle table-group-divider">
 								<?php
 								while ($rows = mysqli_fetch_assoc($getRecords)) {
 								?>

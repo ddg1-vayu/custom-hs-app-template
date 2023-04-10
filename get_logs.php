@@ -25,7 +25,7 @@ if (empty($dbServer) == false || empty($dbUser) == false || empty($dbPassword) =
 			"db" => "timestamp",
 			"dt" => "timestamp",
 			"formatter" => function ($d, $row) {
-				return date("d-M-Y h:i:s A", strtotime($d));
+				return date("d-M-Y h:i:s A T", strtotime($d));
 			}
 		]
 	];

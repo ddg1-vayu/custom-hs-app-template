@@ -37,7 +37,6 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 					$output['client_secret'] = mask_string($output['client_secret'], 12);
 					$output['refresh_token'] = mask_string($output['refresh_token'], 12);
 				} elseif (strncmp($payload, "grant_type=authorization_code", 29) === 0) {
-					$output = [];
 					$array = explode("&", $payload);
 					for ($i = 0; $i < sizeof($array); $i++) {
 						list($key, $value) = explode("=", $array[$i]);

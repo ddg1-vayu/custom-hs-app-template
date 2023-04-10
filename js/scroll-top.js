@@ -9,9 +9,9 @@ $(document).ready(function () {
 			document.body.scrollTop > 20 ||
 			document.documentElement.scrollTop > 20
 		) {
-			scroll_btn.style.display = "block";
+			$("#btn-back-to-top").fadeIn();
 		} else {
-			scroll_btn.style.display = "none";
+			$("#btn-back-to-top").fadeOut();
 		}
 	}
 	scroll_btn.addEventListener("click", backToTop);

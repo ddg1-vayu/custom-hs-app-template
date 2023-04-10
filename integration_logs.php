@@ -20,7 +20,7 @@ function startsWith($haystack, $needle) {
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-	<script src="js/preload.js"></script>
+	<script src="js/preloader.js"></script>
 	<div class="preloader">
 		<img src="assets/preloader.gif" alt="Loading...">
 	</div>
@@ -249,7 +249,7 @@ function startsWith($haystack, $needle) {
 				<div class="white-container">
 					<div id="records-table" style="width:100%; overflow-x:auto;">
 						<table class="table table-hover table-responsive table-bordered text-center">
-							<thead>
+							<thead class="text-uppercase">
 								<tr>
 									<th> Action </th>
 									<th> Origin </th>
@@ -265,7 +265,7 @@ function startsWith($haystack, $needle) {
 									<th> Timestamp </th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="align-middle table-group-divider">
 								<?php
 								while ($rows = mysqli_fetch_assoc($getRecords)) {
 								?>
