@@ -160,7 +160,7 @@ include("conn.php");
 									<th> Timestamp </th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="align-middle table-group-divider">
 								<?php
 								while ($rows = mysqli_fetch_assoc($getRecords)) {
 								?>
