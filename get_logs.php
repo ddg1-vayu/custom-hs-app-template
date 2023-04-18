@@ -1,5 +1,6 @@
 <?php
 require("globals.php");
+date_default_timezone_set("Asia/Kolkata");
 
 if (empty($dbServer) == false || empty($dbUser) == false || empty($dbPassword) == false || empty($db) == false) {
 	$dbDetails = [
