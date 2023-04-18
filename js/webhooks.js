@@ -12,6 +12,7 @@ $(document).ready(function () {
 				action: function (e, dt, node, config) {
 					dt.ajax.reload();
 				},
+				className: "refresh-btn",
 				titleAttr: "Refresh",
 			},
 		],

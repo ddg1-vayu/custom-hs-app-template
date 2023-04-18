@@ -12,6 +12,7 @@ $(document).ready(function () {
 				action: function (e, dt, node, config) {
 					dt.ajax.reload();
 				},
+				className: "refresh-btn",
 				titleAttr: "Refresh",
 			},
 		],
@@ -45,7 +46,7 @@ $(document).ready(function () {
 				targets: 1,
 				render: function (data, row, type) {
 					var rowId = type.id;
-					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showEndpoint(${rowId})"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
+					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showEndpoint(${rowId})"><i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i></button>`;
 				},
 			},
 			{
@@ -62,7 +63,7 @@ $(document).ready(function () {
 				targets: 1,
 				render: function (data, row, type) {
 					var rowId = type.id;
-					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showPayload(${rowId})"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
+					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showPayload(${rowId})"><i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i></button>`;
 				},
 			},
 			{
@@ -74,7 +75,7 @@ $(document).ready(function () {
 				targets: 1,
 				render: function (data, row, type) {
 					var rowId = type.id;
-					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showPayload(${rowId}, 'json')"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
+					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showPayload(${rowId}, 'json')"><i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i></button>`;
 				},
 			},
 			{
@@ -91,7 +92,7 @@ $(document).ready(function () {
 				targets: 1,
 				render: function (data, row, type) {
 					var rowId = type.id;
-					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showResponse(${rowId})"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
+					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showResponse(${rowId})"><i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i></button>`;
 				},
 			},
 			{
@@ -103,7 +104,7 @@ $(document).ready(function () {
 				targets: 1,
 				render: function (data, row, type) {
 					var rowId = type.id;
-					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showResponse(${rowId}, 'json')"><i class="fa fa-eye" aria-hidden="true"></i></button>`;
+					return `<button type="button" class="btn btn-primary view-btn" data-bs-toggle="modal" title="View" data-bs-target="#data-modal" onclick="showResponse(${rowId}, 'json')"><i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i></button>`;
 				},
 			},
 			{

@@ -150,17 +150,18 @@ div.dt-button-collection div.dropdown-menu {
 	padding: 0 !important;
 }
 
-.dt-buttons > .btn-group > .buttons-collection {
+.dt-buttons > .btn-group > .buttons-collection,
+div.dataTables_wrapper div.dt-buttons.btn-group div.btn-group {
 	border-radius: 0.375rem !important;
 }
 
-.dt-buttons > .btn-group,
-.dt-buttons > button {
+.dt-buttons > .btn-group {
 	margin-right: 0.5rem !important;
 }
 
-.dt-buttons > button {
+.refresh-btn {
 	border-radius: 0.375rem !important;
+	padding: 0.375rem 0.75rem;
 }
 
 .dt-button-collection .dt-button {
@@ -177,7 +178,6 @@ div.dt-button-collection div.dropdown-menu {
 
 .dt-buttons > button:last-child {
 	margin-right: 0 !important;
-	font-size: 1rem !important;
 }
 
 #api_logs_first .page-link,
@@ -279,7 +279,7 @@ table.dataTable.dtr-inline.collapsed
 	}
 
 	table.dataTable > tbody > tr.child ul.dtr-details > li:first-child {
-		padding-top: 0.5em !important;
+		padding-top: 0.375em !important;
 	}
 
 	table.dataTable > tbody > tr.child ul.dtr-details > li {
@@ -287,7 +287,7 @@ table.dataTable.dtr-inline.collapsed
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0.5em !important;
+		padding: 0.375em !important;
 	}
 
 	table.dataTable
@@ -297,10 +297,6 @@ table.dataTable.dtr-inline.collapsed
 		> li.curl_url
 		> span.dtr-data {
 		word-break: break-all;
-	}
-
-	.view-btn {
-		padding: 0.325rem 0.625rem !important;
 	}
 }
 

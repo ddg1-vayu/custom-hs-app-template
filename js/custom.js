@@ -34,6 +34,10 @@ function showFilters() {
 	form.is(":visible") ? form.hide() : form.show();
 }
 
+function removeInvalidClass(form) {
+	$(form).find(".is-invalid").removeClass("is-invalid");
+}
+
 function resetFilters() {
 	window.location = window.location.href.split("?")[0];
 }
