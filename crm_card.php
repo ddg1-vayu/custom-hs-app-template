@@ -1,5 +1,5 @@
 <?php
-include("globals.php");
+include_once("globals.php");
 
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $unixTimestamp = $_SERVER['HTTP_X_HUBSPOT_REQUEST_TIMESTAMP'];

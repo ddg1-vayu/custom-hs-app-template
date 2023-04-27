@@ -1,35 +1,29 @@
 <?php
-// include("session.php");
+// include_once("session.php");
 date_default_timezone_set("Asia/Kolkata");
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 $fileExtension = pathinfo(__FILE__, PATHINFO_EXTENSION);
 $file = $fileName . "." . $fileExtension;
-include("conn.php");
+include_once("conn.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<?php include("head.php"); ?>
+	<?php include_once("head.php"); ?>
 	<title> Activity Logs </title>
+	<script src="js/preload.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/ajax.js"></script>
 	<link rel="stylesheet" href="css/integration.css">
-	<style>
-		.comment {
-			line-height: normal;
-		}
-	</style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-	<script src="js/preloader.js"></script>
 	<div class="preloader">
 		<img src="assets/preloader.gif" alt="Loading...">
 	</div>
 
-	<?php include("header.php"); ?>
-
-	<script src="js/custom.js"></script>
-	<script src="js/scroll-top.js"></script>
+	<?php include_once("header.php"); ?>
 
 	<main>
 		<div class="container-fluid">
@@ -167,7 +161,7 @@ include("conn.php");
 									<tr>
 										<td> <?= $rows['user'] ?> </td>
 										<td> <?= $rows['action'] ?> </td>
-										<?= (empty($rows['comment']) == false) ? "<td class='text-start comment'>" . $rows['comment'] . "</td>" : "<td class='comment'> — </td>"; ?>
+										<?= (empty($rows['comment']) == false) ? "<td class='text-start lh-1'>" . $rows['comment'] . "</td>" : "<td class='lh-1'> — </td>"; ?>
 										<td> <?= $rows['remote_address'] ?> </td>
 										<td> <?= date("d-M-Y h:i:s A T", strtotime($rows['timestamp'])) ?> </td>
 									</tr>
@@ -181,7 +175,7 @@ include("conn.php");
 					<div class="row align-items-center">
 						<div id="record-count" class="col-lg-4 col-md-4 col-sm-12">
 							<div class="total-records">
-								<?= isset($_GET['search']) ? "Filtered Logs" : "Total Logs" ?> &xrarr; <?= $totalRecords ?>
+								<?= isset($_GET['search']) ? "Filtered Records" : "Total Records" ?><i class="fa-solid fa-arrow-right mx-2"></i><?= $totalRecords ?>
 							</div>
 						</div>
 						<div id="record-pagination" class="col-lg-8 col-md-8 col-sm-12">
@@ -236,9 +230,7 @@ include("conn.php");
 		</div>
 	</main>
 
-	<button type="button" class="btn btn-primary" id="btn-back-to-top" title="Back to Top"><i class="fa fa-chevron-up"></i></button>
-
-	<?php include("footer.php"); ?>
+	<?php include_once("footer.php"); ?>
 </body>
 
 </html>

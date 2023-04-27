@@ -6,7 +6,7 @@ if (isset($_SESSION['login_username'])) {
 }
 
 if (isset($_POST['submit']) && $_POST['submit'] == "login") {
-	include("conn.php");
+	include_once("conn.php");
 	
 	$user = stripslashes($_POST["user"]);
 	$password = stripslashes($_POST["password"]);
@@ -45,12 +45,12 @@ if (isset($_POST['submit']) && $_POST['submit'] == "login") {
 <html lang="en">
 
 <head>
-	<?php include("head.php"); ?>
+	<?php include_once("head.php"); ?>
 	<title> Login </title>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-	<?php include("header.php"); ?>
+	<?php include_once("header.php"); ?>
 
 	<main>
 		<div class="container-fluid">
@@ -76,7 +76,7 @@ if (isset($_POST['submit']) && $_POST['submit'] == "login") {
 			</div>
 		</div>
 	</main>
-	<?php include("footer.php"); ?>
+	<?php include_once("footer.php"); ?>
 </body>
 
 </html>

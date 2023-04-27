@@ -101,6 +101,61 @@ main {
 	padding: 1rem 0.25rem;
 }
 
+@-webkit-keyframes fade-in {
+	from {
+		visibility: hidden;
+		opacity: 0;
+	}
+
+	to {
+		visibility: visible;
+		opacity: 1;
+	}
+}
+
+@keyframes fade-in {
+	from {
+		visibility: hidden;
+		opacity: 0;
+	}
+
+	to {
+		visibility: visible;
+		opacity: 1;
+	}
+}
+
+.notification {
+	align-items: center;
+	background-clip: padding-box;
+	box-shadow: none;
+	display: flex;
+	font-weight: 500;
+	margin: 15.5px 0;
+	opacity: 0;
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	visibility: hidden;
+	z-index: 99;
+}
+
+.notification-body {
+	padding: 0.75rem 0.875rem;
+}
+
+.notification .btn-close {
+	margin: auto;
+	margin-right: 0.75rem;
+	padding: 0.25em 0;
+	opacity: 0.75;
+}
+
+.notification.show {
+	animation: fade-in 0.5s ease-in-out forwards,
+		fade-in 0.5s ease-in-out reverse forwards 3s;
+}
+
 .white-container,
 .form-container {
 	background: #feffff;
@@ -327,6 +382,19 @@ ul.pagination {
 	transition: 0.5s all ease;
 }
 
+.form-control.form-control-lg {
+	padding: 0.5rem 1rem !important;
+}
+
+input[type="file"]::file-selector-button,
+input[type="file"]::-webkit-file-upload-button {
+	background: #005c97;
+	border-bottom-left-radius: 0.375rem;
+	border-top-left-radius: 0.375rem;
+	color: #feffff;
+	cursor: pointer;
+}
+
 .form-select {
 	padding-right: 2.25rem !important;
 }
@@ -516,7 +584,6 @@ textarea {
 }
 
 .modal-body > .alert {
-	border-width: 2px;
 	font-weight: bold;
 	margin: 0;
 	padding: 0.75rem;

@@ -1,15 +1,26 @@
-document.addEventListener("DOMContentLoaded", function () {
-	var queryString = window.location.search;
-	if (queryString != "") {
-		const searchParams = new URLSearchParams(queryString);
-		var pageNum = searchParams.get("page");
-		null == pageNum
-			? $(".page-link#1").addClass("active disabled")
-			: $(".page-link#" + pageNum).addClass("active disabled");
-	} else {
-		$(".page-link#1").addClass("active disabled");
-	}
-});
+var page = window.location.pathname,
+	currentPage = page.split("/").pop();
+
+var int_page_arr = [
+	"activity.php",
+	"integration_logs.php",
+	"integration_webhooks.php",
+];
+
+if (int_page_arr.includes(currentPage)) {
+	document.addEventListener("DOMContentLoaded", function () {
+		var queryString = window.location.search;
+		if (queryString != "") {
+			const searchParams = new URLSearchParams(queryString);
+			var pageNum = searchParams.get("page");
+			null == pageNum
+				? $(".page-link#1").addClass("active disabled")
+				: $(".page-link#" + pageNum).addClass("active disabled");
+		} else {
+			$(".page-link#1").addClass("active disabled");
+		}
+	});
+}
 
 function loader() {
 	$("body").addClass("preloading");
@@ -34,12 +45,12 @@ function showFilters() {
 	form.is(":visible") ? form.hide() : form.show();
 }
 
-function removeInvalidClass(form) {
-	$(form).find(".is-invalid").removeClass("is-invalid");
-}
-
 function resetFilters() {
 	window.location = window.location.href.split("?")[0];
+}
+
+function removeInvalidClass(form) {
+	$(form).find(".is-invalid").removeClass("is-invalid");
 }
 
 function isAlphaNumericKey(e) {
@@ -68,4 +79,28 @@ function isAlphaKey(e) {
 	}
 	e.preventDefault();
 	return false;
+}
+
+function formatFileSize(bytes) {
+	if (isNaN(bytes) || bytes < 0) return "Invalid input";
+	const UNITS = ["B", "KB", "MB", "GB"],
+		FACTORS = [1, 1024, 1048576, 1024 ** 3];
+	let index = 0;
+	for (; bytes >= FACTORS[index + 1] && index < UNITS.length - 1; ) index++;
+	const size = (bytes / FACTORS[index]).toFixed(2);
+	return `${size} ${UNITS[index]}`;
+}
+
+function linkify(str) {
+	var pattern = /(https?:\/\/[^\s]+)/i;
+	var replacement = '<a class="text-info" target="_blank" href="$1">$1</a>';
+	return str.replace(pattern, replacement);
+}
+
+function notify(text) {
+	$(".notification-body").text(text);
+	$(".notification").toggleClass("show hide");
+	setTimeout(function () {
+		$(".notification").toggleClass("show hide");
+	}, 4000);
 }

@@ -1,45 +1,50 @@
 <?php
-// include("session.php");
+// include_once("session.php");
 date_default_timezone_set("Asia/Kolkata");
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 $fileExtension = pathinfo(__FILE__, PATHINFO_EXTENSION);
 $file = $fileName . "." . $fileExtension;
-include("conn.php");
+include_once("conn.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<?php include("head.php"); ?>
+	<?php include_once("head.php"); ?>
 	<title> Integration Webhooks </title>
+	<script src="js/preload.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/ajax.js"></script>
 	<link rel="stylesheet" href="css/integration.css">
-	<style>
-		.modal-dialog {
-			max-width: 66.67%;
-		}
-	</style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-	<script src="js/preloader.js"></script>
 	<div class="preloader">
 		<img src="assets/preloader.gif" alt="Loading...">
 	</div>
 
-	<?php include("header.php"); ?>
-
-	<script src="js/scroll-top.js"></script>
-	<script src="js/custom.js"></script>
-	<script src="js/ajax.js"></script>
+	<?php include_once("header.php"); ?>
 
 	<main>
 		<div class="container-fluid">
 			<div class="white-container mb-3">
 				<div class="d-flex align-items-center justify-content-between">
 					<h4 class="fs-1 fw-bold m-0"> Webhooks </h4>
-					<button type="button" class="btn btn-primary filter-btn" title="Show Filters" onclick="showFilters()">
-						<i class="fa-solid fa-filter" aria-hidden="true"></i>
-					</button>
+					<?php
+					if (isset($_GET['search']) && $_GET['search'] == "search") {
+					?>
+						<button type="button" class="btn btn-danger filter-btn" title="Reset Filters" onclick="resetFilters()">
+							<i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i>
+						</button>
+					<?php
+					} else {
+					?>
+						<button type="button" class="btn btn-primary filter-btn" title="Show Filters" onclick="showFilters()">
+							<i class="fa-solid fa-filter" aria-hidden="true"></i>
+						</button>
+					<?php
+					}
+					?>
 				</div>
 			</div>
 
@@ -87,6 +92,23 @@ include("conn.php");
 							</select>
 						</div>
 						<div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+							<label for="source" class="form-label"> Source </label>
+							<select title="Source" name="source" id="source" class="form-select">
+								<option value="" selected> --- SELECT --- </option>
+								<?php
+								$getSource = mysqli_query($conn, "SELECT DISTINCT `source` FROM `webhooks` WHERE `source` != '' ORDER BY `source` ASC");
+								if (mysqli_num_rows($getSource) > 0) {
+									while ($rows = mysqli_fetch_assoc($getSource)) {
+										$selectedSource = (isset($_REQUEST['source']) && $_REQUEST['source'] == $rows['source'])  ? "selected" : "";
+								?>
+										<option value="<?= $rows['source'] ?>" <?= $selectedSource ?>><?= $rows['source'] ?></option>
+								<?php
+									}
+								}
+								?>
+							</select>
+						</div>
+						<div class="col-lg-3 col-md-6 col-sm-12 mb-3">
 							<label for="file_name" class="form-label"> File </label>
 							<select title="File" name="file_name" id="file_name" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -118,8 +140,7 @@ include("conn.php");
 						</div>
 						<div class="col-lg-12 col-md-12 col-sm-12 text-center mt-2">
 							<input type="hidden" name="search" value="search">
-							<button type="button" class="btn btn-secondary text-uppercase" onclick="resetFilters();">Reset</button>
-							<button type="submit" class="btn btn-primary text-uppercase ms-2"> Filter </button>
+							<button type="submit" class="btn btn-primary text-uppercase"> Filter </button>
 						</div>
 					</div>
 				</form>
@@ -134,9 +155,9 @@ include("conn.php");
 
 			$whereConditions .= (isset($_REQUEST['hub_portal_id']) && $_REQUEST['hub_portal_id'] != "") ? " AND w.hub_portal_id = '" . trim($_REQUEST['hub_portal_id']) . "'" : "";
 
-			$whereConditions .= (isset($_REQUEST['source']) && empty($_REQUEST['source']) == false) ? " AND w.source = '" . trim($_REQUEST['source']) . "'" : "";
-
 			$whereConditions .= (isset($_REQUEST['type']) && empty($_REQUEST['type']) == false) ? " AND w.type = '" . trim($_REQUEST['type']) . "'" : "";
+
+			$whereConditions .= (isset($_REQUEST['source']) && empty($_REQUEST['source']) == false) ? " AND w.source = '" . trim($_REQUEST['source']) . "'" : "";
 
 			$whereConditions .= (isset($_REQUEST['file_name']) && empty($_REQUEST['file_name']) == false) ? " AND w.file_name = '" . trim($_REQUEST['file_name']) . "'" : "";
 
@@ -210,7 +231,7 @@ include("conn.php");
 					<div class="row align-items-center">
 						<div id="record-count" class="col-lg-4 col-md-4 col-sm-12">
 							<div class="total-records">
-								<?= isset($_GET['search']) ? "Filtered Records" : "Total Records" ?> &xrarr; <?= $totalRecords ?>
+								<?= isset($_GET['search']) ? "Filtered Records" : "Total Records" ?><i class="fa-solid fa-arrow-right mx-2"></i><?= $totalRecords ?>
 							</div>
 						</div>
 						<div id="record-pagination" class="col-lg-8 col-md-8 col-sm-12">
@@ -271,9 +292,9 @@ include("conn.php");
 		</div>
 	</main>
 
-	<?php include("modal.php"); ?>
+	<?php include_once("modal.php"); ?>
 
-	<?php include("footer.php"); ?>
+	<?php include_once("footer.php"); ?>
 </body>
 
 </html>

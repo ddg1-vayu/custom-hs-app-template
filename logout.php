@@ -1,10 +1,10 @@
 <?php
-include("session.php");
+include_once("session.php");
 
 $userId = $_SESSION['id'];
 $user = $_SESSION['login_username'];
 
-include("conn.php");
+include_once("conn.php");
 
 $http_cookie = (isset($_SERVER['HTTP_COOKIE']) && empty($_SERVER['HTTP_COOKIE']) == false) ? addslashes($_SERVER['HTTP_COOKIE']) : "";
 $remote_address = (isset($_SERVER['REMOTE_ADDR']) && empty($_SERVER['REMOTE_ADDR']) == false) ? addslashes($_SERVER['REMOTE_ADDR']) : "";

@@ -1,27 +1,26 @@
-<?php // include("session.php"); ?>
+<?php //include_once("session.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<?php include("head.php"); ?>
+	<?php include_once("head.php"); ?>
 	<title> Webhooks </title>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.5/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/r-2.2.9/sc-2.0.5/sb-1.3.2/sp-2.0.0/sl-1.3.4/sr-1.1.0/datatables.min.css" />
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.5/b-2.2.2/b-colvis-2.2.2/b-html5-2.2.2/b-print-2.2.2/r-2.2.9/sc-2.0.5/sb-1.3.2/sp-2.0.0/sl-1.3.4/sr-1.1.0/datatables.min.js"></script>
+	<script src="js/preload.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/datatables.js"></script>
+	<script src="js/ajax.js"></script>
 	<link rel="stylesheet" href="css/datatables.css">
 	<link rel="stylesheet" href="css/webhooks.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-	<script src="js/preloader.js"></script>
 	<div class="preloader">
 		<img src="assets/preloader.gif" alt="Loading...">
 	</div>
 
-	<?php include("header.php"); ?>
-
-	<script src="js/scroll-top.js"></script>
-	<script src="js/ajax.js"></script>
-	<script src="js/webhooks.js"></script>
+	<?php include_once("header.php"); ?>
 
 	<main>
 		<div class="container-fluid">
@@ -52,9 +51,9 @@
 		</div>
 	</main>
 
-	<?php include("modal.php"); ?>
+	<?php include_once("modal.php"); ?>
 
-	<?php include("footer.php"); ?>
+	<?php include_once("footer.php"); ?>
 </body>
 
 </html>

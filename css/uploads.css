@@ -1,0 +1,112 @@
+td {
+	text-align: center;
+}
+
+td.file_name,
+td.file_path {
+	word-break: break-all;
+}
+
+.actions_box {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	justify-content: center;
+}
+
+td.file_type,
+.file_type .dtr-data {
+	line-height: 1;
+}
+
+.file-image {
+	color: #ffa500;
+}
+
+.file-video {
+	color: #f44336;
+}
+
+.file-audio {
+	color: #9c27b0;
+}
+
+.file-pdf {
+	color: #fa0f00;
+}
+
+.file-doc {
+	color: #1b5ebe;
+}
+
+.file-sheet {
+	color: #10793f;
+}
+
+.file-ppt {
+	color: #c13b1b;
+}
+
+.file-other {
+	color: #c6c6c6;
+}
+
+#data-modal-content {
+	line-height: 1;
+}
+
+.modal-body .audio-container {
+	line-height: 0;
+	transition: 0.5s all ease;
+	width: 100%;
+}
+
+.modal-body .audio-container audio {
+	transition: 0.5s all ease;
+	width: 100%;
+}
+
+.modal-body img,
+.modal-body video {
+	border-radius: 0.375rem;
+	border: 2px solid #005c97;
+	height: 100%;
+	transition: 0.5s all ease;
+	width: 100%;
+}
+
+.modal-body iframe,
+.modal-body object {
+	border-radius: 0.375rem;
+	border: 2px solid #005c97;
+	height: 50vh;
+	margin: 0;
+	max-height: 32rem;
+	padding: 0;
+	transition: 0.5s all ease;
+	width: 100%;
+}
+
+.progress {
+	height: 1.125rem;
+	border-radius: 2rem;
+}
+
+.progress-bar {
+	border-radius: 2rem;
+	font-size: 14px;
+	font-weight: 500;
+	text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 953px) {
+	.file_actions,
+	.file_name,
+	.file_path,
+	.file_size,
+	.file_timestamp,
+	.file_type {
+		width: auto !important;
+	}
+}

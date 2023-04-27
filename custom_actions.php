@@ -15,8 +15,8 @@
 	ini_set("display_errors", 1);
 	$fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 
-	require("conn.php");
-	require("functions.php");
+	require_once("conn.php");
+	require_once("functions.php");
 
 	$actionURL = "";
 
