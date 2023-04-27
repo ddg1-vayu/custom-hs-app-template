@@ -40,31 +40,35 @@ if (isset($_POST['action']) && empty($_POST['action']) == false) {
 									mysqli_query($conn, "INSERT INTO `uploads` (`file_name`, `file_path`, `file_type`, `file_size`, `file_checksum`) VALUES ('$fileName', '$filePath', '$fileType', '$fileSize', '$uploadedFileHash')");
 
 									http_response_code(201);
-									echo "File Uploaded!";
+									$ajaxResponseArr['message'] = "File Uploaded!";
 								} else {
 									http_response_code(400);
-									echo "Unable to upload File! Try again later!!";
+									$ajaxResponseArr['message'] = "Unable to upload File! Try again later!!";
 								}
 							} else {
 								http_response_code(415);
-								echo "Unsupported File Type!";
+								$ajaxResponseArr['message'] = "Unsupported File Type!";
 							}
 						} else {
 							http_response_code(400);
-							echo "File cannot be empty!";
+							$ajaxResponseArr['message'] = "File cannot be empty!";
 						}
 					} else {
 						http_response_code(413);
-						echo "File size more than 16 MB";
+						$ajaxResponseArr['message'] = "File size more than 16 MB";
 					}
 				} else {
 					http_response_code(409);
-					echo "File Already Uploaded!";
+					$ajaxResponseArr['message'] = "File Already Uploaded!";
 				}
 			} else {
 				http_response_code(400);
-				echo "Undefined Error! Try again later!";
+				$ajaxResponseArr['message'] = "Undefined Error! Try again later!";
 			}
+
+			
+
+			echo json_encode($ajaxResponseArr);
 			break;
 	}
 }

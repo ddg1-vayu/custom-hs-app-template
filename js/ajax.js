@@ -156,7 +156,9 @@ function upload() {
 				},
 				success: function (response) {
 					if ("" != response || "null" != response) {
-						uploadAlert(response);
+						var message = JSON.parse(response).message;
+
+						uploadAlert(message);
 						window.setTimeout(function () {
 							$("#upload-modal").modal("hide");
 							window.setTimeout(function () {
@@ -175,7 +177,7 @@ function upload() {
 					}
 				},
 				error: function (jqXHR) {
-					var error = jqXHR.responseText,
+					var message = JSON.parse(jqXHR.responseText).message,
 						statusCode = jqXHR.status;
 
 					$("#progress-bar").hide();
@@ -184,7 +186,7 @@ function upload() {
 						.attr("aria-valuenow", 0)
 						.css("width", 0 + "%");
 
-					uploadAlert(`${error} (${statusCode})`, "error");
+					uploadAlert(`${message} (${statusCode})`, "error");
 				},
 			});
 		} else {

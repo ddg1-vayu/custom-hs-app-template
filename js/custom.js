@@ -104,3 +104,25 @@ function notify(text) {
 		$(".notification").toggleClass("show hide");
 	}, 4000);
 }
+
+function uploadAlert(text, type = "") {
+	var alert = $("#upload-alert");
+	alert.removeClass("alert-success, alert-danger");
+
+	"error" == type
+		? (alert.html(text).addClass("alert-danger"),
+		  $("#upload_file").removeClass("is-valid"))
+		: alert.html(text).addClass("alert-success");
+
+	$("#upload-form").fadeOut(function () {
+		alert.fadeIn();
+	});
+
+	window.setTimeout(function () {
+		alert.fadeOut(function () {
+			$("#upload_file, #submit").prop("disabled", false);
+			$("#submit").html("Upload");
+			$("#upload-form").fadeIn();
+		});
+	}, 2500);
+}
