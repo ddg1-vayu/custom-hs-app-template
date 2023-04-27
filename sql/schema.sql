@@ -42,6 +42,18 @@ CREATE TABLE `app_installs` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
+CREATE TABLE `uploads` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `file_name` varchar(512) DEFAULT NULL,
+  `file_path` text NOT NULL,
+  `file_type` varchar(512) DEFAULT NULL,
+  `file_size` bigint(24) NOT NULL,
+  `file_checksum` text DEFAULT NULL,
+  `uploaded` timestamp NULL DEFAULT current_timestamp(),
+  `last_modified` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(255) DEFAULT NULL,
