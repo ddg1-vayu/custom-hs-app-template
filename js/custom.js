@@ -97,32 +97,15 @@ function linkify(str) {
 	return str.replace(pattern, replacement);
 }
 
-function notify(text) {
-	$(".notification-body").text(text);
-	$(".notification").toggleClass("show hide");
-	setTimeout(function () {
-		$(".notification").toggleClass("show hide");
-	}, 4000);
-}
-
-function uploadAlert(text, type = "") {
-	var alert = $("#upload-alert");
-	alert.removeClass("alert-success, alert-danger");
-
-	"error" == type
-		? (alert.html(text).addClass("alert-danger"),
-		  $("#upload_file").removeClass("is-valid"))
-		: alert.html(text).addClass("alert-success");
-
-	$("#upload-form").fadeOut(function () {
-		alert.fadeIn();
-	});
-
-	window.setTimeout(function () {
-		alert.fadeOut(function () {
-			$("#upload_file, #submit").prop("disabled", false);
-			$("#submit").html("Upload");
-			$("#upload-form").fadeIn();
-		});
-	}, 2500);
+function notify(type, text) {
+	$(".notification-body").text(text),
+		$(".notification")
+			.addClass(`text-bg-${type} border-${type}`)
+			.toggleClass("show hide"),
+		setTimeout(function () {
+			$(".notification")
+				.removeClass(`text-bg-${type} border-${type}`)
+				.toggleClass("show hide"),
+				$(".notification-body").text("");
+		}, 4000);
 }
