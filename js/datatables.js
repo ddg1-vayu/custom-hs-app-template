@@ -199,11 +199,6 @@ if (currentPage == dt_page_arr[0]) {
 					className: "curl_type",
 				},
 				{
-					name: "app_name",
-					data: "app_name",
-					className: "curl_app",
-				},
-				{
 					name: "api_origin",
 					data: "api_origin",
 					className: "curl_origin",
@@ -339,7 +334,7 @@ if (currentPage == dt_page_arr[0]) {
 				[15, 30, 60, 120, 240, 480],
 				[15, 30, 60, 120, 240, 480],
 			],
-			order: [[12, "desc"]],
+			order: [[11, "desc"]],
 			pageLength: 15,
 			pagingType: "simple_numbers",
 			processing: true,
@@ -371,11 +366,6 @@ if (currentPage == dt_page_arr[0]) {
 				},
 			],
 			columns: [
-				{
-					name: "app_name",
-					data: "app_name",
-					className: "webhook_app",
-				},
 				{
 					name: "portal",
 					data: "portal",

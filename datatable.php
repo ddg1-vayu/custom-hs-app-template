@@ -19,7 +19,6 @@ if (empty($dbServer) == false || empty($dbUser) == false || empty($dbPassword) =
 
 				$columns = [
 					["db" => "id", "dt" => "id"],
-					["db" => "app_name", "dt" => "app_name"],
 					["db" => "hub_portal_id", "dt" => "hub_portal_id"],
 					["db" => "curl_type", "dt" => "curl_type"],
 					["db" => "api_origin", "dt" => "api_origin"],
@@ -41,7 +40,6 @@ if (empty($dbServer) == false || empty($dbUser) == false || empty($dbPassword) =
 
 				$columns = [
 					["db" => "id", "dt" => "id"],
-					["db" => "app_name", "dt" => "app_name"],
 					["db" => "hub_portal_id", "dt" => "portal"],
 					["db" => "source", "dt" => "source"],
 					["db" => "type", "dt" => "type"],
