@@ -55,16 +55,16 @@ function startsWith($haystack, $needle) {
 
 			<div class="white-container mb-3" id="filter-form" style="<?php echo isset($_GET['search']) ? 'display:block;' : 'display:none;'; ?>">
 				<form method="GET" id="search-form">
-					<div class="row align-items-center">
-						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+					<div class="row align-items-center g-3">
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="start_date" class="form-label"> Start Date </label>
 							<input type="date" class="form-control" name="start_date" id='start_date' placeholder="From Date" title="From Date" value="<?= (isset($_REQUEST['start_date']) && $_REQUEST['start_date'] != '') ? $_REQUEST['start_date'] : "" ?>">
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="end_date" class="form-label"> End Date </label>
 							<input type="date" class="form-control" name="end_date" id='end_date' placeholder="To Date" title="To Date" value="<?= (isset($_REQUEST['end_date']) && $_REQUEST['end_date'] != '') ? $_REQUEST['end_date'] : "" ?>">
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="hub_portal_id" class="form-label"> Portal </label>
 							<select title="Portal" name="hub_portal_id" id="hub_portal_id" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -79,7 +79,7 @@ function startsWith($haystack, $needle) {
 								} ?>
 							</select>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="curl_type" class="form-label"> Type </label>
 							<select title="Type" name="curl_type" id="curl_type" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -141,7 +141,7 @@ function startsWith($haystack, $needle) {
 								?>
 							</select>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="file_name" class="form-label"> File </label>
 							<select name="file_name" id="file_name" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -159,7 +159,7 @@ function startsWith($haystack, $needle) {
 								} ?>
 							</select>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="api_origin" class="form-label"> API Origin </label>
 							<select title="API Origin" name="api_origin" id="api_origin" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -174,7 +174,7 @@ function startsWith($haystack, $needle) {
 								} ?>
 							</select>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="curl_method" class="form-label"> Method </label>
 							<select name="curl_method" id="curl_method" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -192,7 +192,7 @@ function startsWith($haystack, $needle) {
 								} ?>
 							</select>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="curl_http_code" class="form-label"> HTTP Response Code </label>
 							<select name="curl_http_code" id="curl_http_code" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
@@ -210,7 +210,61 @@ function startsWith($haystack, $needle) {
 								} ?>
 							</select>
 						</div>
-						<div class="col-lg-12 col-md-12 col-sm-12 text-center mt-2">
+						<div class="col-lg-3 col-md-6 col-sm-12">
+							<label for="curl_type_not" class="form-label"> Not Type </label>
+							<select title="Type" name="curl_type_not[]" id="curl_type_not" class="form-select" multiple>
+								<option value=""> --- SELECT --- </option>
+								<?php
+								$getNotTypes = mysqli_query($conn, "SELECT DISTINCT `curl_type` FROM `api_logs` WHERE `curl_type` != '' ORDER BY `curl_type` ASC");
+								if (mysqli_num_rows($getNotTypes) > 0) {
+									while ($rows = mysqli_fetch_assoc($getNotTypes)) {
+										$curlTypeNot = $rows['curl_type'];
+										$selectedCurlTypeNot = (isset($_REQUEST['curl_type_not']) && in_array($curlTypeNot, $_REQUEST['curl_type_not'])) ? "selected" : "";
+								?>
+										<option value="<?= $curlTypeNot ?>" <?= $selectedCurlTypeNot ?>> <?= $curlTypeNot ?> </option>
+								<?php
+									}
+								}
+								?>
+							</select>
+						</div>
+						<div class="col-lg-3 col-md-6 col-sm-12">
+							<label for="http_code_not" class="form-label"> Not HTTP Code </label>
+							<select title="Type" name="http_code_not[]" id="http_code_not" class="form-select" multiple>
+								<option value=""> --- SELECT --- </option>
+								<?php
+								$getNotHttpCodes = mysqli_query($conn, "SELECT DISTINCT `curl_http_code` FROM `api_logs` WHERE `curl_http_code` != '' ORDER BY `curl_http_code` ASC");
+								if (mysqli_num_rows($getNotHttpCodes) > 0) {
+									while ($rows = mysqli_fetch_assoc($getNotHttpCodes)) {
+										$httpCodeNot = $rows['curl_http_code'];
+										$selectedHttpCodeNot = (isset($_REQUEST['http_code_not']) && in_array($httpCodeNot, $_REQUEST['http_code_not'])) ? "selected" : "";
+								?>
+										<option value="<?= $httpCodeNot ?>" <?= $selectedHttpCodeNot ?>> <?= $httpCodeNot ?> </option>
+								<?php
+									}
+								}
+								?>
+							</select>
+						</div>
+						<div class="col-lg-3 col-md-6 col-sm-12">
+							<label for="file_name_not" class="form-label"> Not File </label>
+							<select title="Type" name="file_name_not[]" id="file_name_not" class="form-select" multiple>
+								<option value=""> --- SELECT --- </option>
+								<?php
+								$getNotTypes = mysqli_query($conn, "SELECT DISTINCT `file_name` FROM `api_logs` WHERE `file_name` != '' ORDER BY `file_name` ASC");
+								if (mysqli_num_rows($getNotTypes) > 0) {
+									while ($rows = mysqli_fetch_assoc($getNotTypes)) {
+										$filenameNot = $rows['file_name'];
+										$selectedFilenameNot = (isset($_REQUEST['file_name_not']) && in_array($filenameNot, $_REQUEST['file_name_not'])) ? "selected" : "";
+								?>
+										<option value="<?= $filenameNot ?>" <?= $selectedFilenameNot ?>> <?= $filenameNot ?> </option>
+								<?php
+									}
+								}
+								?>
+							</select>
+						</div>
+						<div class="col-lg-12 col-md-12 col-sm-12 text-center">
 							<input type="hidden" name="search" value="search">
 							<button type="submit" class="btn btn-primary text-uppercase"> Filter </button>
 						</div>
@@ -227,15 +281,30 @@ function startsWith($haystack, $needle) {
 
 			$whereConditions .= (isset($_REQUEST['hub_portal_id']) && $_REQUEST['hub_portal_id'] != "") ? " AND al.hub_portal_id = '" . trim($_REQUEST['hub_portal_id']) . "'" : "";
 
+			$whereConditions .= (isset($_REQUEST['curl_type']) && empty($_REQUEST['curl_type']) == false) ? " AND al.curl_type LIKE '%" . trim($_REQUEST['curl_type']) . "%'" : "";
+
+			$whereConditions .= (isset($_REQUEST['file_name']) && empty($_REQUEST['file_name']) == false) ? " AND al.file_name = '" . trim($_REQUEST['file_name']) . "'" : "";
+
 			$whereConditions .= (isset($_REQUEST['api_origin']) && empty($_REQUEST['api_origin']) == false) ? " AND al.api_origin = '" . trim($_REQUEST['api_origin']) . "'" : "";
 
 			$whereConditions .= (isset($_REQUEST['curl_method']) && empty($_REQUEST['curl_method']) == false) ? " AND al.curl_method = '" . trim($_REQUEST['curl_method']) . "'" : "";
 
 			$whereConditions .= (isset($_REQUEST['curl_http_code']) && $_REQUEST['curl_http_code'] != "") ? " AND al.curl_http_code = '" . trim($_REQUEST['curl_http_code']) . "'" : "";
 
-			$whereConditions .= (isset($_REQUEST['curl_type']) && empty($_REQUEST['curl_type']) == false) ? " AND al.curl_type LIKE '%" . trim($_REQUEST['curl_type']) . "%'" : "";
+			if (isset($_REQUEST['curl_type_not']) && empty($_REQUEST['curl_type_not']) == false) {
+				$notTypes = (count($_REQUEST['curl_type_not']) > 1) ? "'" . implode("', '", $_REQUEST['curl_type_not']) . "'" : "'" . $_REQUEST['curl_type_not'][0] . "'";
+				$whereConditions .=  " AND al.curl_type NOT IN ($notTypes)";
+			}
 
-			$whereConditions .= (isset($_REQUEST['file_name']) && empty($_REQUEST['file_name']) == false) ? " AND al.file_name = '" . trim($_REQUEST['file_name']) . "'" : "";
+			if (isset($_REQUEST['file_name_not']) && empty($_REQUEST['file_name_not']) == false) {
+				$notFilename = (count($_REQUEST['file_name_not']) > 1) ? "'" . implode("', '", $_REQUEST['file_name_not']) . "'" : "'" . $_REQUEST['file_name_not'][0] . "'";
+				$whereConditions .=  " AND al.file_name NOT IN ($notFilename)";
+			}
+
+			if (isset($_REQUEST['http_code_not']) && empty($_REQUEST['http_code_not']) == false) {
+				$notHttpCode = (count($_REQUEST['http_code_not']) > 1) ? "'" . implode("', '", $_REQUEST['http_code_not']) . "'" : "'" . $_REQUEST['http_code_not'][0] . "'";
+				$whereConditions .=  " AND al.curl_http_code NOT IN ($notHttpCode)";
+			}
 
 			$limit = 15;
 			if (isset($_REQUEST['page'])) {
