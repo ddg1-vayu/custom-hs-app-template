@@ -319,7 +319,7 @@ function startsWith($haystack, $needle) {
 			$getTotalRecords = mysqli_query($conn, $totalRecordsSql);
 			$totalRecords = mysqli_num_rows($getTotalRecords);
 			$pages = ceil($totalRecords / $limit);
-
+ 
 			$recordsSql = "SELECT * FROM `api_logs` AS al WHERE 1=1 $whereConditions ORDER BY al.id DESC LIMIT $limit OFFSET $offset";
 			$getRecords = mysqli_query($conn, $recordsSql);
 			if (mysqli_num_rows($getRecords) > 0) {

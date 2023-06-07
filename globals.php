@@ -1,8 +1,8 @@
 <?php
-$dbServer = "";
-$dbUser = "";
-$dbPassword = "";
-$db = "";
+define("db_server", "");
+define("db_user", "");
+define("db", "");
+define("db_password", "");
 
 $subdomain = "";
 
