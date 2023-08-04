@@ -1,14 +1,9 @@
 <?php
 // include_once("session.php");
-date_default_timezone_set("Asia/Kolkata");
 $fileName = pathinfo(__FILE__, PATHINFO_FILENAME);
 $fileExtension = pathinfo(__FILE__, PATHINFO_EXTENSION);
 $file = $fileName . "." . $fileExtension;
 include_once("conn.php");
-
-function startsWith($haystack, $needle) {
-	return !strncmp($haystack, $needle, strlen($needle));
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,15 +11,13 @@ function startsWith($haystack, $needle) {
 <head>
 	<?php include_once("head.php"); ?>
 	<title> Integration Logs </title>
-	<script src="js/preload.js"></script>
-	<script src="js/custom.js"></script>
-	<script src="js/ajax.js"></script>
-	<link rel="stylesheet" href="css/integration.css">
+	<script src="<?= $jsFolder ?>/records.js"></script>
+	<link rel="stylesheet" href="<?= $cssFolder ?>/records.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 	<div class="preloader">
-		<img src="assets/preloader.gif" alt="Loading...">
+		<img src="<?= $assetsFolder ?>/preloader.gif" alt="Loading...">
 	</div>
 
 	<?php include_once("header.php"); ?>
@@ -32,20 +25,25 @@ function startsWith($haystack, $needle) {
 	<main>
 		<div class="container-fluid">
 
-		<div class="white-container mb-3">
+			<div class="white-container mb-3">
 				<div class="d-flex align-items-center justify-content-between">
 					<h4 class="fs-1 fw-bold m-0"> API Logs </h4>
 					<?php
-					if (isset($_GET['search'])) {
+					if (isset($_GET['search']) && $_GET['search'] == "search") {
 					?>
-						<button type="button" class="btn btn-danger filter-btn" title="Reset Filters" onclick="resetFilters()">
-							<i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i>
-						</button>
+						<div class="filter-buttons d-flex align-items-center gap-2">
+							<button type="button" class="btn btn-secondary filter-btn" title="Toggle Filters" onclick="toggleFilters()">
+								<i class="fa-solid fa-filter fa-fw" aria-hidden="true"></i>
+							</button>
+							<button type="button" class="btn btn-danger filter-btn" title="Reset Filters" onclick="resetFilters()">
+								<i class="fa-solid fa-filter-circle-xmark fa-fw" aria-hidden="true"></i>
+							</button>
+						</div>
 					<?php
 					} else {
 					?>
-						<button type="button" class="btn btn-primary filter-btn" title="Show Filters" onclick="showFilters()">
-							<i class="fa-solid fa-filter" aria-hidden="true"></i>
+						<button type="button" class="btn btn-primary filter-btn" title="Show Filters" onclick="toggleFilters()">
+							<i class="fa-solid fa-filter fa-fw" aria-hidden="true"></i>
 						</button>
 					<?php
 					}
@@ -84,58 +82,33 @@ function startsWith($haystack, $needle) {
 							<select title="Type" name="curl_type" id="curl_type" class="form-select">
 								<option value="" selected> --- SELECT --- </option>
 								<?php
-								$allValues = $filteredValues = $allLabels = $labels = $otherValues = [];
+								$groupedValues = $words = [];
 								$getType = mysqli_query($conn, "SELECT DISTINCT `curl_type` FROM `api_logs` WHERE `curl_type` != '' ORDER BY `curl_type` ASC");
 								if (mysqli_num_rows($getType) > 0) {
 									while ($rows = mysqli_fetch_assoc($getType)) {
-										$curlType = $rows['curl_type'];
-										$labelArr = explode(" ", $curlType);
-										array_push($allValues, $curlType);
-										array_push($allLabels, $labelArr[0]);
+										$value = $rows['curl_type'];
+										$words = explode(' ', $value);
+										$firstWord = $words[0];
+										$group = (strpos($firstWord, "_") !== false) ? "Others" : $firstWord;
+										$groupedValues[$group][] = $value;
 									}
 
-									$uniqueLabels = array_unique($allLabels);
-									foreach ($uniqueLabels as $value) {
-										if (strpos($value, '_') !== false) {
-											array_push($otherValues, $value);
-										} else {
-											array_push($labels, $value);
-										}
+									if (isset($groupedValues['Others'])) {
+										$othersGroup = $groupedValues['Others'];
+										unset($groupedValues['Others']);
+										$groupedValues['Others'] = $othersGroup;
 									}
 
-									$array = array_diff($allValues, $otherValues);
-									foreach ($array as $value) {
-										array_push($filteredValues, $value);
-									}
-
-									$selectedType = "";
-									for ($x = 0; $x < count($labels); $x++) { ?>
-										<optgroup label="<?= $labels[$x] ?>">
-											<?php
-											foreach ($filteredValues as $values) {
-												if (startsWith($values, $labels[$x])) {
-													$selectedType = (isset($_REQUEST['curl_type']) && $_REQUEST['curl_type'] == $values)  ? "selected" : "";
-											?>
-													<option value="<?= $values ?>" <?= $selectedType ?>><?= $values ?></option>
-											<?php
-												}
-											}
-											?>
-										</optgroup>
-									<?php
-									}
-									if (empty($otherValues) == false) {
-									?>
-										<optgroup label="Others">
-											<?php
-											foreach ($otherValues as $values) {
-												$selectedType = (isset($_REQUEST['curl_type']) && $_REQUEST['curl_type'] == $values)  ? "selected" : "";
-											?>
-												<option value="<?= $values ?>" <?= $selectedType ?>><?= $values ?></option>
-											<?php
-											} ?>
-										</optgroup>
+									foreach ($groupedValues as $group => $options) {
+										echo "<optgroup label='" . htmlspecialchars($group) . "'>";
+										foreach ($options as $option) {
+											$optionValue = htmlspecialchars($option);
+											$selectedType = isset($_REQUEST['curl_type']) && $_REQUEST['curl_type'] === $optionValue;
+								?>
+											<option value="<?= $optionValue; ?>" <?= ($selectedType) ? "selected" : ""; ?>> <?= $optionValue; ?> </option>
 								<?php
+										}
+										echo "</optgroup>";
 									}
 								}
 								?>
@@ -149,12 +122,9 @@ function startsWith($haystack, $needle) {
 								$getFileNames = mysqli_query($conn, "SELECT DISTINCT `file_name` FROM `api_logs` WHERE `file_name` != '' ORDER BY `file_name` ASC");
 								if (mysqli_num_rows($getFileNames) > 0) {
 									while ($rows = mysqli_fetch_assoc($getFileNames)) {
-										$hub_portal_sel = "";
-										if ($rows['file_name'] == $_REQUEST['file_name']) {
-											$hub_portal_sel = "selected='selected'";
-										}
+										$selectedFileName = (isset($_REQUEST['file_name']) && $rows['file_name'] == $_REQUEST['file_name']) ? "selected" : "";
 								?>
-										<option value="<?= $rows['file_name'] ?>" <?= $hub_portal_sel ?>><?= $rows['file_name'] ?></option>
+										<option value="<?= $rows['file_name'] ?>" <?= $selectedFileName ?>><?= $rows['file_name'] ?></option>
 								<?php }
 								} ?>
 							</select>
@@ -167,7 +137,7 @@ function startsWith($haystack, $needle) {
 								$getApiOrigin = mysqli_query($conn, "SELECT DISTINCT `api_origin` FROM `api_logs` WHERE `api_origin` != '' ORDER BY `api_origin` ASC");
 								if (mysqli_num_rows($getApiOrigin) > 0) {
 									while ($rows = mysqli_fetch_assoc($getApiOrigin)) {
-										$selectedOrigin = ($rows['api_origin'] == $_REQUEST['api_origin']) ? "selected='selected'" : "";
+										$selectedOrigin = (isset($_REQUEST['api_origin']) && $rows['api_origin'] == $_REQUEST['api_origin']) ? "selected" : "";
 								?>
 										<option value="<?= $rows['api_origin'] ?>" <?= $selectedOrigin ?>><?= $rows['api_origin'] ?></option>
 								<?php }
@@ -182,12 +152,9 @@ function startsWith($haystack, $needle) {
 								$getMethods = mysqli_query($conn, "SELECT DISTINCT `curl_method` FROM `api_logs` WHERE `curl_method` != '' ORDER BY `curl_method` ASC");
 								if (mysqli_num_rows($getMethods) > 0) {
 									while ($rows = mysqli_fetch_assoc($getMethods)) {
-										$hub_portal_sel = "";
-										if ($rows['curl_method'] == $_REQUEST['curl_method']) {
-											$hub_portal_sel = "selected='selected'";
-										}
+										$selectedMethod = (isset($_REQUEST['curl_method']) && $rows['curl_method'] == $_REQUEST['curl_method']) ? "selected" : "";
 								?>
-										<option value="<?= $rows['curl_method'] ?>" <?= $hub_portal_sel ?>><?= $rows['curl_method'] ?></option>
+										<option value="<?= $rows['curl_method'] ?>" <?= $selectedMethod ?>><?= $rows['curl_method'] ?></option>
 								<?php }
 								} ?>
 							</select>
@@ -200,19 +167,34 @@ function startsWith($haystack, $needle) {
 								$getResponseCodes = mysqli_query($conn, "SELECT DISTINCT `curl_http_code` FROM `api_logs` WHERE `curl_http_code` != '' ORDER BY `curl_http_code` ASC");
 								if (mysqli_num_rows($getResponseCodes) > 0) {
 									while ($rows = mysqli_fetch_assoc($getResponseCodes)) {
-										$hub_portal_sel = "";
-										if ($rows['curl_http_code'] == $_REQUEST['curl_http_code']) {
-											$hub_portal_sel = "selected='selected'";
-										}
+										$selectedCode = (isset($_REQUEST['curl_http_code']) && $rows['curl_http_code'] == $_REQUEST['curl_http_code']) ? "selected" : "";
 								?>
-										<option value="<?= $rows['curl_http_code'] ?>" <?= $hub_portal_sel ?>><?= $rows['curl_http_code'] ?></option>
+										<option value="<?= $rows['curl_http_code'] ?>" <?= $selectedMethod ?>><?= $rows['curl_http_code'] ?></option>
 								<?php }
 								} ?>
 							</select>
 						</div>
 						<div class="col-lg-3 col-md-6 col-sm-12">
+							<label for="portal_not" class="form-label"> Not Portal </label>
+							<select title="Type" name="portal_not[]" id="portal_not" class="form-control overflow-y-auto" size="5" multiple>
+								<option value=""> --- SELECT --- </option>
+								<?php
+								$getNotPortals = mysqli_query($conn, "SELECT DISTINCT `hub_portal_id` FROM `api_logs` WHERE `hub_portal_id` != '' ORDER BY `hub_portal_id` ASC");
+								if (mysqli_num_rows($getNotPortals) > 0) {
+									while ($rows = mysqli_fetch_assoc($getNotPortals)) {
+										$portalNot = $rows['hub_portal_id'];
+										$selectedPortalNot = (isset($_REQUEST['portal_not']) && in_array($portalNot, $_REQUEST['portal_not'])) ? "selected" : "";
+								?>
+										<option value="<?= $portalNot ?>" <?= $selectedPortalNot ?>> <?= $portalNot ?> </option>
+								<?php
+									}
+								}
+								?>
+							</select>
+						</div>
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="curl_type_not" class="form-label"> Not Type </label>
-							<select title="Type" name="curl_type_not[]" id="curl_type_not" class="form-select" multiple>
+							<select title="Type" name="curl_type_not[]" id="curl_type_not" class="form-control overflow-y-auto" size="5" multiple>
 								<option value=""> --- SELECT --- </option>
 								<?php
 								$getNotTypes = mysqli_query($conn, "SELECT DISTINCT `curl_type` FROM `api_logs` WHERE `curl_type` != '' ORDER BY `curl_type` ASC");
@@ -230,7 +212,7 @@ function startsWith($haystack, $needle) {
 						</div>
 						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="http_code_not" class="form-label"> Not HTTP Code </label>
-							<select title="Type" name="http_code_not[]" id="http_code_not" class="form-select" multiple>
+							<select title="Type" name="http_code_not[]" id="http_code_not" class="form-control overflow-y-auto" size="5" multiple>
 								<option value=""> --- SELECT --- </option>
 								<?php
 								$getNotHttpCodes = mysqli_query($conn, "SELECT DISTINCT `curl_http_code` FROM `api_logs` WHERE `curl_http_code` != '' ORDER BY `curl_http_code` ASC");
@@ -248,7 +230,7 @@ function startsWith($haystack, $needle) {
 						</div>
 						<div class="col-lg-3 col-md-6 col-sm-12">
 							<label for="file_name_not" class="form-label"> Not File </label>
-							<select title="Type" name="file_name_not[]" id="file_name_not" class="form-select" multiple>
+							<select title="Type" name="file_name_not[]" id="file_name_not" class="form-control overflow-y-auto" size="5" multiple>
 								<option value=""> --- SELECT --- </option>
 								<?php
 								$getNotTypes = mysqli_query($conn, "SELECT DISTINCT `file_name` FROM `api_logs` WHERE `file_name` != '' ORDER BY `file_name` ASC");
@@ -266,7 +248,7 @@ function startsWith($haystack, $needle) {
 						</div>
 						<div class="col-lg-12 col-md-12 col-sm-12 text-center">
 							<input type="hidden" name="search" value="search">
-							<button type="submit" class="btn btn-primary text-uppercase"> Filter </button>
+							<button type="submit" class="btn btn-primary"> Filter </button>
 						</div>
 					</div>
 				</form>
@@ -291,6 +273,11 @@ function startsWith($haystack, $needle) {
 
 			$whereConditions .= (isset($_REQUEST['curl_http_code']) && $_REQUEST['curl_http_code'] != "") ? " AND al.curl_http_code = '" . trim($_REQUEST['curl_http_code']) . "'" : "";
 
+			if (isset($_REQUEST['portal_not']) && empty($_REQUEST['portal_not']) == false) {
+				$notTypes = (count($_REQUEST['portal_not']) > 1) ? "'" . implode("', '", $_REQUEST['portal_not']) . "'" : "'" . $_REQUEST['portal_not'][0] . "'";
+				$whereConditions .=  " AND al.hub_portal_id NOT IN ($notTypes)";
+			}
+
 			if (isset($_REQUEST['curl_type_not']) && empty($_REQUEST['curl_type_not']) == false) {
 				$notTypes = (count($_REQUEST['curl_type_not']) > 1) ? "'" . implode("', '", $_REQUEST['curl_type_not']) . "'" : "'" . $_REQUEST['curl_type_not'][0] . "'";
 				$whereConditions .=  " AND al.curl_type NOT IN ($notTypes)";
@@ -306,14 +293,8 @@ function startsWith($haystack, $needle) {
 				$whereConditions .=  " AND al.curl_http_code NOT IN ($notHttpCode)";
 			}
 
-			$limit = 15;
-			if (isset($_REQUEST['page'])) {
-				$offset = ($_REQUEST['page'] * $limit) - $limit;
-				$x = ($_REQUEST['page'] * $limit) - $limit + 1;
-			} else {
-				$offset = 0;
-				$x = 1;
-			}
+			$limit = 25;
+			$offset = (isset($_REQUEST['page'])) ? ($_REQUEST['page'] * $limit) - $limit : 0;
 
 			$totalRecordsSql = "SELECT `id` FROM `api_logs` AS al WHERE 1=1 $whereConditions";
 			$getTotalRecords = mysqli_query($conn, $totalRecordsSql);
@@ -327,7 +308,7 @@ function startsWith($haystack, $needle) {
 				<div class="white-container">
 					<div id="records-table" style="width:100%; overflow-x:auto;">
 						<table class="table table-hover table-responsive table-bordered text-center">
-							<thead class="text-uppercase">
+							<thead>
 								<tr>
 									<th> Action </th>
 									<th> Origin </th>
@@ -353,25 +334,25 @@ function startsWith($haystack, $needle) {
 										<td> <?= $rows['hub_portal_id'] ?> </td>
 										<td> <?= $rows['file_name'] ?> </td>
 										<td>
-											<button type="button" class="btn btn-primary" title="View Endpoint" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showEndpoint('<?= $rows['id'] ?>')"> View </button>
+											<button type="button" class="btn btn-primary view-btn" title="View Endpoint" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showEndpoint('<?= $rows['id'] ?>')"><i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i></button>
 										</td>
 										<td> <?= $rows['curl_method'] ?> </td>
 										<td>
-											<button type="button" class="btn btn-primary" title="View Payload" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showPayload('<?= $rows['id'] ?>')"> View </button>
+											<button type="button" class="btn btn-primary view-btn" title="View Payload" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showPayload('<?= $rows['id'] ?>')"><i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i></button>
 										</td>
 										<td>
-											<button type="button" class="btn btn-primary" title="View Payload JSON" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showPayload('<?= $rows['id'] ?>', 'json')"> View </button>
+											<button type="button" class="btn btn-primary view-btn" title="View Payload JSON" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showPayload('<?= $rows['id'] ?>', 'json')"><i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i></button>
 										</td>
 										<td class="<?= ($rows['curl_http_code'] >= 200 && $rows['curl_http_code'] < 400) ? "success-code" : "error-code" ?>">
 											<?= $rows['curl_http_code']; ?>
 										</td>
 										<td>
-											<button type="button" class="btn btn-primary" title="View Response" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showResponse('<?= $rows['id'] ?>')"> View </button>
+											<button type="button" class="btn btn-primary view-btn" title="View Response" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showResponse('<?= $rows['id'] ?>')"><i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i></button>
 										</td>
 										<td>
-											<button type="button" class="btn btn-primary" title="View Response" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showResponse('<?= $rows['id'] ?>', 'json')"> View </button>
+											<button type="button" class="btn btn-primary view-btn" title="View Response" data-bs-toggle="modal" data-bs-target="#data-modal" onclick="showResponse('<?= $rows['id'] ?>', 'json')"><i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i></button>
 										</td>
-										<td> <?= date("d-M-Y h:i:s A T", strtotime($rows['timestamp'])) ?> </td>
+										<td> <?= formatDateTime($rows['timestamp']) ?> </td>
 									</tr>
 								<?php
 								}
@@ -380,66 +361,16 @@ function startsWith($haystack, $needle) {
 						</table>
 					</div>
 
-					<div class="row align-items-center">
-						<div id="record-count" class="col-lg-4 col-md-4 col-sm-12">
-							<div class="total-records">
-								<?= (isset($_GET['search']) && $_GET['search'] == "search") ? "Filtered Records" : "Total Records" ?><i class="fa-solid fa-arrow-right mx-2"></i><?= $totalRecords ?>
-							</div>
-						</div>
-						<div id="record-pagination" class="col-lg-8 col-md-8 col-sm-12">
-							<ul class="pagination">
-								<?php
-								if (isset($_REQUEST['search']) && empty($_REQUEST['search']) == false) {
-									$request = $_REQUEST;
-									unset($request['page']);
-									$query = http_build_query($request);
-									$pagination = "?" . $query . "&";
-								} else {
-									$pagination = "?";
-								}
-
-								if ($pages > 1) {
-									$_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 1;
-									$pageNum = ($_GET['page'] > 5) ? ($_GET['page'] - 4) : 1;
-									$nextPage = ($pages > ($_GET['page'] + 5)) ? ($_GET['page'] + 4) : $pages;
-									if ($_GET['page'] > 1) {
-										$previousPage = $_GET['page'] - 1;
-								?>
-										<li class="page-item">
-											<a class="page-link prev-link" href="<?= $file . $pagination . 'page=' . $previousPage ?>" id="<?= $previousPage ?>">Prev</a>
-										</li>
-									<?php
-									}
-									for ($i = $pageNum; $i < $nextPage; $i++) {
-									?>
-										<li class="page-item">
-											<a class="page-link" href="<?= $file . $pagination . 'page=' . $i ?>" id="<?= $i ?>"> <?= $i ?> </a>
-										</li>
-									<?php
-									}
-									if ($_GET['page'] < $pages) {
-										$nextPage = ($_GET['page'] + 1);
-									?>
-										<li class="page-item">
-											<a class="page-link next-link" href="<?= $file . $pagination . 'page=' . $nextPage ?>" id="<?= $nextPage ?>">Next</a>
-										</li>
-								<?php
-									}
-								}
-								?>
-							</ul>
-						</div>
-					</div>
+					<?php include_once("pagination.php"); ?>
 				</div>
 			<?php
 			} else {
 			?>
 				<div class="white-container mt-3">
-					<div class="alert alert-warning fw-bold text-center" role="alert"> No Records Found! </div>
+					<div class="alert alert-warning" role="alert"> No Records Found! </div>
 				</div>
 			<?php
 			}
-			echo "<div class='white-container mt-3' id='query-div'> $recordsSql </div>";
 			?>
 		</div>
 	</main>

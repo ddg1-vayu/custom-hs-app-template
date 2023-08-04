@@ -16,3 +16,15 @@ $devApiKey = "";
 
 $clientId = "";
 $clientSecret = "";
+
+function formatDateTime($value) {
+	return date("d-M-Y h:i:s A T", strtotime($value));
+}
+
+function formatDate($value) {
+	return date("d-M-Y", strtotime($value));
+}
+
+function formatTime($value) {
+	return date("h:i:s A T", strtotime($value));
+}
