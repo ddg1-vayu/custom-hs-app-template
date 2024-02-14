@@ -12,20 +12,22 @@ include 'auth_check.php';
 
 <!DOCTYPE html>
 <html lang="en">
-<?php 
-    include 'header.php';
+<?php
+include 'header.php';
 ?>
 <title>Profile</title>
-    <body >
-        <h2>This is the profile page, <?php echo $username; ?> </h2>
-        <p>This is the profile page. You are logged in!</p>
-        <p>This is the profile page. You are logged in!</p>
-        <a href="welcome.php">welcome</a>
-        <p>This is the profile page. You are logged in!</p>
-        <p>This is the profile page. You are logged in!</p>
-        <a href="hit-me.php">Hit The API</a>
-        <p>This is the profile page. You are logged in!</p>
-        <p>This is the profile page. You are logged in!</p>
-        <a href="logout.php">Logout</a>
-    </body>
+
+<body>
+	<h2>This is the profile page, <?php echo $username; ?> </h2>
+	<p>This is the profile page. You are logged in!</p>
+	<p>This is the profile page. You are logged in!</p>
+	<a href="welcome.php">welcome</a>
+	<p>This is the profile page. You are logged in!</p>
+	<p>This is the profile page. You are logged in!</p>
+	<a href="hit-me.php">Hit The API</a>
+	<p>This is the profile page. You are logged in!</p>
+	<p>This is the profile page. You are logged in!</p>
+	<a href="logout.php">Logout</a>
+</body>
+
 </html>

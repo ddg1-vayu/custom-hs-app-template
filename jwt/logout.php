@@ -6,14 +6,14 @@ session_start();
 $_SESSION = array();
 
 // Delete the session cookie
-if(isset($_COOKIE[session_name()])) {
-    setcookie(session_name(), '', time() - 3600, '/');
+if (isset($_COOKIE[session_name()])) {
+	setcookie(session_name(), '', time() - 3600, '/');
 }
 
 // Delete the JWT token cookie if exists
-if(isset($_COOKIE['jwt_token'])) {
-  setcookie('jwt_token', '', time() - 3600, '/');
-  setcookie('jwt_token_expire_time', '', time() - 3600, '/');
+if (isset($_COOKIE['jwt_token'])) {
+	setcookie('jwt_token', '', time() - 3600, '/');
+	setcookie('jwt_token_expire_time', '', time() - 3600, '/');
 }
 
 // Destroy the session
@@ -26,4 +26,3 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 // Redirect to the login page
 header("Location: login.php");
 exit;
-?>
